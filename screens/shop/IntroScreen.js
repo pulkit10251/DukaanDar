@@ -71,9 +71,9 @@ const IntroScreen = (props) => {
     setColor
   ) => {
     const curr_date =
-      new Date().getDate() +
-      "/" +
       new Date().getMonth() +
+      "/" +
+      new Date().getDate() +
       "/" +
       new Date().getFullYear();
 
@@ -98,10 +98,9 @@ const IntroScreen = (props) => {
         const Break = breakTime.split(" to ");
         const breakstart = new Date(curr_date + " " + Break[0]);
         const breakend = new Date(curr_date + " " + Break[1]);
-
+        
         if (
-          (curr >= open && curr <= breakstart) ||
-          (curr >= breakend && curr < close)
+          (curr >= open && curr <= breakstart) || (curr >= breakend && curr <= close)
         ) {
           Status = "OPEN";
           Color = "green";
