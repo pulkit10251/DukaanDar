@@ -1,18 +1,12 @@
 import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  Platform,
-  Dimensions,
-  ScrollView,
-} from "react-native";
-import Colors from "../../constants/Colors";
+import { Text, View, StyleSheet, Platform, FlatList } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
-import { Ionicons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+import FrontCard from "../../components/UI/FrontCard";
+import FrontImages from "../../components/UI/FrontImages";
+import Header from "../../components/UI/Header";
+import CategoriesScreen from "../../screens/shop/CategoriesScreen";
 
 const AllScreen = (props) => {
   const CategoryNavigate = (id) => {
@@ -20,33 +14,40 @@ const AllScreen = (props) => {
       shopId: id,
     });
   };
+
+  const productDetailNavigate = (product, categoryList) => {
+    props.navigation.navigate("productDetail", {
+      product: product,
+      categoryList: categoryList,
+    });
+  };
   const shopId = props.navigation.getParam("shopId");
 
-  let TouchableCmp = TouchableOpacity;
-  if (Platform.OS === "android" && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-  }
+  const shop = useSelector((state) =>
+    state.shops.ShopData.find((shop) => shop.shop_Id === shopId)
+  );
+
+  const FrontData = shop.shop_Front;
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableCmp onPress={() => CategoryNavigate(shopId)}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Categories</Text>
+      <Header CategoryNavigate={CategoryNavigate} id={shopId} />
+      <FlatList
+        ListHeaderComponent={
+          <View>
+            <FrontImages shop_Offers={shop.shop_Offers} />
           </View>
-        </TouchableCmp>
-        <TouchableCmp>
-          <View style={styles.searchBar}>
-              <Ionicons name={Platform.OS==="android"?"md-search" : "ios-search"} size={16} color="#888" style={styles.iconStyle} />
-            <Text style={styles.searchText} >Search for products</Text>
-          </View>
-        </TouchableCmp>
-      </View>
-      <ScrollView>
-        <View style={styles.offerView}>
-          
-        </View>
-      </ScrollView>
+        }
+        data={FrontData}
+        keyExtractor={(item) => String(item.Local_Id)}
+        renderItem={(itemData) => (
+          <FrontCard
+            data={itemData.item.category_Products}
+            name={itemData.item.category_Name}
+            navigation={productDetailNavigate}
+          />
+        )}
+      />
     </View>
   );
 };
@@ -67,50 +68,7 @@ AllScreen.navigationOptions = (NavData) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: Colors.primary,
-    elevation: 0.2,
-    flexDirection: "row",
-  },
-  button: {
-    width: "27%",
-    height: 35,
-    backgroundColor: "white",
-    margin: 7,
-    borderRadius: 2,
-    justifyContent: "center",
-  },
-  buttonText: {
-    textAlign: "center",
-    fontSize: Dimensions.get("screen").width * 0.04,
-    fontFamily: "open-sans-bold",
-  },
-  searchBar: {
-      width:'65%',
-      height:35,
-      backgroundColor:'white',
-      borderRadius:2,
-      marginVertical:7,
-      marginRight:7,
-      flexDirection:'row',
-      alignItems:'center',
-      marginLeft:'auto',
-  },
-  iconStyle:{
-      marginHorizontal:10,
-      opacity:0.6
-  },
-  searchText:{
-    fontFamily:'open-sans',
-    color:'#888',
-    fontSize:14,
-  },
-  offerView:{
-    width:'100%',
-    height: 200,
-    backgroundColor:'white'
-  }
+  container: { flex: 1, paddingBottom: 10 },
 });
-
 
 export default AllScreen;

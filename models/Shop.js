@@ -12,6 +12,8 @@ class Shop {
     shop_OpenTimings,
     shop_ClosedTimings,
     shop_BreakTimings,
+    shop_Offers,
+    shop_Front,
   ) {
     this.shop_Id = shop_Id;
     this.shop_Name = shop_Name;
@@ -25,6 +27,8 @@ class Shop {
     this.shop_OpenTimings = shop_OpenTimings;
     this.shop_ClosedTimings = shop_ClosedTimings;
     this.shop_BreakTimings = shop_BreakTimings;
+    this.shop_Offers = shop_Offers;
+    this.shop_Front = shop_Front;
   }
 }
 
