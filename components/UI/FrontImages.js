@@ -29,10 +29,11 @@ const FrontImages = (props) => {
           autoplay={true}
           circleLoop={true}
           resizeMode="stretch"
+          resizeMethod="resize"
           ImageComponentStyle={{
-            borderRadius: 10,
             width: "95%",
-            marginVertical: 10,
+            marginTop: 10,
+            borderRadius:5,
           }}
           paginationBoxStyle={styles.BoxStyle}
           dotStyle={styles.dotStyle}
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     backgroundColor: "#888",
+    overflow:'hidden',
   },
   welcomeImage: {
     width: "100%",
@@ -58,6 +60,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     marginVertical: 10,
+    overflow:'hidden',
   },
   BoxStyle: {
     bottom: 0,
