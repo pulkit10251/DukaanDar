@@ -15,6 +15,10 @@ const AllScreen = (props) => {
     });
   };
 
+  const searchScreenNavigate = () => {
+    props.navigation.navigate("Search");
+  };
+
   const productDetailNavigate = (product, categoryList) => {
     props.navigation.navigate("productDetail", {
       product: product,
@@ -31,7 +35,11 @@ const AllScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <Header CategoryNavigate={CategoryNavigate} id={shopId} />
+      <Header
+        CategoryNavigate={CategoryNavigate}
+        id={shopId}
+        SearchNavigate={searchScreenNavigate}
+      />
       <FlatList
         ListHeaderComponent={
           <View>

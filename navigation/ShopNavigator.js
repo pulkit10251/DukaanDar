@@ -7,11 +7,12 @@ import Colors from "../constants/Colors";
 
 import AddScreen from "../screens/shop/AddScreen";
 import StartScreen from "../screens/shop/StartScreen";
-import IntroScreen from '../screens/shop/IntroScreen';
-import CategoriesScreen from '../screens/shop/CategoriesScreen';
-import ProductOverviewScreen from '../screens/shop/ProductOverviewScreen';
-import ProductScreen from '../screens/shop/ProductScreen';
+import IntroScreen from "../screens/shop/IntroScreen";
+import CategoriesScreen from "../screens/shop/CategoriesScreen";
+import ProductOverviewScreen from "../screens/shop/ProductOverviewScreen";
+import ProductScreen from "../screens/shop/ProductScreen";
 import AllScreen from "../screens/shop/AllScreen";
+import SearchScreen from "../screens/shop/SearchScreen";
 
 defaultNavOptions = {
   headerStyle: {
@@ -27,11 +28,11 @@ const StartNavigator = createStackNavigator(
   {
     start: StartScreen,
     Intro: IntroScreen,
-    All:AllScreen,
+    All: AllScreen,
+    Search: SearchScreen,
     Category: CategoriesScreen,
-    productOverview : ProductOverviewScreen,
+    productOverview: ProductOverviewScreen,
     productDetail: ProductScreen,
-
   },
   {
     defaultNavigationOptions: defaultNavOptions,
