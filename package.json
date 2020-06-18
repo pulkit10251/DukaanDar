@@ -29,7 +29,8 @@
     "react-navigation-header-buttons": "^4.0.2",
     "react-navigation-stack": "^2.5.1",
     "react-redux": "^7.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "string-similarity": "^4.0.1"
   },
   "devDependencies": {
     "babel-preset-expo": "~8.1.0",

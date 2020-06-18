@@ -15,8 +15,10 @@ const AllScreen = (props) => {
     });
   };
 
-  const searchScreenNavigate = () => {
-    props.navigation.navigate("Search");
+  const searchScreenNavigate = (categoriesList) => {
+    props.navigation.navigate("Search", {
+      categories: categoriesList,
+    });
   };
 
   const productDetailNavigate = (product, categoryList) => {
@@ -38,6 +40,7 @@ const AllScreen = (props) => {
       <Header
         CategoryNavigate={CategoryNavigate}
         id={shopId}
+        shopCategories={shop.shop_Categories}
         SearchNavigate={searchScreenNavigate}
       />
       <FlatList
