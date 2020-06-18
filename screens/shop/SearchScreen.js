@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, FlatList, Text, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  FlatList,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+} from "react-native";
 import SearchBar from "../../components/UI/SearchBar";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import stringSimilarity from "string-similarity";
 import SearchScreenBar from "../../components/UI/SearchScreenBar";
+import Imagess from "../../constants/Imagess";
+import Colors from "../../constants/Colors";
 
 const SearchScreen = (props) => {
   const [value, setvalue] = useState("");
@@ -33,7 +42,10 @@ const SearchScreen = (props) => {
         for (var k = 0; k < LocalCat.length; k++) {
           const Product = LocalCat[k];
           if (
-            stringSimilarity.compareTwoStrings(value, Product.prod_Name) >= 0.3
+            stringSimilarity.compareTwoStrings(
+              value.toLowerCase(),
+              Product.prod_Name.toLowerCase()
+            ) >= 0.3
           ) {
             prod_list.push({ product: Product, category: category });
           }
@@ -47,22 +59,36 @@ const SearchScreen = (props) => {
 
   return (
     <View>
-      <FlatList
-        data={filter}
-        keyExtractor={(item) => String(item.product.prod_Id)}
-        renderItem={(itemData) => (
-          <View style={styles.container}>
-            <SearchScreenBar
-              imageUrl={itemData.item.product.prod_ImageUrl}
-              name={itemData.item.product.prod_Name}
-              categoryName={itemData.item.category.category_Name}
-              navigate={productDetailNavigate}
-              catList={itemData.item.category.category_Products}
-              product={itemData.item.product}
-            />
+      {value != "" && filter.length === 0 ? (
+        <View style={styles.ENFContainer}>
+          <View style={styles.imageContainer}>
+            <Image source={{ uri: Imagess.NotFound }} style={styles.image} />
           </View>
-        )}
-      />
+          <View>
+            <Text style={styles.noText}>No result for "{value}"</Text>
+            <Text style={styles.noticeText}>
+              Please check your spelling or use more general term
+            </Text>
+          </View>
+        </View>
+      ) : (
+        <FlatList
+          data={filter}
+          keyExtractor={(item) => String(item.product.prod_Id)}
+          renderItem={(itemData) => (
+            <View style={styles.container}>
+              <SearchScreenBar
+                imageUrl={itemData.item.product.prod_ImageUrl}
+                name={itemData.item.product.prod_Name}
+                categoryName={itemData.item.category.category_Name}
+                navigate={productDetailNavigate}
+                catList={itemData.item.category.category_Products}
+                product={itemData.item.product}
+              />
+            </View>
+          )}
+        />
+      )}
     </View>
   );
 };
@@ -101,6 +127,37 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: "center",
+  },
+  ENFContainer: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imageContainer: {
+    width: Dimensions.get("screen").width * 0.7,
+    height: Dimensions.get("screen").width * 0.7,
+    alignItems: "center",
+    backgroundColor: "white",
+    marginVertical: 10,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+  noText: {
+    textAlign: "center",
+    fontSize: 20,
+    fontFamily: "open-sans-bold",
+    color: "red",
+  },
+  noticeText: {
+    fontFamily: "open-sans",
+    fontSize: 12,
+    textAlign: "center",
+    flexWrap: "wrap",
+    color: "#888",
   },
 });
 

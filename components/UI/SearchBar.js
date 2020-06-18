@@ -37,6 +37,7 @@ const SearchBar = (props) => {
             style={styles.iconStyle}
             onPress={() => {
               setValue("");
+              props.setData("");
             }}
             size={18}
           />
