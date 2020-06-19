@@ -8,6 +8,7 @@ import {
   Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import * as CartActions from "../../store/actions/CartAction";
 
 const AddInitial = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -15,7 +16,18 @@ const AddInitial = (props) => {
     TouchableCmp = TouchableNativeFeedback;
   }
   return (
-    <TouchableCmp onPress={() => {props.increment()}}>
+    <TouchableCmp
+      onPress={() => {
+        // props.increment();
+        props.dispatch(
+          CartActions.addToCart(
+            props.product,
+            props.val + 1,
+            props.categoryList
+          )
+        );
+      }}
+    >
       <View style={styles.container}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>ADD</Text>
