@@ -1,73 +1,99 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  Platform,
+  TouchableNativeFeedback,
+  TouchableOpacity,
+} from "react-native";
 import Colors from "../../constants/Colors";
 import AddInitial from "./AddInitial";
 import AddLater from "./AddLater";
 
 const ProductsCard = (props) => {
   const percentage = 100 - (props.price * 100) / props.mrp;
-  const [countQuantity, setCountQuantity] = useState(0);
 
-  const incrementQuantity = (props) => {
-    setCountQuantity((prevState) => prevState + 1);
-  };
+  const cartItems = props.cartItems
+  
+  var currentQuantity; 
 
-  const decrementQuantity = (props) => {
-    setCountQuantity((prevState) => prevState - 1);
-  };
+  if(cartItems[props.product.prod_Id]){
+    currentQuantity = cartItems[props.product.prod_Id].quantity;
+  }else{
+    currentQuantity = 0
+  }
+
+  let TouchableCmp = TouchableOpacity;
+  if (Platform.OS === "android" && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+  }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={{ uri: props.image }}
-          style={styles.image}
-          resizeMode="contain"
-        />
-      </View>
-      <View style={styles.textContainer}>
-        <View style={styles.priceContainer}>
-          <Text style={styles.price}>₹{props.price}</Text>
-          {props.price === props.mrp ? (
-            <Text></Text>
-          ) : (
-            <Text style={styles.mrp}>₹{props.mrp}</Text>
-          )}
-          {percentage === 0 ? (
-            <View></View>
-          ) : (
-            <View style={styles.percentage}>
-              <Text style={styles.percentText}>
-                {percentage.toFixed(1)}% OFF
-              </Text>
-            </View>
-          )}
+    <TouchableCmp
+      onPress={() => props.navigate(props.product, props.catList)}
+      useForeground
+    >
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image
+            source={{ uri: props.image }}
+            style={styles.image}
+            resizeMode="contain"
+          />
         </View>
-        <Text style={styles.text}>{props.product_Name}</Text>
-        <View style={styles.priceAddContainer}>
-          <Text style={styles.QuantityText}>
-            {props.qty} {props.unit}
-          </Text>
-          {props.Avail ? (
-            <View style={styles.addContainer}>
-              {countQuantity == 0 ? (
-                <AddInitial increment={incrementQuantity} />
-              ) : (
-                <AddLater
-                  val={countQuantity}
-                  increment={incrementQuantity}
-                  decrement={decrementQuantity}
-                />
-              )}
-            </View>
-          ) : (
-            <View style={styles.OutStock}>
-              <Text style={styles.stockText}>Out of Stock</Text>
-            </View>
-          )}
+        <View style={styles.textContainer}>
+          <View style={styles.priceContainer}>
+            <Text style={styles.price}>₹{props.price}</Text>
+            {props.price === props.mrp ? (
+              <Text></Text>
+            ) : (
+              <Text style={styles.mrp}>₹{props.mrp}</Text>
+            )}
+            {percentage === 0 ? (
+              <View></View>
+            ) : (
+              <View style={styles.percentage}>
+                <Text style={styles.percentText}>
+                  {percentage.toFixed(1)}% OFF
+                </Text>
+              </View>
+            )}
+          </View>
+          <Text style={styles.text}>{props.product_Name}</Text>
+          <View style={styles.priceAddContainer}>
+            <Text style={styles.QuantityText}>
+              {props.qty} {props.unit}
+            </Text>
+            {props.Avail ? (
+              <View style={styles.addContainer}>
+                {currentQuantity == 0 ? (
+                  <AddInitial
+                    dispatch={props.dispatch}
+                    val={currentQuantity}
+                    product={props.product}
+                    categoryList={props.catList}
+                  />
+                ) : (
+                  <AddLater
+                    dispatch={props.dispatch}
+                    val={currentQuantity}
+                    categoryList={props.catList}
+                    product={props.product}
+                  />
+                )}
+              </View>
+            ) : (
+              <View style={styles.OutStock}>
+                <Text style={styles.stockText}>Out of Stock</Text>
+              </View>
+            )}
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableCmp>
   );
 };
 
@@ -146,16 +172,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
     overflow: "hidden",
   },
-  OutStock:{
-    marginLeft:'auto',
-    marginRight:10,
+  OutStock: {
+    marginLeft: "auto",
+    marginRight: 10,
   },
-  stockText:{
-    fontSize: Dimensions.get("screen").width*0.05,
-    fontFamily:'open-sans-bold',
-    color:"red",
-  }
+  stockText: {
+    fontSize: Dimensions.get("screen").width * 0.05,
+    fontFamily: "open-sans-bold",
+    color: "red",
+  },
 });
-
 
 export default ProductsCard;

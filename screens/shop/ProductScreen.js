@@ -13,13 +13,20 @@ import ProductDetailCard from "../../components/UI/ProductDetailCard";
 import ExploreItemBox from "../../components/UI/ExploreItemBox";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
+import { useDispatch, useSelector } from "react-redux";
+import CartItem from "../../models/CartItem";
 
 const ProductScreen = (props) => {
   const product = props.navigation.getParam("product");
   const LocalList = props.navigation.getParam("categoryList");
+
   const list = props.navigation
     .getParam("categoryList")
     .filter((item) => item.prod_Id != product.prod_Id);
+
+  const dispatch = useDispatch();
+
+  const cartItem = useSelector((state)=> state.cart.items)
 
   const productDetailNavigate = (product, categoryList) => {
     props.navigation.replace("productDetail", {
@@ -47,6 +54,10 @@ const ProductScreen = (props) => {
           Mfd={product.prod_MfdDate}
           Shelf={product.prod_ShelfLife}
           Avail={product.prod_Availability}
+          product={product}
+          dispatch={dispatch}
+          cartItem={cartItem}
+          catList={LocalList}
         />
         <View style={styles.ExploreContainer}>
           <Text style={styles.ExploreText}>Explore other Products</Text>
@@ -63,6 +74,8 @@ const ProductScreen = (props) => {
                 list={LocalList}
                 Avail={itemData.item.prod_Availability}
                 navigate={productDetailNavigate}
+                cartItem={cartItem}
+                dispatch={dispatch}
               />
             )}
           />
@@ -80,7 +93,9 @@ ProductScreen.navigationOptions = (NavData) => {
         <Item
           title="Add"
           iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
-          onPress={() => {}}
+          onPress={() => {
+            NavData.navigation.navigate("cart");
+          }}
         />
       </HeaderButtons>
     ),

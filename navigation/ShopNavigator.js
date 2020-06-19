@@ -13,6 +13,7 @@ import ProductOverviewScreen from "../screens/shop/ProductOverviewScreen";
 import ProductScreen from "../screens/shop/ProductScreen";
 import AllScreen from "../screens/shop/AllScreen";
 import SearchScreen from "../screens/shop/SearchScreen";
+import CartScreen from "../screens/shop/CartScreen";
 
 defaultNavOptions = {
   headerStyle: {
@@ -33,6 +34,7 @@ const StartNavigator = createStackNavigator(
     Category: CategoriesScreen,
     productOverview: ProductOverviewScreen,
     productDetail: ProductScreen,
+    cart: CartScreen,
   },
   {
     defaultNavigationOptions: defaultNavOptions,

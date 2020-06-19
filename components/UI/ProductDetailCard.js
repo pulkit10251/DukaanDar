@@ -6,15 +6,15 @@ import AddLater from "../../components/UI/AddLater";
 
 const ProductDetailCard = (props) => {
   const percentage = 100 - (props.Price * 100) / props.Mrp;
-  const [countQuantity, setCountQuantity] = useState(0);
 
-  const incrementQuantity = (props) => {
-    setCountQuantity((prevState) => prevState + 1);
-  };
+  const cartItems = props.cartItem;
+  var currentQuantity;
+  if (cartItems[props.product.prod_Id]) {
+    currentQuantity = cartItems[props.product.prod_Id].quantity;
+  } else {
+    currentQuantity = 0;
+  }
 
-  const decrementQuantity = (props) => {
-    setCountQuantity((prevState) => prevState - 1);
-  };
   return (
     <View style={styles.bottomContainer}>
       <View style={styles.NameContainer}>
@@ -37,13 +37,19 @@ const ProductDetailCard = (props) => {
         {props.Avail && (
           <View style={styles.priceAddContainer}>
             <View style={styles.addContainer}>
-              {countQuantity == 0 ? (
-                <AddInitial increment={incrementQuantity} />
+              {currentQuantity == 0 ? (
+                <AddInitial
+                  val={currentQuantity}
+                  product={props.product}
+                  dispatch={props.dispatch}
+                  categoryList={props.catList}
+                />
               ) : (
                 <AddLater
-                  val={countQuantity}
-                  increment={incrementQuantity}
-                  decrement={decrementQuantity}
+                  val={currentQuantity}
+                  product={props.product}
+                  dispatch={props.dispatch}
+                  categoryList={props.catList}
                 />
               )}
             </View>

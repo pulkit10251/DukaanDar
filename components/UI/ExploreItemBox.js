@@ -13,15 +13,13 @@ import AddInitial from "../../components/UI/AddInitial";
 import AddLater from "../../components/UI/AddLater";
 
 const ExploreItemBox = (props) => {
-  const [countQuantity, setCountQuantity] = useState(0);
-
-  const incrementQuantity = (props) => {
-    setCountQuantity((prevState) => prevState + 1);
-  };
-
-  const decrementQuantity = (props) => {
-    setCountQuantity((prevState) => prevState - 1);
-  };
+  const cartItems = props.cartItem;
+  var currentQuantity;
+  if (cartItems[props.product.prod_Id]) {
+    currentQuantity = cartItems[props.product.prod_Id].quantity;
+  } else {
+    currentQuantity = 0;
+  }
 
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -29,9 +27,7 @@ const ExploreItemBox = (props) => {
   }
 
   return (
-    <TouchableCmp
-      onPress={() => props.navigate(props.product, props.list, props.GlobList)}
-    >
+    <TouchableCmp onPress={() => props.navigate(props.product, props.list)}>
       <View style={styles.container}>
         <Image
           source={{ uri: props.image }}
@@ -41,13 +37,19 @@ const ExploreItemBox = (props) => {
         <Text style={styles.textStyle}>{props.title}</Text>
         {props.Avail ? (
           <View style={styles.addContainer}>
-            {countQuantity == 0 ? (
-              <AddInitial increment={incrementQuantity} />
+            {currentQuantity == 0 ? (
+              <AddInitial
+                val={currentQuantity}
+                product={props.product}
+                dispatch={props.dispatch}
+                categoryList={props.catList}
+              />
             ) : (
               <AddLater
-                val={countQuantity}
-                increment={incrementQuantity}
-                decrement={decrementQuantity}
+                val={currentQuantity}
+                dispatch={props.dispatch}
+                product={props.product}
+                categoryList={props.catList}
               />
             )}
           </View>
@@ -100,13 +102,13 @@ const styles = StyleSheet.create({
   },
   OutStock: {
     marginTop: "auto",
-    alignItems:'center'
+    alignItems: "center",
   },
   stockText: {
     fontSize: Dimensions.get("screen").width * 0.045,
     fontFamily: "open-sans-bold",
     color: "red",
-    textAlign:'center'
+    textAlign: "center",
   },
 });
 

@@ -11,6 +11,7 @@ import {
 import ProductsCard from "../../components/UI/ProductsCard";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductOverviewScreen = (props) => {
   const categoryList = props.navigation.getParam("CatList");
@@ -22,33 +23,32 @@ const ProductOverviewScreen = (props) => {
     });
   };
 
-  let TouchableCmp = TouchableOpacity;
-  if (Platform.OS === "android" && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-  }
+  const dispatch = useDispatch();
+  var quantity = 0;
+  const cartItems = useSelector((state) => state.cart.items)
+
+
   return (
     <FlatList
       data={categoryList}
       keyExtractor={(item) => item.prod_Id}
       renderItem={(itemData) => (
-        <TouchableCmp
-          onPress={() =>
-            productDetailNavigate(itemData.item, categoryList)
-          }
-          useForeground
-        >
-          <View>
-            <ProductsCard
-              image={itemData.item.prod_ImageUrl}
-              product_Name={itemData.item.prod_Name}
-              price={itemData.item.prod_Price}
-              mrp={itemData.item.prod_Mrp}
-              qty={itemData.item.prod_Quantity}
-              unit={itemData.item.prod_Unit}
-              Avail={itemData.item.prod_Availability}
-            />
-          </View>
-        </TouchableCmp>
+        <View>
+          <ProductsCard
+            image={itemData.item.prod_ImageUrl}
+            product_Name={itemData.item.prod_Name}
+            price={itemData.item.prod_Price}
+            mrp={itemData.item.prod_Mrp}
+            qty={itemData.item.prod_Quantity}
+            unit={itemData.item.prod_Unit}
+            Avail={itemData.item.prod_Availability}
+            product={itemData.item}
+            navigate={productDetailNavigate}
+            dispatch={dispatch}
+            cartItems={cartItems}
+            catList={categoryList}
+          />
+        </View>
       )}
     />
   );
@@ -62,7 +62,9 @@ ProductOverviewScreen.navigationOptions = (NavData) => {
         <Item
           title="Add"
           iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
-          onPress={() => {}}
+          onPress={() => {
+            NavData.navigation.navigate("cart");
+          }}
         />
       </HeaderButtons>
     ),

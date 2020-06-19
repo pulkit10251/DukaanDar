@@ -111,7 +111,9 @@ SearchScreen.navigationOptions = (NavData) => {
         <Item
           title="Add"
           iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
-          onPress={() => {}}
+          onPress={() => {
+            NavData.navigation.navigate("cart");
+          }}
         />
       </HeaderButtons>
     ),
