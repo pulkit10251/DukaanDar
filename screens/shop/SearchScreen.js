@@ -23,13 +23,16 @@ const SearchScreen = (props) => {
     });
   }, []);
 
-  const productDetailNavigate = (product, categoryList) => {
+  const productDetailNavigate = (product, categoryList,shopId) => {
     props.navigation.navigate("productDetail", {
       product: product,
       categoryList: categoryList,
+      shopId: shopId,
     });
   };
   const categoryList = props.navigation.getParam("categories");
+
+  const shopId = props.navigation.getParam("shopId");
 
   const filterList = (value, categoryList) => {
     const prod_list = [];
@@ -82,6 +85,7 @@ const SearchScreen = (props) => {
                 name={itemData.item.product.prod_Name}
                 categoryName={itemData.item.category.category_Name}
                 navigate={productDetailNavigate}
+                shopId={shopId}
                 catList={itemData.item.category.category_Products}
                 product={itemData.item.product}
               />
@@ -112,7 +116,9 @@ SearchScreen.navigationOptions = (NavData) => {
           title="Add"
           iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
           onPress={() => {
-            NavData.navigation.navigate("cart");
+            NavData.navigation.navigate("cart", {
+              shopId: NavData.navigation.getParam("shopId"),
+            });
           }}
         />
       </HeaderButtons>

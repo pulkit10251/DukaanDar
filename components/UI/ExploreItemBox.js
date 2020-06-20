@@ -27,7 +27,9 @@ const ExploreItemBox = (props) => {
   }
 
   return (
-    <TouchableCmp onPress={() => props.navigate(props.product, props.list)}>
+    <TouchableCmp
+      onPress={() => props.navigate(props.product, props.list, props.shopId)}
+    >
       <View style={styles.container}>
         <Image
           source={{ uri: props.image }}

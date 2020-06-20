@@ -17,7 +17,7 @@ const FrontBox = (props) => {
     TouchableCmp = TouchableNativeFeedback;
   }
   return (
-    <TouchableCmp onPress={() => props.navigation(props.prod, props.data)}>
+    <TouchableCmp onPress={() => props.navigation(props.prod, props.data,props.shopId)}>
       <View style={styles.box}>
         <View style={styles.imageContainer}>
           <Image

@@ -15,16 +15,18 @@ const AllScreen = (props) => {
     });
   };
 
-  const searchScreenNavigate = (categoriesList) => {
+  const searchScreenNavigate = (categoriesList, shopId) => {
     props.navigation.navigate("Search", {
       categories: categoriesList,
+      shopId: shopId,
     });
   };
 
-  const productDetailNavigate = (product, categoryList) => {
+  const productDetailNavigate = (product, categoryList, shopId) => {
     props.navigation.navigate("productDetail", {
       product: product,
       categoryList: categoryList,
+      shopId: shopId,
     });
   };
   const shopId = props.navigation.getParam("shopId");
@@ -55,6 +57,7 @@ const AllScreen = (props) => {
           <FrontCard
             data={itemData.item.category_Products}
             name={itemData.item.category_Name}
+            shopId={shopId}
             navigation={productDetailNavigate}
           />
         )}
@@ -72,7 +75,9 @@ AllScreen.navigationOptions = (NavData) => {
           title="Add"
           iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
           onPress={() => {
-            NavData.navigation.navigate("cart");
+            NavData.navigation.navigate("cart",{
+              shopId: NavData.navigation.getParam("shopId")
+            });
           }}
         />
       </HeaderButtons>

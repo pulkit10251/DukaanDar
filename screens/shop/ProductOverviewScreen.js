@@ -16,17 +16,19 @@ import { useDispatch, useSelector } from "react-redux";
 const ProductOverviewScreen = (props) => {
   const categoryList = props.navigation.getParam("CatList");
 
-  const productDetailNavigate = (product, categoryList) => {
+  const productDetailNavigate = (product, categoryList, shopId) => {
     props.navigation.navigate("productDetail", {
       product: product,
       categoryList: categoryList,
+      shopId: shopId,
     });
   };
 
+  const shopId = props.navigation.getParam("shopId");
+
   const dispatch = useDispatch();
   var quantity = 0;
-  const cartItems = useSelector((state) => state.cart.items)
-
+  const cartItems = useSelector((state) => state.cart.items);
 
   return (
     <FlatList
@@ -43,6 +45,7 @@ const ProductOverviewScreen = (props) => {
             unit={itemData.item.prod_Unit}
             Avail={itemData.item.prod_Availability}
             product={itemData.item}
+            shopId={shopId}
             navigate={productDetailNavigate}
             dispatch={dispatch}
             cartItems={cartItems}
@@ -63,7 +66,9 @@ ProductOverviewScreen.navigationOptions = (NavData) => {
           title="Add"
           iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
           onPress={() => {
-            NavData.navigation.navigate("cart");
+            NavData.navigation.navigate("cart", {
+              shopId: NavData.navigation.getParam("shopId"),
+            });
           }}
         />
       </HeaderButtons>

@@ -22,6 +22,7 @@ const FrontCard = (props) => {
             name={itemData.item.prod_Name}
             data={props.data}
             prod={itemData.item}
+            shopId={props.shopId}
             navigation={props.navigation}
           />
         )}

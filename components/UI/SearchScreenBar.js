@@ -17,7 +17,9 @@ const SearchScreenBar = (props) => {
     TouchableCmp = TouchableNativeFeedback;
   }
   return (
-    <TouchableCmp onPress={() => props.navigate(props.product, props.catList)}>
+    <TouchableCmp
+      onPress={() => props.navigate(props.product, props.catList, props.shopId)}
+    >
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <Image

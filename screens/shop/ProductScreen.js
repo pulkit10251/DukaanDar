@@ -20,18 +20,21 @@ const ProductScreen = (props) => {
   const product = props.navigation.getParam("product");
   const LocalList = props.navigation.getParam("categoryList");
 
+  const shopId = props.navigation.getParam("shopId")
+
   const list = props.navigation
     .getParam("categoryList")
     .filter((item) => item.prod_Id != product.prod_Id);
 
   const dispatch = useDispatch();
 
-  const cartItem = useSelector((state)=> state.cart.items)
+  const cartItem = useSelector((state) => state.cart.items);
 
-  const productDetailNavigate = (product, categoryList) => {
+  const productDetailNavigate = (product, categoryList,shopId) => {
     props.navigation.replace("productDetail", {
       product: product,
       categoryList: categoryList,
+      shopId: shopId
     });
   };
 
@@ -55,6 +58,7 @@ const ProductScreen = (props) => {
           Shelf={product.prod_ShelfLife}
           Avail={product.prod_Availability}
           product={product}
+          shopId={shopId}
           dispatch={dispatch}
           cartItem={cartItem}
           catList={LocalList}
@@ -73,6 +77,7 @@ const ProductScreen = (props) => {
                 product={itemData.item}
                 list={LocalList}
                 Avail={itemData.item.prod_Availability}
+                shopId={shopId}
                 navigate={productDetailNavigate}
                 cartItem={cartItem}
                 dispatch={dispatch}
@@ -94,7 +99,9 @@ ProductScreen.navigationOptions = (NavData) => {
           title="Add"
           iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
           onPress={() => {
-            NavData.navigation.navigate("cart");
+            NavData.navigation.navigate("cart", {
+              shopId: NavData.navigation.getParam("shopId"),
+            });
           }}
         />
       </HeaderButtons>

@@ -30,6 +30,7 @@ const BoxView = (props) => {
               props.products(
                 itemData.item.category_Name,
                 itemData.item.category_Products,
+                props.shopId
               );
             }}
           >

@@ -12,10 +12,11 @@ const CategoriesScreen = (props) => {
   );
   const categories = shop.shop_Categories;
 
-  const ProductNavigate = (CatTitle, LocalCat) => {
+  const ProductNavigate = (CatTitle, LocalCat, shopId) => {
     props.navigation.navigate("productOverview", {
       CatTitle: CatTitle,
       CatList: LocalCat,
+      shopId: shopId,
     });
   };
 
@@ -29,6 +30,7 @@ const CategoriesScreen = (props) => {
             category={itemData.item.category_Name}
             catImage={itemData.item.category_Image}
             catList={itemData.item.category_Local}
+            shopId={shopId}
             products={ProductNavigate}
           />
         )}
@@ -46,7 +48,9 @@ CategoriesScreen.navigationOptions = (NavData) => {
           title="Add"
           iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
           onPress={() => {
-            NavData.navigation.navigate("cart");
+            NavData.navigation.navigate("cart", {
+              shopId: NavData.navigation.getParam("shopId"),
+            });
           }}
         />
       </HeaderButtons>

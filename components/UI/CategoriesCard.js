@@ -44,6 +44,7 @@ const CategoriesCard = (props) => {
           <BoxView
             data={categoryList}
             products={props.products}
+            shopId={props.shopId}
           />
         </View>
       )}

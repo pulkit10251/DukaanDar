@@ -16,14 +16,14 @@ import AddLater from "./AddLater";
 const ProductsCard = (props) => {
   const percentage = 100 - (props.price * 100) / props.mrp;
 
-  const cartItems = props.cartItems
-  
-  var currentQuantity; 
+  const cartItems = props.cartItems;
 
-  if(cartItems[props.product.prod_Id]){
+  var currentQuantity;
+
+  if (cartItems[props.product.prod_Id]) {
     currentQuantity = cartItems[props.product.prod_Id].quantity;
-  }else{
-    currentQuantity = 0
+  } else {
+    currentQuantity = 0;
   }
 
   let TouchableCmp = TouchableOpacity;
@@ -33,7 +33,7 @@ const ProductsCard = (props) => {
 
   return (
     <TouchableCmp
-      onPress={() => props.navigate(props.product, props.catList)}
+      onPress={() => props.navigate(props.product, props.catList, props.shopId)}
       useForeground
     >
       <View style={styles.container}>

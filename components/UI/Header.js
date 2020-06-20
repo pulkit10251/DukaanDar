@@ -24,7 +24,7 @@ const Header = (props) => {
           <Text style={styles.buttonText}>Categories</Text>
         </View>
       </TouchableCmp>
-      <TouchableCmp onPress={() => props.SearchNavigate(props.shopCategories)}>
+      <TouchableCmp onPress={() => props.SearchNavigate(props.shopCategories,props.id)}>
         <View style={styles.searchBar}>
           <Ionicons
             name={Platform.OS === "android" ? "md-search" : "ios-search"}
