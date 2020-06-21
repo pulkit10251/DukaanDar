@@ -25,7 +25,7 @@ const CartScreen = (props) => {
       categoryList: categoryList,
     });
   };
-  const shopId = props.navigation.getParam("shopId");
+  const shopId = useSelector((state) => state.shopId.shopId);
 
   const AllNavigate = (id) => {
     props.navigation.navigate("All", {

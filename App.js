@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 
 import ShopReducer from "./store/reducers/ShopReducer";
 import CartReducer from "./store/reducers/CartReducer";
+import ShopIdReducer from "./store/reducers/ShopIdReducer";
 
 const fetchFont = () => {
   return Font.loadAsync({
@@ -19,6 +20,7 @@ const fetchFont = () => {
 const rootReducer = combineReducers({
   shops: ShopReducer,
   cart: CartReducer,
+  shopId: ShopIdReducer,
 });
 
 const store = createStore(rootReducer);

@@ -39,7 +39,7 @@ const AddLater = (props) => {
             CartActions.addToCart(
               props.product,
               props.val,
-              props.categoryList
+              props.categoryList,
             )
           );
         }}

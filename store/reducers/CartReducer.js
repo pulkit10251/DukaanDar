@@ -32,7 +32,7 @@ export default (state = initialState, action) => {
         ...state,
         items: { ...state.items, [addedProduct.prod_Id]: updatedOrnewCartItem },
         totalAmount: state.totalAmount + prodPrice,
-        totalAmountMRP : state.totalAmountMRP + prodMrp
+        totalAmountMRP : state.totalAmountMRP + prodMrp,
       };
     }
 

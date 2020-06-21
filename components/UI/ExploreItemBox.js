@@ -44,6 +44,7 @@ const ExploreItemBox = (props) => {
                 val={currentQuantity}
                 product={props.product}
                 dispatch={props.dispatch}
+                shopId={props.shopId}
                 categoryList={props.catList}
               />
             ) : (
@@ -52,6 +53,7 @@ const ExploreItemBox = (props) => {
                 dispatch={props.dispatch}
                 product={props.product}
                 categoryList={props.catList}
+                shopId={props.shopId}
               />
             )}
           </View>

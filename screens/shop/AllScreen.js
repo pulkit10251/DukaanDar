@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import FrontCard from "../../components/UI/FrontCard";
 import FrontImages from "../../components/UI/FrontImages";
 import Header from "../../components/UI/Header";
-import CategoriesScreen from "../../screens/shop/CategoriesScreen";
 
 const AllScreen = (props) => {
   const CategoryNavigate = (id) => {
@@ -29,7 +28,7 @@ const AllScreen = (props) => {
       shopId: shopId,
     });
   };
-  const shopId = props.navigation.getParam("shopId");
+  const shopId = useSelector((state)=>state.shopId.shopId);
 
   const shop = useSelector((state) =>
     state.shops.ShopData.find((shop) => shop.shop_Id === shopId)
@@ -69,14 +68,25 @@ const AllScreen = (props) => {
 AllScreen.navigationOptions = (NavData) => {
   return {
     headerTitle: "DukaanDar",
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          onPress={() => {
+            NavData.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Add"
           iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
           onPress={() => {
-            NavData.navigation.navigate("cart",{
-              shopId: NavData.navigation.getParam("shopId")
+            NavData.navigation.navigate("cart", {
+              shopId: NavData.navigation.getParam("shopId"),
             });
           }}
         />

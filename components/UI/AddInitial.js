@@ -23,7 +23,7 @@ const AddInitial = (props) => {
           CartActions.addToCart(
             props.product,
             props.val + 1,
-            props.categoryList
+            props.categoryList,
           )
         );
       }}

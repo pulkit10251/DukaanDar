@@ -43,6 +43,7 @@ const ProductDetailCard = (props) => {
                   product={props.product}
                   dispatch={props.dispatch}
                   categoryList={props.catList}
+                  shopId={props.shopId}
                 />
               ) : (
                 <AddLater
@@ -50,6 +51,7 @@ const ProductDetailCard = (props) => {
                   product={props.product}
                   dispatch={props.dispatch}
                   categoryList={props.catList}
+                  shopId={props.shopId}
                 />
               )}
             </View>

@@ -74,12 +74,14 @@ const ProductsCard = (props) => {
                     dispatch={props.dispatch}
                     val={currentQuantity}
                     product={props.product}
+                    shopId={props.shopId}
                     categoryList={props.catList}
                   />
                 ) : (
                   <AddLater
                     dispatch={props.dispatch}
                     val={currentQuantity}
+                    shopId={props.shopId}
                     categoryList={props.catList}
                     product={props.product}
                   />

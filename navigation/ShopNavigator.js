@@ -29,6 +29,15 @@ const StartNavigator = createStackNavigator(
   {
     start: StartScreen,
     Intro: IntroScreen,
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions,
+    initialRouteName: "start",
+  }
+);
+
+const HomeNavigator = createStackNavigator(
+  {
     All: AllScreen,
     Search: SearchScreen,
     Category: CategoriesScreen,
@@ -38,7 +47,32 @@ const StartNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultNavOptions,
+    initialRouteName: "All",
   }
 );
 
-export default createAppContainer(StartNavigator);
+const CartNavigator = createStackNavigator(
+  {
+    cart: CartScreen,
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions,
+  }
+);
+
+const shopNavigator = createDrawerNavigator(
+  {
+    Start: StartNavigator,
+    Home: HomeNavigator,
+    Cart: CartNavigator,
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.primary,
+    },
+    unmountInactiveRoutes: true,
+    hideStatusBar: true,
+  }
+);
+
+export default createAppContainer(shopNavigator);

@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, FlatList, Platform } from "react-native";
 import Card from "../../components/UI/Card";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
+import * as ShopIDAction from "../../store/actions/ShopIdAction";
 
 const StartScreen = (props) => {
   const shops = useSelector((state) => state.shops.ShopData);
-  const IntroNavigate = (id,shopName) => {
+  const IntroNavigate = (id, shopName) => {
     props.navigation.navigate("Intro", {
       shopId: id,
-      shopTitle : shopName
+      shopTitle: shopName,
     });
   };
 
+  const dispatch = useDispatch();
 
   return (
     <View>
@@ -25,7 +27,8 @@ const StartScreen = (props) => {
             shopName={itemData.item.shop_Name}
             deleteShop={() => {}}
             GotoShopping={() => {
-              IntroNavigate(itemData.item.shop_Id,itemData.item.shop_Name);
+              dispatch(ShopIDAction.shopId(itemData.item.shop_Id));
+              IntroNavigate(itemData.item.shop_Id, itemData.item.shop_Name);
             }}
           />
         )}
