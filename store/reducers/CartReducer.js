@@ -1,6 +1,7 @@
 import ADD_TO_CART from "../actions/CartAction";
 import CartItem from "../../models/CartItem";
 
+
 const initialState = {
   items: {},
   totalAmount: 0,

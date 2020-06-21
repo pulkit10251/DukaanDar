@@ -3,7 +3,7 @@ import {
   Text,
   View,
   StyleSheet,
-  Flatlist,
+  FlatList,
   TouchableNativeFeedback,
   TouchableOpacity,
   Platform,
@@ -11,7 +11,6 @@ import {
   Dimensions,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { FlatList } from "react-native-gesture-handler";
 import CartPriceContainer from "../../components/UI/CartPriceContainer";
 import ProductsCard from "../../components/UI/ProductsCard";
 import { Ionicons } from "@expo/vector-icons";
