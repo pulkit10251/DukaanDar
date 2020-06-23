@@ -8,13 +8,16 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_STORE":
+    case "ADD_STORE": {
       const shopId = action.shopId;
       const shop = ShopData.find((props) => props.shop_Id === shopId);
       const shopName = shop.shop_Name;
-      const cartItems = {};
-      var NewShop;
-      if (!state.shops[shopId]) {
+
+      let NewShop;
+      if (state.shops[shopId]) {
+        return state;
+      } else {
+        const cartItems = {};
         // shop is not present in the store
         NewShop = new StoreModel(shopName, shopId, shop, cartItems, 0, 0);
       }
@@ -23,24 +26,25 @@ export default (state = initialState, action) => {
         ...state,
         shops: { ...state.shops, [shopId]: NewShop },
       };
-
-    case "REMOVE_STORE":
-      const shopId = action.shopId;
+    }
+    case "REMOVE_STORE": {
+      const shopId1 = action.shopId;
       const UpdatedStore = { ...state.shops };
-      delete UpdatedStore[shopId];
+      delete UpdatedStore[shopId1];
       return {
         ...state,
         shops: UpdatedStore,
       };
+    }
 
-    case "ADD_TO_CART":
+    case "ADD_TO_CART": {
       const addedProduct = action.product;
       const prodPrice = addedProduct.prod_Price;
       const prodMrp = addedProduct.prod_Mrp;
       const catList = action.categoryList;
-      const shopId = action.shopId;
-      const cartItems = { ...state.shops[shopId].cartItems };
-      const store = state.shops[shopId];
+      const shopId2 = action.shopId;
+      const cartItems = { ...state.shops[shopId2].cartItems };
+      const store = state.shops[shopId2];
 
       let updatedOrnewCartItem;
 
@@ -68,50 +72,53 @@ export default (state = initialState, action) => {
         store.shopId,
         store.shopData,
         updatedCartItems,
-        store.totalAmount + prodPrice,
-        store.totalMrp + prodMrp
+        store.TotalAmount + prodPrice,
+        store.TotalMrp + prodMrp
       );
       return {
         ...state,
-        shops: { ...state.shops, [shopId]: updatedShop },
+        shops: { ...state.shops, [shopId2]: updatedShop },
       };
+    }
 
-    case "REMOVE_FROM_CART":
-      const shopId = action.shopId;
+    case "REMOVE_FROM_CART": {
+      const shopId3 = action.shopId;
       const prodId = action.pid;
-      const selectedStore = state.shops[shopId];
-      const cartItems = selectedStore.cartItems;
-      const selectedCartItem = cartItems[prodId];
+      const selectedStore = state.shops[shopId3];
+      const CartItems = selectedStore.cartItems ;
+      const selectedCartItem = CartItems[prodId];
       const CurrentQuantity = selectedCartItem.quantity;
 
-      var updatedCartItems;
+      let updatedCartItems;
 
       if (CurrentQuantity > 1) {
         const updatedCartItem = new CartItem(
           selectedCartItem.quantity - 1,
-          selectedCartItem,
+          selectedCartItem.product,
           selectedCartItem.sum - selectedCartItem.product.prod_Price,
           selectedCartItem.catList
         );
-        updatedCartItems = { ...cartItems, [prodId]: updatedCartItem };
+        updatedCartItems = { ...CartItems, [prodId]: updatedCartItem };
+        
       } else {
-        updatedCartItems = { ...cartItems };
+        updatedCartItems = { ...CartItems };
         delete updatedCartItems[prodId];
       }
 
       const updatedShop = new StoreModel(
-        store.shopName,
-        store.shopId,
-        store.shopData,
+        selectedStore.shopName,
+        selectedStore.shopId,
+        selectedStore.shopData,
         updatedCartItems,
-        store.totalAmount - selectedCartItem.product.prod_Price,
-        store.totalMrp - selectedCartItem.product.prod_Mrp
+        selectedStore.TotalAmount - selectedCartItem.product.prod_Price,
+        selectedStore.TotalMrp - selectedCartItem.product.prod_Mrp
       );
 
       return {
         ...state,
-        shops: { ...state.shops, [shopId]: updatedShop },
+        shops: { ...state.shops, [shopId3]: updatedShop },
       };
+    }
   }
 
   return state;

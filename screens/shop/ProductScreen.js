@@ -28,7 +28,7 @@ const ProductScreen = (props) => {
 
   const dispatch = useDispatch();
 
-  const cartItem = useSelector((state) => state.cart.items);
+  const cartItem = useSelector((state) => state.store.shops[shopId].cartItems);
 
   const productDetailNavigate = (product, categoryList,shopId) => {
     props.navigation.replace("productDetail", {

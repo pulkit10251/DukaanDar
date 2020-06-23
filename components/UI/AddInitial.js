@@ -9,21 +9,27 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as CartActions from "../../store/actions/CartAction";
+import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
+import { useSelector } from "react-redux";
+
 
 const AddInitial = (props) => {
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
+
+  const shopId = useSelector((state) => state.shopId.shopId);
   return (
     <TouchableCmp
       onPress={() => {
         // props.increment();
         props.dispatch(
-          CartActions.addToCart(
+          ShopStoreActions.addToCart(
             props.product,
             props.val + 1,
             props.categoryList,
+            shopId
           )
         );
       }}

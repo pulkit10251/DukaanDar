@@ -1,3 +1,5 @@
+import { shopId } from "./ShopIdAction";
+
 export const ADD_STORE = "ADD_STORE";
 export const REMOVE_STORE = "REMOVE_STORE";
 export const ADD_TO_CART = "ADD_TO_CART";
@@ -17,19 +19,20 @@ export const removeStore = (shopId) => {
   };
 };
 
-export const addToCart = (product, quantity, categoryList) => {
+export const addToCart = (product, quantity, categoryList, shopId) => {
   return {
     type: ADD_TO_CART,
     product: product,
     quantity: quantity,
     categoryList: categoryList,
+    shopId: shopId,
   };
 };
 
-export const removeFromCart = (productId, quantity) => {
+export const removeFromCart = (productId, shopId) => {
   return {
     type: REMOVE_FROM_CART,
     pid: productId,
-    quantity: quantity,
+    shopId: shopId,
   };
 };

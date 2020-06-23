@@ -16,15 +16,21 @@ import ProductsCard from "../../components/UI/ProductsCard";
 import { Ionicons } from "@expo/vector-icons";
 
 const CartScreen = (props) => {
-  const totalAmount = useSelector((state) => state.cart.totalAmount);
-  const totalAmountMrp = useSelector((state) => state.cart.totalAmountMRP);
-  const productDetailNavigate = (product, categoryList) => {
+  const shopId = useSelector((state) => state.shopId.shopId);
+
+  const totalAmount = useSelector(
+    (state) => state.store.shops[shopId].TotalAmount
+  );
+  const totalAmountMrp = useSelector(
+    (state) => state.store.shops[shopId].TotalMrp
+  );
+  const productDetailNavigate = (product, categoryList, shopId) => {
     props.navigation.navigate("productDetail", {
       product: product,
       categoryList: categoryList,
+      shopId: shopId,
     });
   };
-  const shopId = useSelector((state) => state.shopId.shopId);
 
   const AllNavigate = (id) => {
     props.navigation.navigate("All", {
@@ -40,18 +46,22 @@ const CartScreen = (props) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => {
     const cartItems = [];
-    for (const key in state.cart.items) {
+    for (const key in state.store.shops[shopId].cartItems) {
       cartItems.push({
-        product: state.cart.items[key].product,
-        quantity: state.cart.items[key].quantity,
-        sum: state.cart.items[key].sum,
+        product: state.store.shops[shopId].cartItems[key].product,
+        quantity: state.store.shops[shopId].cartItems[key].quantity,
+        sum: state.store.shops[shopId].cartItems[key].sum,
+        catList: state.store.shops[shopId].cartItems[key].catList,
         id: key,
       });
     }
-    return cartItems;
+    return cartItems.sort((a,b)=> a.product.prod_Id  > b.product.prod_Id ? 1:-1);
   });
 
-  const cartItemsObject = useSelector((state) => state.cart.items);
+  const cartItemsObject = useSelector(
+    (state) => state.store.shops[shopId].cartItems
+  );
+
   return (
     <View style={styles.screen}>
       {totalAmount === 0 ? (
@@ -100,6 +110,7 @@ const CartScreen = (props) => {
                   navigate={productDetailNavigate}
                   dispatch={dispatch}
                   cartItems={cartItemsObject}
+                  shopId={shopId}
                   catList={
                     cartItemsObject[itemData.item.product.prod_Id].catList
                   }

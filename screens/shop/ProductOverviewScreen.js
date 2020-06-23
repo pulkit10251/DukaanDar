@@ -4,8 +4,6 @@ import {
   View,
   StyleSheet,
   FlatList,
-  TouchableNativeFeedback,
-  TouchableOpacity,
   Platform,
 } from "react-native";
 import ProductsCard from "../../components/UI/ProductsCard";
@@ -28,7 +26,7 @@ const ProductOverviewScreen = (props) => {
 
   const dispatch = useDispatch();
   var quantity = 0;
-  const cartItems = useSelector((state) => state.cart.items);
+  const cartItems = useSelector((state) => state.store.shops[shopId].cartItems);
 
   return (
     <FlatList
