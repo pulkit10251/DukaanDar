@@ -55,7 +55,9 @@ const CartScreen = (props) => {
         id: key,
       });
     }
-    return cartItems.sort((a,b)=> a.product.prod_Id  > b.product.prod_Id ? 1:-1);
+    return cartItems.sort((a, b) =>
+      a.product.prod_Id > b.product.prod_Id ? 1 : -1
+    );
   });
 
   const cartItemsObject = useSelector(
@@ -118,19 +120,21 @@ const CartScreen = (props) => {
               </View>
             )}
           />
-          <View style={styles.footerContainer}>
-            <Text style={styles.footerText}>Checkout</Text>
-            <Text style={styles.footerAmount}>₹ {totalAmount}</Text>
-            <Ionicons
-              name={
-                Platform.OS === "android"
-                  ? "md-arrow-forward"
-                  : "ios-arrow-forward"
-              }
-              size={20}
-              style={styles.iconStyle}
-            />
-          </View>
+          <TouchableCmp onPress={() => {}}>
+            <View style={styles.footerContainer}>
+              <Text style={styles.footerText}>Checkout</Text>
+              <Text style={styles.footerAmount}>₹ {totalAmount}</Text>
+              <Ionicons
+                name={
+                  Platform.OS === "android"
+                    ? "md-arrow-forward"
+                    : "ios-arrow-forward"
+                }
+                size={20}
+                style={styles.iconStyle}
+              />
+            </View>
+          </TouchableCmp>
         </View>
       )}
     </View>
