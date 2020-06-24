@@ -15,6 +15,8 @@ import SearchScreen from "../screens/shop/SearchScreen";
 import CartScreen from "../screens/shop/CartScreen";
 import { Ionicons } from "@expo/vector-icons";
 import QRCodeScreen from "../screens/shop/QRCodeScreen";
+import CheckoutScreen from "../screens/shop/CheckoutScreen";
+import OrderScreen from "../screens/shop/OrderScreen";
 
 defaultNavOptions = {
   headerStyle: {
@@ -43,6 +45,7 @@ const StartNavigator = createStackNavigator(
           color={drawerConfig.tintColor}
         />
       ),
+      title: "Change Shop",
     },
   }
 );
@@ -67,6 +70,7 @@ const HomeNavigator = createStackNavigator(
           color={drawerConfig.tintColor}
         />
       ),
+      title: "Home",
     },
   }
 );
@@ -74,6 +78,7 @@ const HomeNavigator = createStackNavigator(
 const CartNavigator = createStackNavigator(
   {
     cart: CartScreen,
+    checkout: CheckoutScreen,
   },
   {
     defaultNavigationOptions: defaultNavOptions,
@@ -85,6 +90,26 @@ const CartNavigator = createStackNavigator(
           color={drawerConfig.tintColor}
         />
       ),
+      title: "My Cart",
+    },
+  }
+);
+
+const OrderNavigator = createStackNavigator(
+  {
+    order: OrderScreen,
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions,
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-list-box" : "ios-list-box"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+      title: "My Orders",
     },
   }
 );
@@ -92,14 +117,16 @@ const CartNavigator = createStackNavigator(
 const shopNavigator = createDrawerNavigator(
   {
     Start: StartNavigator,
-    Home: HomeNavigator,
+    All: HomeNavigator,
     Cart: CartNavigator,
+    Order: OrderNavigator,
   },
   {
     contentOptions: {
       activeTintColor: Colors.primary,
     },
     unmountInactiveRoutes: true,
+    initialRouteName: "Start",
   }
 );
 

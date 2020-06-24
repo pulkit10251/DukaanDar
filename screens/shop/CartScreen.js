@@ -14,6 +14,8 @@ import { useSelector, useDispatch } from "react-redux";
 import CartPriceContainer from "../../components/UI/CartPriceContainer";
 import ProductsCard from "../../components/UI/ProductsCard";
 import { Ionicons } from "@expo/vector-icons";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import HeaderButton from "../../components/UI/HeaderButton";
 
 const CartScreen = (props) => {
   const shopId = useSelector((state) => state.shopId.shopId);
@@ -28,6 +30,14 @@ const CartScreen = (props) => {
     props.navigation.navigate("productDetail", {
       product: product,
       categoryList: categoryList,
+      shopId: shopId,
+    });
+  };
+
+  const checkoutScreenNavigate = (cartItems, totalAmount, shopId) => {
+    props.navigation.navigate("checkout", {
+      cartItems: cartItems,
+      totalAmount: totalAmount,
       shopId: shopId,
     });
   };
@@ -120,7 +130,11 @@ const CartScreen = (props) => {
               </View>
             )}
           />
-          <TouchableCmp onPress={() => {}}>
+          <TouchableCmp
+            onPress={() => {
+              checkoutScreenNavigate(cartItems, totalAmount, shopId);
+            }}
+          >
             <View style={styles.footerContainer}>
               <Text style={styles.footerText}>Checkout</Text>
               <Text style={styles.footerAmount}>₹ {totalAmount}</Text>
@@ -143,7 +157,18 @@ const CartScreen = (props) => {
 
 CartScreen.navigationOptions = (NavData) => {
   return {
-    headerTitle: "Your Cart",
+    headerTitle: "My Cart",
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Add"
+          iconName={
+            Platform.OS === "android" ? "md-arrow-back" : "ios-arrow-back"
+          }
+          onPress={() => NavData.navigation.navigate("All")}
+        />
+      </HeaderButtons>
+    ),
   };
 };
 
