@@ -1,6 +1,7 @@
 import ShopData from "../../data/Dummy_data";
 import StoreModel from "../../models/StoreModel";
 import CartItem from "../../models/CartItem";
+import OrderModel from "../../models/OrderModel";
 
 const initialState = {
   shops: {},
@@ -18,8 +19,17 @@ export default (state = initialState, action) => {
         return state;
       } else {
         const cartItems = {};
+        const YourOrders = [];
         // shop is not present in the store
-        NewShop = new StoreModel(shopName, shopId, shop, cartItems, 0, 0);
+        NewShop = new StoreModel(
+          shopName,
+          shopId,
+          shop,
+          cartItems,
+          YourOrders,
+          0,
+          0
+        );
       }
 
       return {
@@ -72,6 +82,7 @@ export default (state = initialState, action) => {
         store.shopId,
         store.shopData,
         updatedCartItems,
+        store.YourOrders,
         store.TotalAmount + prodPrice,
         store.TotalMrp + prodMrp
       );
@@ -85,7 +96,7 @@ export default (state = initialState, action) => {
       const shopId3 = action.shopId;
       const prodId = action.pid;
       const selectedStore = state.shops[shopId3];
-      const CartItems = selectedStore.cartItems ;
+      const CartItems = selectedStore.cartItems;
       const selectedCartItem = CartItems[prodId];
       const CurrentQuantity = selectedCartItem.quantity;
 
@@ -99,7 +110,6 @@ export default (state = initialState, action) => {
           selectedCartItem.catList
         );
         updatedCartItems = { ...CartItems, [prodId]: updatedCartItem };
-        
       } else {
         updatedCartItems = { ...CartItems };
         delete updatedCartItems[prodId];
@@ -110,6 +120,7 @@ export default (state = initialState, action) => {
         selectedStore.shopId,
         selectedStore.shopData,
         updatedCartItems,
+        selectedStore.YourOrders,
         selectedStore.TotalAmount - selectedCartItem.product.prod_Price,
         selectedStore.TotalMrp - selectedCartItem.product.prod_Mrp
       );
@@ -117,6 +128,42 @@ export default (state = initialState, action) => {
       return {
         ...state,
         shops: { ...state.shops, [shopId3]: updatedShop },
+      };
+    }
+    case "PLACE_ORDER": {
+      const shop_Id = action.shopId;
+      const store = state.shops[shop_Id];
+      const orders = store.YourOrders;
+      const DummyId = new Date().toString();
+      const orderData = action.orderData;
+      const cartItems = orderData.cartItems;
+      const totalAmount = orderData.totalAmount;
+      const paymentDetails = action.paymentDetails;
+      const paymentMethod = paymentDetails.paymentMethod;
+      const paymentStatus = paymentDetails.paymentStatus;
+
+      const newOrder = new OrderModel(
+        DummyId,
+        cartItems,
+        totalAmount,
+        new Date(),
+        paymentStatus,
+        paymentMethod
+      );
+      const updatedOrderItems = orders.concat(newOrder);
+
+      const updatedShop = new StoreModel(
+        store.shopName,
+        store.shopId,
+        store.shopData,
+        {},
+        updatedOrderItems,
+        0,
+        0
+      );
+      return {
+        ...state,
+        shops: { ...state.shops, [shop_Id]: updatedShop },
       };
     }
   }
