@@ -1,10 +1,19 @@
 import moment from "moment";
 
 class OrderModel {
-  constructor(id, items, totalAmount, date, paymentStatus, paymentMethod) {
+  constructor(
+    id,
+    cartItems,
+    totalAmount,
+    totalMrp,
+    date,
+    paymentStatus,
+    paymentMethod
+  ) {
     this.id = id;
-    this.items = items;
+    this.cartItems = cartItems;
     this.totalAmount = totalAmount;
+    this.totalMrp = totalMrp;
     this.date = date;
     this.paymentStatus = paymentStatus;
     this.paymentMethod = paymentMethod;
