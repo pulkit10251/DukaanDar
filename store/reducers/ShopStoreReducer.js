@@ -134,18 +134,22 @@ export default (state = initialState, action) => {
       const shop_Id = action.shopId;
       const store = state.shops[shop_Id];
       const orders = store.YourOrders;
-      const DummyId = new Date().toString();
+      const DummyId = new Date().getTime().toString();
       const orderData = action.orderData;
       const cartItems = orderData.cartItems;
       const totalAmount = orderData.totalAmount;
+      const totalMrp = orderData.totalMrp;
       const paymentDetails = action.paymentDetails;
       const paymentMethod = paymentDetails.paymentMethod;
       const paymentStatus = paymentDetails.paymentStatus;
+
+    
 
       const newOrder = new OrderModel(
         DummyId,
         cartItems,
         totalAmount,
+        totalMrp,
         new Date(),
         paymentStatus,
         paymentMethod

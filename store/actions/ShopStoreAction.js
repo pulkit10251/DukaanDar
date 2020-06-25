@@ -42,6 +42,7 @@ export const placeOrder = (
   shopId,
   cartItems,
   totalAmount,
+  totalMrp,
   paymentStatus,
   paymentMethod
 ) => {
@@ -51,6 +52,7 @@ export const placeOrder = (
     orderData: {
       cartItems: cartItems,
       totalAmount: totalAmount,
+      totalMrp: totalMrp,
     },
     paymentDetails: {
       paymentMethod: paymentMethod,
