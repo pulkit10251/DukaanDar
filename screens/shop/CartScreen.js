@@ -34,10 +34,11 @@ const CartScreen = (props) => {
     });
   };
 
-  const checkoutScreenNavigate = (cartItems, totalAmount, shopId) => {
+  const checkoutScreenNavigate = (cartItems, totalAmount, totalMrp, shopId) => {
     props.navigation.navigate("checkout", {
       cartItems: cartItems,
       totalAmount: totalAmount,
+      totalMrp: totalMrp,
       shopId: shopId,
     });
   };
@@ -132,7 +133,12 @@ const CartScreen = (props) => {
           />
           <TouchableCmp
             onPress={() => {
-              checkoutScreenNavigate(cartItems, totalAmount, shopId);
+              checkoutScreenNavigate(
+                cartItems,
+                totalAmount,
+                totalAmountMrp,
+                shopId
+              );
             }}
           >
             <View style={styles.footerContainer}>

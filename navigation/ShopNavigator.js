@@ -17,6 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import QRCodeScreen from "../screens/shop/QRCodeScreen";
 import CheckoutScreen from "../screens/shop/CheckoutScreen";
 import OrderScreen from "../screens/shop/OrderScreen";
+import OrderDetailScreen from "../screens/shop/OrderDetailScreen";
 
 defaultNavOptions = {
   headerStyle: {
@@ -98,6 +99,7 @@ const CartNavigator = createStackNavigator(
 const OrderNavigator = createStackNavigator(
   {
     order: OrderScreen,
+    detail: OrderDetailScreen,
   },
   {
     defaultNavigationOptions: defaultNavOptions,

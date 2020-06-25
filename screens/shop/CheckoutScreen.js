@@ -18,9 +18,10 @@ const CheckoutScreen = (props) => {
 
   const cartItems = props.navigation.getParam("cartItems");
   const totalAmount = props.navigation.getParam("totalAmount");
+  const totalMrp = props.navigation.getParam("totalMrp");
   const shopId = props.navigation.getParam("shopId");
-  const paymentStatus = "";
-  const paymentMethod = "";
+  const paymentStatus = false;
+  const paymentMethod = "PAY ON SHOP";
 
   const dispatch = useDispatch();
 
@@ -35,6 +36,7 @@ const CheckoutScreen = (props) => {
                 shopId,
                 cartItems,
                 totalAmount,
+                totalMrp,
                 paymentStatus,
                 paymentMethod
               )
