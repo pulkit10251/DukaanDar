@@ -20,7 +20,7 @@ class OrderModel {
   }
 
   get readableDate() {
-    return moment(this.date).format("MMMM Do YYYY, hh:mm");
+    return moment(this.date).format("MMM Do YYYY, hh:mm A");
   }
 }
 
