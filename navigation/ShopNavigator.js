@@ -18,6 +18,9 @@ import QRCodeScreen from "../screens/shop/QRCodeScreen";
 import CheckoutScreen from "../screens/shop/CheckoutScreen";
 import OrderScreen from "../screens/shop/OrderScreen";
 import OrderDetailScreen from "../screens/shop/OrderDetailScreen";
+import AddorEditProductScreen from "../screens/Admin/AddorEditProductScreen";
+import AddorEditGCScreen from "../screens/Admin/AddorEditGCScreen";
+import AddorEditLCScreen from "../screens/Admin/AddorEditLCScreen";
 
 defaultNavOptions = {
   headerStyle: {
@@ -116,12 +119,34 @@ const OrderNavigator = createStackNavigator(
   }
 );
 
+const AdminNavigator = createStackNavigator(
+  {
+    Global: AddorEditGCScreen,
+    Local: AddorEditLCScreen,
+    Product: AddorEditProductScreen,
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions,
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-create" : "ios-create"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+      title: "Admin",
+    },
+  }
+);
+
 const shopNavigator = createDrawerNavigator(
   {
     Start: StartNavigator,
     All: HomeNavigator,
     Cart: CartNavigator,
     Order: OrderNavigator,
+    Admin: AdminNavigator,
   },
   {
     contentOptions: {

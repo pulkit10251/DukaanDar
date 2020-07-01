@@ -1,9 +1,10 @@
 import React from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, Image } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import { useSelector } from "react-redux";
 import OrderItem from "../../components/UI/OrderItem";
+import Imagess from "../../constants/Imagess";
 
 const OrderScreen = (props) => {
   const shopId = useSelector((state) => state.shopId.shopId);
@@ -19,13 +20,23 @@ const OrderScreen = (props) => {
     });
   };
 
+  if (orderItems.length === 0) {
+    return (
+      <View style={styles.screen}>
+        <Image
+          source={{ uri: Imagess.NoOrders }}
+          style={styles.imageContainer}
+        />
+      </View>
+    );
+  }
+
   return (
     <FlatList
       data={orderItems.reverse()}
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => (
         <View>
-          {console.log(itemData.item.cartItems)}
           <OrderItem
             date={itemData.item.readableDate}
             id={itemData.item.id}
@@ -61,6 +72,18 @@ OrderScreen.navigationOptions = (NavData) => {
     ),
   };
 };
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  screen: {
+    justifyContent: "center",
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "white",
+  },
+  imageContainer: {
+    width: "95%",
+    alignSelf: "center",
+    aspectRatio: 1,
+  },
+});
 
 export default OrderScreen;
