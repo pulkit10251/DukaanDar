@@ -5,7 +5,7 @@ import AdminProductsCard from "../../components/UI/AdminProductsCard";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 
-const AddorEditProductScreen = (props) => {
+const AddProductScreen = (props) => {
   const shopId = props.navigation.getParam("shopId");
   const catId = props.navigation.getParam("catId");
   const locId = props.navigation.getParam("LocId");
@@ -46,7 +46,7 @@ const AddorEditProductScreen = (props) => {
   );
 };
 
-AddorEditProductScreen.navigationOptions = (NavData) => {
+AddProductScreen.navigationOptions = (NavData) => {
   return {
     headerTitle: "DukaanDar",
 
@@ -73,4 +73,4 @@ AddorEditProductScreen.navigationOptions = (NavData) => {
 
 const styles = StyleSheet.create({});
 
-export default AddorEditProductScreen;
+export default AddProductScreen;

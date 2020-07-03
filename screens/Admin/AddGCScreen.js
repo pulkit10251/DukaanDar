@@ -5,7 +5,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import { useSelector, useDispatch } from "react-redux";
 
-const AddorEditGCScreen = (props) => {
+const AddGCScreen = (props) => {
   const shopData = useSelector((state) =>
     state.shops.ShopData.find((item) => item.shop_Id === "15C5GS")
   );
@@ -46,7 +46,7 @@ const AddorEditGCScreen = (props) => {
   );
 };
 
-AddorEditGCScreen.navigationOptions = (NavData) => {
+AddGCScreen.navigationOptions = (NavData) => {
   return {
     headerTitle: "DukaanDar",
     headerLeft: () => (
@@ -79,4 +79,4 @@ AddorEditGCScreen.navigationOptions = (NavData) => {
 
 const styles = StyleSheet.create({});
 
-export default AddorEditGCScreen;
+export default AddGCScreen;

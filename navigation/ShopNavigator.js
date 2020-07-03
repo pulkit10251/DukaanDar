@@ -18,9 +18,9 @@ import QRCodeScreen from "../screens/shop/QRCodeScreen";
 import CheckoutScreen from "../screens/shop/CheckoutScreen";
 import OrderScreen from "../screens/shop/OrderScreen";
 import OrderDetailScreen from "../screens/shop/OrderDetailScreen";
-import AddorEditProductScreen from "../screens/Admin/AddorEditProductScreen";
-import AddorEditGCScreen from "../screens/Admin/AddorEditGCScreen";
-import AddorEditLCScreen from "../screens/Admin/AddorEditLCScreen";
+import AddProductScreen from "../screens/Admin/AddProductScreen";
+import AddGCScreen from "../screens/Admin/AddGCScreen";
+import AddLCScreen from "../screens/Admin/AddLCScreen";
 import AddCategory from "../screens/Admin/AddCategory";
 import AddLocalCategory from "../screens/Admin/AddLocalCategory";
 import AddProduct from "../screens/Admin/AddProduct";
@@ -124,9 +124,9 @@ const OrderNavigator = createStackNavigator(
 
 const AdminNavigator = createStackNavigator(
   {
-    Global: AddorEditGCScreen,
-    Local: AddorEditLCScreen,
-    Product: AddorEditProductScreen,
+    Global: AddGCScreen,
+    Local: AddLCScreen,
+    Product: AddProductScreen,
     Add: AddCategory,
     AddLocal: AddLocalCategory,
     AddProduct: AddProduct,

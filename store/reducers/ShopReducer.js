@@ -233,7 +233,7 @@ export default (state = initialState, action) => {
 
       console.log(list.length);
 
-      const Local_Id = String(list.length + 1);
+      const Local_Id = String(2*list.length + 1);
 
       const globalCategory = globalCategories.find(
         (item) => item.category_Id === GlobalId
@@ -314,7 +314,7 @@ export default (state = initialState, action) => {
       const prod_Id =
         prod_CategoryId +
         "-" +
-        String(localCategory.category_Products.length + 1);
+        String(2*localCategory.category_Products.length + 1);
       console.log(prod_Id);
 
       const newProduct = new Product(

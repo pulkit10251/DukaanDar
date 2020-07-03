@@ -5,7 +5,7 @@ import { useSelector, useDispatch, connect } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 
-const AddorEditLCScreen = (props) => {
+const AddLCScreen = (props) => {
   const shopData = useSelector((state) => state.shops.ShopData);
 
   const catId = props.navigation.getParam("catId");
@@ -48,7 +48,7 @@ const AddorEditLCScreen = (props) => {
   );
 };
 
-AddorEditLCScreen.navigationOptions = (NavData) => {
+AddLCScreen.navigationOptions = (NavData) => {
   return {
     headerTitle: "DukaanDar",
 
@@ -73,4 +73,4 @@ AddorEditLCScreen.navigationOptions = (NavData) => {
 
 const styles = StyleSheet.create({});
 
-export default AddorEditLCScreen;
+export default AddLCScreen;
