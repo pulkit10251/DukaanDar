@@ -24,6 +24,9 @@ import AddLCScreen from "../screens/Admin/AddLCScreen";
 import AddCategory from "../screens/Admin/AddCategory";
 import AddLocalCategory from "../screens/Admin/AddLocalCategory";
 import AddProduct from "../screens/Admin/AddProduct";
+import EditGlobal from "../screens/Admin/EditGlobal";
+import EditLocal from "../screens/Admin/EditLocal";
+import EditProduct from "../screens/Admin/EditProduct";
 
 defaultNavOptions = {
   headerStyle: {
@@ -130,6 +133,9 @@ const AdminNavigator = createStackNavigator(
     Add: AddCategory,
     AddLocal: AddLocalCategory,
     AddProduct: AddProduct,
+    EditGlobal: EditGlobal,
+    EditLocal: EditLocal,
+    EditProduct: EditProduct,
   },
   {
     defaultNavigationOptions: defaultNavOptions,

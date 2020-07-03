@@ -181,7 +181,21 @@ export default (state = initialState, action) => {
         (item) => item.shop_Id === shopId
       );
       var globalCategories = selectedStore.shop_Categories;
-      const Id = String(globalCategories.length + 1);
+
+      var Ids = [];
+      for (var i = 0; i < globalCategories.length; i++) {
+        Ids.push(globalCategories[i].category_Id);
+      }
+
+      var max;
+      if (Ids.length === 0) {
+        max = 0;
+      } else {
+        max = Math.max(...Ids);
+      }
+
+      const Id = max + 1;
+
       const Globalcategory = new CategoryGlobal(Name, ImageUrl, Id, []);
 
       globalCategories.push(Globalcategory);
@@ -231,9 +245,20 @@ export default (state = initialState, action) => {
         list = [...list, ...local];
       }
 
-      console.log(list.length);
+      var Ids = [];
 
-      const Local_Id = String(2*list.length + 1);
+      for (var i = 0; i < list.length; i++) {
+        Ids.push(list[i].Local_Id);
+      }
+
+      var max;
+      if (Ids.length === 0) {
+        max = 0;
+      } else {
+        max = Math.max(...Ids);
+      }
+
+      const Local_Id = max + 1;
 
       const globalCategory = globalCategories.find(
         (item) => item.category_Id === GlobalId
@@ -310,12 +335,21 @@ export default (state = initialState, action) => {
       const localCategory = globalCategory.category_Local.find(
         (item) => item.Local_Id === prod_CategoryId
       );
-      console.log(localCategory.category_Products.length);
-      const prod_Id =
-        prod_CategoryId +
-        "-" +
-        String(2*localCategory.category_Products.length + 1);
-      console.log(prod_Id);
+
+      var Ids = [];
+
+      for (var i = 0; i < localCategory.category_Products.length; i++) {
+        const id = localCategory.category_Products[i].prod_Id;
+        var Id = id.split("-");
+        Ids.push(Number(Id[1]));
+      }
+      var max;
+      if (Ids.length === 0) {
+        max = 0;
+      } else {
+        max = Math.max(...Ids);
+      }
+      const prod_Id = prod_CategoryId + "-" + String(max + 1);
 
       const newProduct = new Product(
         prod_Name,
@@ -371,7 +405,6 @@ export default (state = initialState, action) => {
         ...state,
         ShopData: ShopData.slice(),
       };
-
     }
   }
 

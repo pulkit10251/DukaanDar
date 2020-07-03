@@ -26,6 +26,13 @@ const AddLCScreen = (props) => {
     });
   };
 
+  const EditLocalCategory = (catName, ImageUrl) => {
+    props.navigation.navigate("EditLocal", {
+      catName: catName,
+      ImageUrl: ImageUrl,
+    });
+  };
+
   return (
     <View>
       <FlatList
@@ -41,6 +48,7 @@ const AddLCScreen = (props) => {
             shopId={shopId}
             dispatch={dispatch}
             navigate={ProductCategoryNavigate}
+            editNavigate={EditLocalCategory}
           />
         )}
       />
@@ -59,7 +67,7 @@ AddLCScreen.navigationOptions = (NavData) => {
           iconName={Platform.OS === "android" ? "md-add" : "ios-add"}
           onPress={() => {
             const ShopId = NavData.navigation.getParam("shopId");
-            const GlobalId = NavData.navigation.getParam("catId")
+            const GlobalId = NavData.navigation.getParam("catId");
             NavData.navigation.navigate("AddLocal", {
               shopId: ShopId,
               GlobalId: GlobalId,

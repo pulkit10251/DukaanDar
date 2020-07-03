@@ -21,6 +21,12 @@ const AddProductScreen = (props) => {
     (item) => item.Local_Id === locId
   );
 
+  const ProductNavigate = (product) => {
+    props.navigation.navigate("EditProduct", {
+      product: product,
+    });
+  };
+
   const products = localCat.category_Products;
 
   const dispatch = useDispatch();
@@ -39,6 +45,7 @@ const AddProductScreen = (props) => {
             catId={catId}
             locId={locId}
             dispatch={dispatch}
+            editNavigate={ProductNavigate}
           />
         )}
       />

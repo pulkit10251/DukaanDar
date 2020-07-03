@@ -25,7 +25,10 @@ const AdminProductsCard = (props) => {
 
   return (
     <View style={styles.container}>
-      <TouchableCmp useForeground>
+      <TouchableCmp
+        useForeground
+        onPress={() => props.editNavigate(props.product)}
+      >
         <View style={styles.box}>
           <Image source={{ uri: props.prod_Image }} style={styles.image} />
           <Text style={styles.text}>{props.prod_Name}</Text>

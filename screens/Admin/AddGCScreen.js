@@ -25,6 +25,13 @@ const AddGCScreen = (props) => {
     });
   };
 
+  const EditGlobalCategory = (catName, ImageUrl) => {
+    props.navigation.navigate("EditGlobal", {
+      catName: catName,
+      ImageUrl: ImageUrl,
+    });
+  };
+
   return (
     <View>
       <FlatList
@@ -39,6 +46,7 @@ const AddGCScreen = (props) => {
             shopId={shopId}
             dispatch={dispatch}
             navigate={LocalCategoryNavigate}
+            editNavigate={EditGlobalCategory}
           />
         )}
       />

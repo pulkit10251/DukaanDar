@@ -34,36 +34,41 @@ const AdminLocalCategoriesCard = (props) => {
         <View style={styles.box}>
           <Image source={{ uri: props.catImage }} style={styles.image} />
           <Text style={styles.text}>{props.category}</Text>
-          <Ionicons
-            name={Platform.OS === "android" ? "md-trash" : "ios-trash"}
-            size={Dimensions.get("screen").width * 0.1}
-            style={styles.icon}
-            onPress={() => {
-              Alert.alert(
-                "Are you sure ?",
-                "All the products present inside this Local category will also be deleted!",
-                [
-                  {
-                    text: "Cancel",
-                    style: "cancel",
-                  },
-                  {
-                    text: "Ok",
-                    onPress: () =>
-                      props.dispatch(
-                        ShopActions.removeLocal(
-                          props.shopId,
-                          props.catId,
-                          props.LocId
-                        )
-                      ),
-                  },
-                ],
-                { cancelable: false }
-              );
-            }}
-            
-          />
+          <View style={{ marginLeft: "auto" }}>
+            <Ionicons
+              name={Platform.OS === "android" ? "md-create" : "ios-create"}
+              size={Dimensions.get("screen").width * 0.1}
+              style={styles.Editicon}
+              onPress={() => {
+                props.editNavigate(props.category, props.catImage);
+              }}
+            />
+            <Ionicons
+              name={Platform.OS === "android" ? "md-trash" : "ios-trash"}
+              size={Dimensions.get("screen").width * 0.1}
+              style={styles.Trashicon}
+              onPress={() => {
+                Alert.alert(
+                  "Are you sure ?",
+                  "All the products present inside this Local category will also be deleted!",
+                  [
+                    {
+                      text: "Cancel",
+                      style: "cancel",
+                    },
+                    {
+                      text: "Ok",
+                      onPress: () =>
+                        props.dispatch(
+                          ShopActions.removeLocal(props.shopId, props.catId,props.LocId)
+                        ),
+                    },
+                  ],
+                  { cancelable: false }
+                );
+              }}
+            />
+          </View>
         </View>
       </TouchableCmp>
     </View>
@@ -109,9 +114,15 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans",
     fontSize: Dimensions.get("screen").width * 0.045,
   },
-  icon: {
+  Trashicon: {
     marginLeft: "auto",
     color: "red",
+    marginTop: 10,
+  },
+  Editicon: {
+    marginLeft: "auto",
+    color: Colors.primary,
+    marginBottom: 10,
   },
   expandedView: {
     width: "100%",
