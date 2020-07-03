@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import AdminCategoriesCard from "../../components/UI/AdminCategoriesCard";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -14,6 +14,9 @@ const AddorEditGCScreen = (props) => {
 
   const categories = shopData.shop_Categories;
   const shopId = shopData.shop_Id;
+  useEffect(() => {
+    props.navigation.setParams({ ShopId: shopId });
+  }, []);
 
   const LocalCategoryNavigate = (catId, shopId) => {
     props.navigation.navigate("Local", {
@@ -62,7 +65,12 @@ AddorEditGCScreen.navigationOptions = (NavData) => {
         <Item
           title="Add"
           iconName={Platform.OS === "android" ? "md-add" : "ios-add"}
-          onPress={() => {}}
+          onPress={() => {
+            const ShopId = NavData.navigation.getParam("ShopId");
+            NavData.navigation.navigate("Add", {
+              shopId: ShopId,
+            });
+          }}
         />
       </HeaderButtons>
     ),

@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   TouchableNativeFeedback,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import AdminBoxView from "./AdminBoxView";
@@ -38,8 +39,23 @@ const AdminCategoriesCard = (props) => {
             size={Dimensions.get("screen").width * 0.1}
             style={styles.icon}
             onPress={() => {
-              props.dispatch(
-                ShopActions.removeGlobal(props.shopId, props.catId)
+              Alert.alert(
+                "Are you sure ?",
+                "All the categories or products present inside this Global category will also be deleted!",
+                [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Ok",
+                    onPress: () =>
+                      props.dispatch(
+                        ShopActions.removeGlobal(props.shopId, props.catId)
+                      ),
+                  },
+                ],
+                { cancelable: false }
               );
             }}
           />
