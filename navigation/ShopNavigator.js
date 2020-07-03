@@ -21,6 +21,9 @@ import OrderDetailScreen from "../screens/shop/OrderDetailScreen";
 import AddorEditProductScreen from "../screens/Admin/AddorEditProductScreen";
 import AddorEditGCScreen from "../screens/Admin/AddorEditGCScreen";
 import AddorEditLCScreen from "../screens/Admin/AddorEditLCScreen";
+import AddCategory from "../screens/Admin/AddCategory";
+import AddLocalCategory from "../screens/Admin/AddLocalCategory";
+import AddProduct from "../screens/Admin/AddProduct";
 
 defaultNavOptions = {
   headerStyle: {
@@ -124,6 +127,9 @@ const AdminNavigator = createStackNavigator(
     Global: AddorEditGCScreen,
     Local: AddorEditLCScreen,
     Product: AddorEditProductScreen,
+    Add: AddCategory,
+    AddLocal: AddLocalCategory,
+    AddProduct: AddProduct,
   },
   {
     defaultNavigationOptions: defaultNavOptions,
