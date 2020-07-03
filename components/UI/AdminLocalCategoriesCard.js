@@ -40,31 +40,12 @@ const AdminLocalCategoriesCard = (props) => {
               size={Dimensions.get("screen").width * 0.1}
               style={styles.Editicon}
               onPress={() => {
-                props.editNavigate(props.category, props.catImage);
-              }}
-            />
-            <Ionicons
-              name={Platform.OS === "android" ? "md-trash" : "ios-trash"}
-              size={Dimensions.get("screen").width * 0.1}
-              style={styles.Trashicon}
-              onPress={() => {
-                Alert.alert(
-                  "Are you sure ?",
-                  "All the products present inside this Local category will also be deleted!",
-                  [
-                    {
-                      text: "Cancel",
-                      style: "cancel",
-                    },
-                    {
-                      text: "Ok",
-                      onPress: () =>
-                        props.dispatch(
-                          ShopActions.removeLocal(props.shopId, props.catId,props.LocId)
-                        ),
-                    },
-                  ],
-                  { cancelable: false }
+                props.editNavigate(
+                  props.shopId,
+                  props.category,
+                  props.catImage,
+                  props.catId,
+                  props.LocId
                 );
               }}
             />
@@ -114,15 +95,11 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans",
     fontSize: Dimensions.get("screen").width * 0.045,
   },
-  Trashicon: {
-    marginLeft: "auto",
-    color: "red",
-    marginTop: 10,
-  },
+
   Editicon: {
     marginLeft: "auto",
     color: Colors.primary,
-    marginBottom: 10,
+    marginVertical: 10,
   },
   expandedView: {
     width: "100%",

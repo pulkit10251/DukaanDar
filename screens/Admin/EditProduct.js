@@ -21,7 +21,6 @@ import Colors from "../../constants/Colors";
 const EditProduct = (props) => {
   const shopId = props.navigation.getParam("shopId");
   const GlobalId = props.navigation.getParam("GlobalId");
-  const LocalId = props.navigation.getParam("LocalId");
   const product = props.navigation.getParam("product");
 
   const [image, setImage] = useState(product.prod_ImageUrl);
@@ -41,7 +40,21 @@ const EditProduct = (props) => {
 
   const dispatch = useDispatch();
 
-  const submitHandler = () => {
+  const submitHandler = (
+    shopId,
+    GlobalId,
+    prod_Id,
+    name,
+    prod_CategoryId,
+    image,
+    quantity,
+    unit,
+    price,
+    mrp,
+    mfdDate,
+    shelfLife,
+    prod_Availability
+  ) => {
     if (
       image === "" ||
       price === "" ||
@@ -49,13 +62,31 @@ const EditProduct = (props) => {
       name === "" ||
       quantity === "" ||
       unit === "" ||
-      mfdDate === ""
+      mfdDate === "" ||
+      shelfLife === ""
     ) {
       Alert.alert(
         "Please Check!",
         "Hey ! you have left one or more field empty !!!"
       );
     } else {
+      dispatch(
+        ShopActions.editProduct(
+          shopId,
+          GlobalId,
+          prod_Id,
+          name,
+          prod_CategoryId,
+          image,
+          quantity,
+          unit,
+          mfdDate,
+          shelfLife,
+          price,
+          mrp,
+          prod_Availability
+        )
+      );
       props.navigation.pop();
     }
   };
@@ -329,11 +360,66 @@ const EditProduct = (props) => {
               </TouchableCmp>
             </View>
           </View>
-          <TouchableCmp onPress={() => submitHandler()}>
-            <View style={styles.buttonContainer}>
-              <Text style={styles.buttonText}>Submit</Text>
-            </View>
-          </TouchableCmp>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-around" }}
+          >
+            <TouchableCmp
+              onPress={() =>
+                submitHandler(
+                  shopId,
+                  GlobalId,
+                  product.prod_Id,
+                  name,
+                  product.prod_categoryId,
+                  image,
+                  quantity,
+                  unit,
+                  price,
+                  mrp,
+                  mfdDate,
+                  shelfLife,
+                  availability
+                )
+              }
+            >
+              <View style={styles.buttonContainer}>
+                <Text style={styles.buttonText}>Submit</Text>
+              </View>
+            </TouchableCmp>
+            <TouchableCmp
+              onPress={() => {
+                Alert.alert(
+                  "Are you sure ?",
+                  "The product will be deleted !",
+                  [
+                    {
+                      text: "Cancel",
+                      style: "cancel",
+                    },
+                    {
+                      text: "Ok",
+                      onPress: () => {
+                        dispatch(
+                          ShopActions.removeProduct(
+                            shopId,
+                            GlobalId,
+                            product.prod_categoryId,
+                            product.prod_Id
+                          )
+                        );
+                        props.navigation.pop();
+                      },
+                    },
+                  ],
+                  { cancelable: false }
+                );
+              }}
+            >
+              <View style={styles.buttonContainer}>
+                <Text style={styles.buttonText}>Delete</Text>
+              </View>
+            </TouchableCmp>
+          </View>
         </KeyboardAwareScrollView>
       </View>
     </ScrollView>

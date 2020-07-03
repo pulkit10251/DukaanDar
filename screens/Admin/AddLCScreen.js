@@ -26,10 +26,13 @@ const AddLCScreen = (props) => {
     });
   };
 
-  const EditLocalCategory = (catName, ImageUrl) => {
+  const EditLocalCategory = (shopId, catName, ImageUrl, GlobalId, LocalId) => {
     props.navigation.navigate("EditLocal", {
+      shopId: shopId,
       catName: catName,
       ImageUrl: ImageUrl,
+      GlobalId: GlobalId,
+      LocalId: LocalId,
     });
   };
 

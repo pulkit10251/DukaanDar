@@ -21,8 +21,10 @@ const AddProductScreen = (props) => {
     (item) => item.Local_Id === locId
   );
 
-  const ProductNavigate = (product) => {
+  const ProductNavigate = (shopId, GlobalId, product) => {
     props.navigation.navigate("EditProduct", {
+      shopId: shopId,
+      GlobalId: GlobalId,
       product: product,
     });
   };

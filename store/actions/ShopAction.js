@@ -4,6 +4,9 @@ export const ADD_PRODUCT = "ADD_PRODUCT";
 export const REMOVE_GLOBAL_CATEGORY = "REMOVE_GLOBAL_CATEGORY";
 export const REMOVE_LOCAL_CATEGORY = "REMOVE_LOCAL_CATEGORY";
 export const REMOVE_PRODUCT = "REMOVE_PRODUCT";
+export const EDIT_GLOBAL_CATEGORY = "EDIT_GLOBAL_CATEGORY";
+export const EDIT_LOCAL_CATEGORY = "EDIT_LOCAL_CATEGORY";
+export const EDIT_PRODUCT = "EDIT_PRODUCT";
 
 export const addGlobal = (shopId, Name, ImageUrl) => {
   return {
@@ -79,5 +82,59 @@ export const removeProduct = (shopId, catId, LocId, prodId) => {
     catId: catId,
     LocId: LocId,
     prodId: prodId,
+  };
+};
+
+export const editGlobal = (shopId, Name, ImageUrl, GlobalId) => {
+  return {
+    type: EDIT_GLOBAL_CATEGORY,
+    shopId: shopId,
+    Name: Name,
+    ImageUrl: ImageUrl,
+    GlobalId: GlobalId,
+  };
+};
+
+export const editLocal = (shopId, Name, ImageUrl, GlobalId, LocalId) => {
+  return {
+    type: EDIT_LOCAL_CATEGORY,
+    shopId: shopId,
+    Name: Name,
+    ImageUrl: ImageUrl,
+    GlobalId: GlobalId,
+    LocalId: LocalId,
+  };
+};
+
+export const editProduct = (
+  shopId,
+  GlobalId,
+  prod_Id,
+  prod_Name,
+  prod_CategoryId,
+  prod_ImageUrl,
+  prod_Quantity,
+  prod_Unit,
+  prod_MfdDate,
+  prod_ShelfLife,
+  prod_Price,
+  prod_Mrp,
+  prod_Availability
+) => {
+  return {
+    type: EDIT_PRODUCT,
+    shopId: shopId,
+    GlobalId: GlobalId,
+    prod_Id: prod_Id,
+    prod_Name: prod_Name,
+    prod_CategoryId: prod_CategoryId,
+    prod_ImageUrl: prod_ImageUrl,
+    prod_Quantity: prod_Quantity,
+    prod_Unit: prod_Unit,
+    prod_MfdDate: prod_MfdDate,
+    prod_ShelfLife: prod_ShelfLife,
+    prod_Price: prod_Price,
+    prod_Mrp: prod_Mrp,
+    prod_Availability: prod_Availability,
   };
 };

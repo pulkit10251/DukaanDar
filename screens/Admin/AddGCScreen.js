@@ -25,10 +25,12 @@ const AddGCScreen = (props) => {
     });
   };
 
-  const EditGlobalCategory = (catName, ImageUrl) => {
+  const EditGlobalCategory = (shopId, catName, ImageUrl, catId) => {
     props.navigation.navigate("EditGlobal", {
+      shopId:shopId,
       catName: catName,
       ImageUrl: ImageUrl,
+      catId: catId,
     });
   };
 

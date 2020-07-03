@@ -19,6 +19,11 @@ import * as ShopActions from "../../store/actions/ShopAction";
 const EditGlobal = (props) => {
   const imageUrl = props.navigation.getParam("ImageUrl");
   const CatName = props.navigation.getParam("catName");
+  const catId = props.navigation.getParam("catId");
+  const shopId = props.navigation.getParam("shopId");
+
+  console.log(catId);
+
   const [image, setImage] = useState(imageUrl);
   const [name, setName] = useState(CatName);
 
@@ -27,16 +32,15 @@ const EditGlobal = (props) => {
     TouchableCmp = TouchableNativeFeedback;
   }
 
-  const shopId = props.navigation.getParam("shopId");
-
   const dispatch = useDispatch();
 
-  const submitHandler = (shopId, name, image) => {
+  const submitHandler = (shopId, name, image, catId) => {
     if (name.trim().length === 0) {
       Alert.alert("Alert", "Name field can't be empty!");
     } else if (image.trim().length === 0) {
       Alert.alert("Alert", "Image Url field can't be empty!");
     } else {
+      dispatch(ShopActions.editGlobal(shopId, name, image, catId));
       props.navigation.pop();
     }
   };
@@ -109,11 +113,41 @@ const EditGlobal = (props) => {
             )}
           </View>
         </View>
-        <TouchableCmp onPress={() => submitHandler(shopId, name, image)}>
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </View>
-        </TouchableCmp>
+        <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+          <TouchableCmp
+            onPress={() => submitHandler(shopId, name, image, catId)}
+          >
+            <View style={styles.buttonContainer}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </View>
+          </TouchableCmp>
+          <TouchableCmp
+            onPress={() => {
+              Alert.alert(
+                "Are you sure ?",
+                "All the categories or products present inside this Global category will also be deleted!",
+                [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Ok",
+                    onPress: () => {
+                      dispatch(ShopActions.removeGlobal(shopId, catId));
+                      props.navigation.pop();
+                    },
+                  },
+                ],
+                { cancelable: false }
+              );
+            }}
+          >
+            <View style={styles.buttonContainer}>
+              <Text style={styles.buttonText}>Delete</Text>
+            </View>
+          </TouchableCmp>
+        </View>
       </KeyboardAwareScrollView>
     </View>
   );

@@ -406,6 +406,185 @@ export default (state = initialState, action) => {
         ShopData: ShopData.slice(),
       };
     }
+
+    case "EDIT_GLOBAL_CATEGORY": {
+      const shopId = action.shopId;
+      const GlobalId = action.GlobalId;
+      const Name = action.Name;
+      const ImageUrl = action.ImageUrl;
+
+      const selectedStore = state.ShopData.find(
+        (item) => item.shop_Id === shopId
+      );
+
+      const globalCategories = selectedStore.shop_Categories;
+
+      const globalIndex = globalCategories.findIndex(
+        (item) => item.category_Id === GlobalId
+      );
+      globalCategories[globalIndex].category_Name = Name;
+      globalCategories[globalIndex].category_Image = ImageUrl;
+
+      const updatedStore = new Shop(
+        selectedStore.shop_Id,
+        selectedStore.shop_Name,
+        selectedStore.shop_ShopkeeperName,
+        selectedStore.shop_ShopImage,
+        selectedStore.shop_ShopkeeperImage,
+        selectedStore.shop_Location,
+        selectedStore.shop_Description,
+        globalCategories,
+        selectedStore.shop_OpenDays,
+        selectedStore.shop_OpenTimings,
+        selectedStore.shop_ClosedTimings,
+        selectedStore.shop_BreakTimings,
+        selectedStore.shop_Offers,
+        selectedStore.shop_Front
+      );
+
+      var ShopData = state.ShopData;
+      const shopIndex = state.ShopData.findIndex(
+        (item) => item.shop_Id === action.shopId
+      );
+      ShopData[shopIndex] = updatedStore;
+
+      return {
+        ...state,
+        ShopData: ShopData.slice(),
+      };
+    }
+    case "EDIT_LOCAL_CATEGORY": {
+      const shopId = action.shopId;
+      const Name = action.Name;
+      const ImageUrl = action.ImageUrl;
+      const GlobalId = action.GlobalId;
+      const LocalId = action.LocalId;
+
+      const selectedStore = state.ShopData.find(
+        (item) => item.shop_Id === shopId
+      );
+
+      const globalCategories = selectedStore.shop_Categories;
+
+      const globalIndex = globalCategories.findIndex(
+        (item) => item.category_Id === GlobalId
+      );
+
+      const localCategories = globalCategories[globalIndex].category_Local;
+
+      const localIndex = localCategories.findIndex(
+        (item) => item.Local_Id === LocalId
+      );
+
+      localCategories[localIndex].category_Name = Name;
+      localCategories[localIndex].CatLocImage = ImageUrl;
+
+      globalCategories[globalIndex].CategoryLocal = localCategories;
+
+      const updatedStore = new Shop(
+        selectedStore.shop_Id,
+        selectedStore.shop_Name,
+        selectedStore.shop_ShopkeeperName,
+        selectedStore.shop_ShopImage,
+        selectedStore.shop_ShopkeeperImage,
+        selectedStore.shop_Location,
+        selectedStore.shop_Description,
+        globalCategories,
+        selectedStore.shop_OpenDays,
+        selectedStore.shop_OpenTimings,
+        selectedStore.shop_ClosedTimings,
+        selectedStore.shop_BreakTimings,
+        selectedStore.shop_Offers,
+        selectedStore.shop_Front
+      );
+
+      var ShopData = state.ShopData;
+      const shopIndex = state.ShopData.findIndex(
+        (item) => item.shop_Id === action.shopId
+      );
+      ShopData[shopIndex] = updatedStore;
+
+      return {
+        ...state,
+        ShopData: ShopData.slice(),
+      };
+    }
+    case "EDIT_PRODUCT": {
+      const shopId = action.shopId;
+      const prod_Id = action.prod_Id;
+      const GlobalId = action.GlobalId;
+      const prod_Name = action.prod_Name;
+      const prod_CategoryId = action.prod_CategoryId;
+      const prod_ImageUrl = action.prod_ImageUrl;
+      const prod_Quantity = action.prod_Quantity;
+      const prod_Unit = action.prod_Unit;
+      const prod_MfdDate = action.prod_MfdDate;
+      const prod_ShelfLife = action.prod_ShelfLife;
+      const prod_Price = action.prod_Price;
+      const prod_Mrp = action.prod_Mrp;
+      const prod_Availability = action.prod_Availability;
+
+      const selectedStore = state.ShopData.find(
+        (item) => item.shop_Id === shopId
+      );
+
+      const globalCategories = selectedStore.shop_Categories;
+
+      const globalIndex = globalCategories.findIndex(
+        (item) => item.category_Id === GlobalId
+      );
+      const localCategories = globalCategories[globalIndex].category_Local;
+
+      const localIndex = localCategories.findIndex(
+        (item) => item.Local_Id === prod_CategoryId
+      );
+
+      const products = localCategories[localIndex].category_Products;
+
+      const prodIndex = products.findIndex((item) => item.prod_Id === prod_Id);
+
+      products[prodIndex].prod_Name = prod_Name;
+      products[prodIndex].prod_ImageUrl = prod_ImageUrl;
+      products[prodIndex].prod_Quantity = Number(prod_Quantity);
+      products[prodIndex].prod_Unit = prod_Unit;
+      products[prodIndex].prod_Price = Number(prod_Price);
+      products[prodIndex].prod_Mrp = Number(prod_Mrp);
+      products[prodIndex].prod_MfdDate = prod_MfdDate;
+      products[prodIndex].prod_ShelfLife = prod_ShelfLife;
+      products[prodIndex].prod_Availability = prod_Availability;
+
+      localCategories[localIndex].category_Products = products;
+      globalCategories[globalIndex].category_Local = localCategories;
+      4;
+
+      const updatedStore = new Shop(
+        selectedStore.shop_Id,
+        selectedStore.shop_Name,
+        selectedStore.shop_ShopkeeperName,
+        selectedStore.shop_ShopImage,
+        selectedStore.shop_ShopkeeperImage,
+        selectedStore.shop_Location,
+        selectedStore.shop_Description,
+        globalCategories,
+        selectedStore.shop_OpenDays,
+        selectedStore.shop_OpenTimings,
+        selectedStore.shop_ClosedTimings,
+        selectedStore.shop_BreakTimings,
+        selectedStore.shop_Offers,
+        selectedStore.shop_Front
+      );
+
+      var ShopData = state.ShopData;
+      const shopIndex = state.ShopData.findIndex(
+        (item) => item.shop_Id === action.shopId
+      );
+      ShopData[shopIndex] = updatedStore;
+
+      return {
+        ...state,
+        ShopData: ShopData.slice(),
+      };
+    }
   }
 
   return state;

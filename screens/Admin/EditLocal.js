@@ -15,8 +15,12 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import * as ShopActions from "../../store/actions/ShopAction";
+import Shop from "../../models/Shop";
 
 const EditLocal = (props) => {
+  const shopId = props.navigation.getParam("shopId");
+  const GlobalId = props.navigation.getParam("GlobalId");
+  const LocalId = props.navigation.getParam("LocalId");
   const imageUrl = props.navigation.getParam("ImageUrl");
   const CatName = props.navigation.getParam("catName");
   const [image, setImage] = useState(imageUrl);
@@ -27,17 +31,15 @@ const EditLocal = (props) => {
     TouchableCmp = TouchableNativeFeedback;
   }
 
-  const shopId = props.navigation.getParam("shopId");
-  const GlobalId = props.navigation.getParam("GlobalId");
-
   const dispatch = useDispatch();
 
-  const submitHandler = (shopId, name, image, globalId) => {
+  const submitHandler = (shopId, name, image, globalId, localId) => {
     if (name.trim().length === 0) {
       Alert.alert("Alert", "Name field can't be empty!");
     } else if (image.trim().length === 0) {
       Alert.alert("Alert", "Image Url field can't be empty!");
     } else {
+      dispatch(ShopActions.editLocal(shopId, name, image, globalId, localId));
       props.navigation.pop();
     }
   };
@@ -110,13 +112,45 @@ const EditLocal = (props) => {
             )}
           </View>
         </View>
-        <TouchableCmp
-          onPress={() => submitHandler(shopId, name, image, GlobalId)}
-        >
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </View>
-        </TouchableCmp>
+        <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+          <TouchableCmp
+            onPress={() =>
+              submitHandler(shopId, name, image, GlobalId, LocalId)
+            }
+          >
+            <View style={styles.buttonContainer}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </View>
+          </TouchableCmp>
+          <TouchableCmp
+            onPress={() => {
+              Alert.alert(
+                "Are you sure ?",
+                "All the products present inside this Local category will also be deleted!",
+                [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Ok",
+                    onPress: () => {
+                      dispatch(
+                        ShopActions.removeLocal(shopId, GlobalId, LocalId)
+                      );
+                      props.navigation.pop();
+                    },
+                  },
+                ],
+                { cancelable: false }
+              );
+            }}
+          >
+            <View style={styles.buttonContainer}>
+              <Text style={styles.buttonText}>Delete</Text>
+            </View>
+          </TouchableCmp>
+        </View>
       </KeyboardAwareScrollView>
     </View>
   );

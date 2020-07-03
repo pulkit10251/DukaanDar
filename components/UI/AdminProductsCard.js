@@ -27,40 +27,19 @@ const AdminProductsCard = (props) => {
     <View style={styles.container}>
       <TouchableCmp
         useForeground
-        onPress={() => props.editNavigate(props.product)}
+        onPress={() =>
+          props.editNavigate(props.shopId, props.catId, props.product)
+        }
       >
         <View style={styles.box}>
           <Image source={{ uri: props.prod_Image }} style={styles.image} />
           <Text style={styles.text}>{props.prod_Name}</Text>
           <Ionicons
-            name={Platform.OS === "android" ? "md-trash" : "ios-trash"}
+            name={Platform.OS === "android" ? "md-create" : "ios-create"}
             size={Dimensions.get("screen").width * 0.1}
             style={styles.icon}
             onPress={() => {
-              Alert.alert(
-                "Are you sure ?",
-                "The product will be deleted !",
-                [
-                  {
-                    text: "Cancel",
-                    style: "cancel",
-                  },
-                  {
-                    text: "Ok",
-                    onPress: () => {
-                      props.dispatch(
-                        ShopActions.removeProduct(
-                          props.shopId,
-                          props.catId,
-                          props.locId,
-                          props.product.prod_Id
-                        )
-                      );
-                    },
-                  },
-                ],
-                { cancelable: false }
-              );
+              props.editNavigate(props.shopId, props.catId, props.product);
             }}
           />
         </View>
@@ -110,7 +89,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: "auto",
-    color: "red",
+    color: Colors.primary,
   },
   expandedView: {
     width: "100%",
