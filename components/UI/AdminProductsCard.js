@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Image,
   Platform,
+  Alert,
   Dimensions,
   TouchableOpacity,
   TouchableNativeFeedback,
@@ -33,13 +34,29 @@ const AdminProductsCard = (props) => {
             size={Dimensions.get("screen").width * 0.1}
             style={styles.icon}
             onPress={() => {
-              props.dispatch(
-                ShopActions.removeProduct(
-                  props.shopId,
-                  props.catId,
-                  props.locId,
-                  props.product.prod_Id
-                )
+              Alert.alert(
+                "Are you sure ?",
+                "The product will be deleted !",
+                [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Ok",
+                    onPress: () => {
+                      props.dispatch(
+                        ShopActions.removeProduct(
+                          props.shopId,
+                          props.catId,
+                          props.locId,
+                          props.product.prod_Id
+                        )
+                      );
+                    },
+                  },
+                ],
+                { cancelable: false }
               );
             }}
           />
