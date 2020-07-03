@@ -2,6 +2,8 @@ import React from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import AdminLocalCategoriesCard from "../../components/UI/AdminLocalCategoriesCard";
 import { useSelector, useDispatch, connect } from "react-redux";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import HeaderButton from "../../components/UI/HeaderButton";
 
 const AddorEditLCScreen = (props) => {
   const shopData = useSelector((state) => state.shops.ShopData);
@@ -44,6 +46,29 @@ const AddorEditLCScreen = (props) => {
       />
     </View>
   );
+};
+
+AddorEditLCScreen.navigationOptions = (NavData) => {
+  return {
+    headerTitle: "DukaanDar",
+
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Add"
+          iconName={Platform.OS === "android" ? "md-add" : "ios-add"}
+          onPress={() => {
+            const ShopId = NavData.navigation.getParam("shopId");
+            const GlobalId = NavData.navigation.getParam("catId")
+            NavData.navigation.navigate("AddLocal", {
+              shopId: ShopId,
+              GlobalId: GlobalId,
+            });
+          }}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({});

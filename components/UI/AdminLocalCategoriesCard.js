@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   Image,
+  Alert,
   Platform,
   Dimensions,
   TouchableOpacity,
@@ -37,11 +38,31 @@ const AdminLocalCategoriesCard = (props) => {
             name={Platform.OS === "android" ? "md-trash" : "ios-trash"}
             size={Dimensions.get("screen").width * 0.1}
             style={styles.icon}
-            onPress={() =>
-              props.dispatch(
-                ShopActions.removeLocal(props.shopId, props.catId, props.LocId)
-              )
-            }
+            onPress={() => {
+              Alert.alert(
+                "Are you sure ?",
+                "All the products present inside this Local category will also be deleted!",
+                [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Ok",
+                    onPress: () =>
+                      props.dispatch(
+                        ShopActions.removeLocal(
+                          props.shopId,
+                          props.catId,
+                          props.LocId
+                        )
+                      ),
+                  },
+                ],
+                { cancelable: false }
+              );
+            }}
+            
           />
         </View>
       </TouchableCmp>
