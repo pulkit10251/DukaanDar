@@ -34,7 +34,8 @@
     "react-navigation-stack": "^2.5.1",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "string-similarity": "^4.0.1"
+    "string-similarity": "^4.0.1",
+    "expo-image-picker": "~8.1.0"
   },
   "devDependencies": {
     "babel-preset-expo": "~8.1.0",

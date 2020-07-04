@@ -22,7 +22,6 @@ const EditGlobal = (props) => {
   const catId = props.navigation.getParam("catId");
   const shopId = props.navigation.getParam("shopId");
 
-  console.log(catId);
 
   const [image, setImage] = useState(imageUrl);
   const [name, setName] = useState(CatName);

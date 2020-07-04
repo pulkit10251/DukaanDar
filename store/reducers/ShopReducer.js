@@ -5,6 +5,7 @@ import Shop from "../../models/Shop";
 import { useSelector } from "react-redux";
 import CategoryLocal from "../../models/CategoryLocal";
 import Product from "../../models/Product";
+import { InteractionManager } from "react-native";
 
 const initialState = {
   ShopData: ShopData,
@@ -20,6 +21,16 @@ export default (state = initialState, action) => {
       const shop_GC = shop.shop_Categories;
       const updatedGC = shop_GC.filter((item) => item.category_Id !== catId);
 
+      const category = shop_GC.find((item) => item.category_Id === catId);
+      const localCat = category.category_Local;
+
+      var shop_Front = shop.shop_Front;
+
+      for (var i = 0; i < localCat.length; i++) {
+        const LocId = localCat[i].Local_Id;
+        shop_Front = shop_Front.filter((item) => item.Local_Id != LocId);
+      }
+
       const updatedStore = new Shop(
         shop.shop_Id,
         shop.shop_Name,
@@ -34,7 +45,7 @@ export default (state = initialState, action) => {
         shop.shop_ClosedTimings,
         shop.shop_BreakTimings,
         shop.shop_Offers,
-        shop.shop_Front
+        shop_Front
       );
 
       const ShopData = state.ShopData;
@@ -81,6 +92,10 @@ export default (state = initialState, action) => {
       var globalCategories = selectedStore.shop_Categories;
       globalCategories[catIndex] = UpdatedGlobalCategory;
 
+      var shop_Front = selectedStore.shop_Front;
+
+      shop_Front = shop_Front.filter((item) => item.Local_Id != LocId);
+
       const updatedStore = new Shop(
         selectedStore.shop_Id,
         selectedStore.shop_Name,
@@ -95,7 +110,7 @@ export default (state = initialState, action) => {
         selectedStore.shop_ClosedTimings,
         selectedStore.shop_BreakTimings,
         selectedStore.shop_Offers,
-        selectedStore.shop_Front
+        shop_Front
       );
       const ShopData = state.ShopData;
 
@@ -121,7 +136,7 @@ export default (state = initialState, action) => {
       );
 
       var localCategory = globalCategory.category_Local.find(
-        (item) => item.Local_Id === LocId
+        (item) => item.Local_Id != LocId
       );
 
       const products = localCategory.category_Products.filter(
@@ -147,6 +162,14 @@ export default (state = initialState, action) => {
       var globalCategories = selectedStore.shop_Categories;
       globalCategories[catIndex] = globalCategory;
 
+      var shop_Front = selectedStore.shop_Front;
+      for (var i = 0; i < shop_Front.length; i++) {
+        var locCat = shop_Front[i];
+        locCat.category_Products = locCat.category_Products.filter(
+          (item) => item.prod_Id != prodId
+        );
+        shop_Front[i] = locCat;
+      }
       const updatedStore = new Shop(
         selectedStore.shop_Id,
         selectedStore.shop_Name,
@@ -161,7 +184,7 @@ export default (state = initialState, action) => {
         selectedStore.shop_ClosedTimings,
         selectedStore.shop_BreakTimings,
         selectedStore.shop_Offers,
-        selectedStore.shop_Front
+        shop_Front
       );
       const ShopData = state.ShopData;
 
