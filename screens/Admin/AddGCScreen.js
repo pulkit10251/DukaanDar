@@ -59,17 +59,7 @@ const AddGCScreen = (props) => {
 AddGCScreen.navigationOptions = (NavData) => {
   return {
     headerTitle: "DukaanDar",
-    headerLeft: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Add"
-          iconName={
-            Platform.OS === "android" ? "md-arrow-back" : "ios-arrow-back"
-          }
-          onPress={() => NavData.navigation.navigate("All")}
-        />
-      </HeaderButtons>
-    ),
+    
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
