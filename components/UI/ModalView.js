@@ -31,11 +31,11 @@ const ModalView = (props) => {
   });
 
   
-  const onSubmit = (data) => {
+  const onSubmit = (data, ShopData) => {
     if (data.length === 6) {
       if (storeData.includes(data)) {
         props.setModalVisibility(false);
-        props.dispatch(ShopStoreActions.addStore(data));
+        props.dispatch(ShopStoreActions.addStore(data, ShopData));
       } else {
         Alert.alert("Invalid Code", "you have provided wrong code", [
           { text: "OK" },
@@ -66,7 +66,7 @@ const ModalView = (props) => {
                   placeholderTextColor={props.shopId === "" ? "#888" : "black"}
                   value={props.shopId}
                   onChangeText={(text) => props.setShopId(text)}
-                  onSubmitEditing={() => onSubmit(props.shopId)}
+                  onSubmitEditing={() => onSubmit(props.shopId, props.ShopData)}
                   maxLength={6}
                 />
               </View>
@@ -95,7 +95,7 @@ const ModalView = (props) => {
               </TouchableCmp>
             </View>
             <View style={styles.Details}>
-              <TouchableCmp onPress={() => onSubmit(props.shopId)}>
+              <TouchableCmp onPress={() => onSubmit(props.shopId, props.ShopData)}>
                 <View style={styles.button}>
                   <Text style={styles.buttonText}>Submit</Text>
                 </View>

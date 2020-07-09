@@ -29,6 +29,8 @@ import EditLocal from "../screens/Admin/EditLocal";
 import EditProduct from "../screens/Admin/EditProduct";
 import ShopDetailScreen from "../screens/Admin/ShopDetailScreen";
 import EditDetailScreen from "../screens/Admin/EditDetailScreen";
+import CreateShopScreen from "../screens/Admin/CreateShopScreen";
+import AddShopDetail from "../screens/Admin/AddShopDetail";
 
 defaultNavOptions = {
   headerStyle: {
@@ -129,6 +131,8 @@ const OrderNavigator = createStackNavigator(
 
 const AdminNavigator = createStackNavigator(
   {
+    Create: CreateShopScreen,
+    AddShop: AddShopDetail,
     Main: ShopDetailScreen,
     EditShop: EditDetailScreen,
     Global: AddGCScreen,

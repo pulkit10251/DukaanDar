@@ -6,14 +6,14 @@ import HeaderButton from "../../components/UI/HeaderButton";
 import { useSelector, useDispatch } from "react-redux";
 
 const AddGCScreen = (props) => {
+  const shopId = props.navigation.getParam("shopId");
   const shopData = useSelector((state) =>
-    state.shops.ShopData.find((item) => item.shop_Id === "15C5GS")
+    state.shops.ShopData.find((item) => item.shop_Id === shopId)
   );
 
   const dispatch = useDispatch();
 
   const categories = shopData.shop_Categories;
-  const shopId = shopData.shop_Id;
   useEffect(() => {
     props.navigation.setParams({ ShopId: shopId });
   }, []);
@@ -27,7 +27,7 @@ const AddGCScreen = (props) => {
 
   const EditGlobalCategory = (shopId, catName, ImageUrl, catId) => {
     props.navigation.navigate("EditGlobal", {
-      shopId:shopId,
+      shopId: shopId,
       catName: catName,
       ImageUrl: ImageUrl,
       catId: catId,
@@ -59,7 +59,7 @@ const AddGCScreen = (props) => {
 AddGCScreen.navigationOptions = (NavData) => {
   return {
     headerTitle: "DukaanDar",
-    
+
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
