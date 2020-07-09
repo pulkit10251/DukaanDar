@@ -24,7 +24,7 @@ import PickerCheckBox from "react-native-picker-checkbox";
 import ModalDetailView from "../../components/UI/ModalDetailView";
 import * as ShopActions from "../../store/actions/ShopAction";
 
-const EditDetailScreen = (props) => {
+const AddShopDetail = (props) => {
   const dispatch = useDispatch();
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -32,32 +32,24 @@ const EditDetailScreen = (props) => {
   }
 
   const shopId = props.navigation.getParam("shopId");
-  const Shop = useSelector((state) =>
-    state.shops.ShopData.find((item) => item.shop_Id === shopId)
-  );
 
-  const [shopImage, setShopImage] = useState(Shop.shop_ShopImage);
-  const [shopkeeperImage, setShopkeeperImage] = useState(
-    Shop.shop_ShopkeeperImage
-  );
-  const [name, setName] = useState(Shop.shop_Name);
-  const [shopkeeperName, setShopkeeperName] = useState(
-    Shop.shop_ShopkeeperName
-  );
-  const [loc, setLoc] = useState(Shop.shop_Location);
-  const [open, setOpen] = useState(Shop.shop_OpenDays);
-  const [openTimings, setOpenTimings] = useState(Shop.shop_OpenTimings);
-  const [closeTimings, setCloseTimings] = useState(Shop.shop_ClosedTimings);
-  const [breakTimings, setBreakTimings] = useState(Shop.shop_BreakTimings);
-  const [offers, setOffers] = useState(Shop.shop_Offers);
-  const [desc, setDesc] = useState(Shop.shop_Description);
-  const [front, setFront] = useState(Shop.shop_Front);
+  const [shopImage, setShopImage] = useState("");
+  const [shopkeeperImage, setShopkeeperImage] = useState("");
+  const [name, setName] = useState("");
+  const [shopkeeperName, setShopkeeperName] = useState("");
+  const [loc, setLoc] = useState("");
+  const [open, setOpen] = useState("Monday");
+  const [openTimings, setOpenTimings] = useState("9:00");
+  const [closeTimings, setCloseTimings] = useState("22:00");
+  const [breakTimings, setBreakTimings] = useState("None");
+  const [offers, setOffers] = useState([]);
+  const [desc, setDesc] = useState("");
+  const [front, setFront] = useState([]);
 
   const [showOpen, setShowOpen] = useState(false);
   const [showClose, setShowClose] = useState(false);
   const [showbreakOpen, setShowbreakOpen] = useState(false);
   const [showbreakClose, setShowbreakClose] = useState(false);
-  const [showPicker, setShowPicker] = useState(false);
 
   let openImagePickerAsync = async (setImage) => {
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -84,7 +76,7 @@ const EditDetailScreen = (props) => {
 
     if (!pickerResult.cancelled) {
       offers.push(pickerResult.uri);
-      setOffers(offers);
+      setOffers(offers.slice());
     }
   };
 
@@ -118,12 +110,53 @@ const EditDetailScreen = (props) => {
 
   const items = [];
 
-  for (var i = 0; i < Shop.shop_Categories.length; i++) {
-    items.push(...Shop.shop_Categories[i].category_Local);
-  }
-
-  const toggleModal = () => {
-    setShowPicker((state) => !state);
+  const submitHandler = (
+    shopId,
+    shopName,
+    shopkeeperName,
+    Loc,
+    Desc,
+    shopImage,
+    shopkeeperImage,
+    offers,
+    front,
+    open,
+    openTimings,
+    closeTimings,
+    breakTimings
+  ) => {
+    if (
+      shopName === "" ||
+      shopkeeperName === "" ||
+      Loc === "" ||
+      Desc === "" ||
+      shopImage === "" ||
+      shopkeeperImage === ""
+    ) {
+      Alert.alert(
+        "Please Check!",
+        "Hey ! you have left one or more field empty !!!"
+      );
+    } else {
+      dispatch(
+        ShopActions.addShop(
+          shopId,
+          shopName,
+          shopImage,
+          shopkeeperName,
+          shopkeeperImage,
+          Loc,
+          offers,
+          front,
+          Desc,
+          open,
+          openTimings,
+          closeTimings,
+          breakTimings
+        )
+      );
+      props.navigation.pop();
+    }
   };
 
   return (
@@ -178,7 +211,7 @@ const EditDetailScreen = (props) => {
             <View style={styles.TextInputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Name"
+                placeholder="Shop Name"
                 placeholderTextColor="#888"
                 value={name}
                 onChangeText={(text) => {
@@ -206,7 +239,7 @@ const EditDetailScreen = (props) => {
             <View style={styles.TextInputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Name"
+                placeholder="Shopkeeper Name"
                 placeholderTextColor="#888"
                 value={shopkeeperName}
                 onChangeText={(text) => {
@@ -234,7 +267,7 @@ const EditDetailScreen = (props) => {
             <View style={styles.TextInputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Name"
+                placeholder="Shop Description"
                 placeholderTextColor="#888"
                 value={desc}
                 onChangeText={(text) => {
@@ -262,7 +295,7 @@ const EditDetailScreen = (props) => {
             <View style={styles.TextInputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Name"
+                placeholder="Shop Location"
                 placeholderTextColor="#888"
                 value={loc}
                 onChangeText={(text) => {
@@ -590,56 +623,27 @@ const EditDetailScreen = (props) => {
               </TouchableCmp>
             </View>
           </View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={styles.textField}>Shop Front Categories:</Text>
-            <TouchableCmp
-              onPress={() => {
-                setShowPicker((state) => !state);
-              }}
-            >
-              <View
-                style={{
-                  ...styles.buttonContainer,
-                  marginLeft: "auto",
-                  marginHorizontal: 10,
-                }}
-              >
-                <Text style={styles.buttonText}>Edit</Text>
-              </View>
-            </TouchableCmp>
-            <ModalDetailView
-              isModalVisible={showPicker}
-              toggleModal={toggleModal}
-              setModalVisibility={setShowPicker}
-              data={items}
-              frontList={front}
-              setFront={setFront}
-            />
-          </View>
         </View>
       }
       numColumns={2}
       ListFooterComponent={
         <TouchableCmp
           onPress={() => {
-            dispatch(
-              ShopActions.editShop(
-                shopId,
-                name,
-                shopImage,
-                shopkeeperName,
-                shopkeeperImage,
-                loc,
-                offers,
-                front,
-                desc,
-                open,
-                openTimings,
-                closeTimings,
-                breakTimings
-              )
+            submitHandler(
+              shopId,
+              name,
+              shopkeeperName,
+              loc,
+              desc,
+              shopImage,
+              shopkeeperImage,
+              offers,
+              front,
+              open,
+              openTimings,
+              closeTimings,
+              breakTimings
             );
-            props.navigation.pop();
           }}
         >
           <View
@@ -757,4 +761,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditDetailScreen;
+export default AddShopDetail;

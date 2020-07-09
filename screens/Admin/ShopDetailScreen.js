@@ -29,7 +29,10 @@ const ShopDetailScreen = (props) => {
   const shopId = "15C5GS";
   const shop = useSelector((state) =>
     state.shops.ShopData.find((shop) => shop.shop_Id === shopId)
-  );
+  )
+
+  
+
   const Time = (time) => {
     const T = time.split(":");
     var newTime;
@@ -178,6 +181,8 @@ const ShopDetailScreen = (props) => {
   useEffect(() => {
     props.navigation.setParams({ shopId: shopId });
   }, []);
+
+
 
   return (
     <ScrollView>
