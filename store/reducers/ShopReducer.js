@@ -1,11 +1,8 @@
 import ShopData from "../../data/Dummy_data";
-import * as ShopAction from "../actions/ShopAction";
 import CategoryGlobal from "../../models/CategoryGlobal";
 import Shop from "../../models/Shop";
-import { useSelector } from "react-redux";
 import CategoryLocal from "../../models/CategoryLocal";
 import Product from "../../models/Product";
-import { InteractionManager } from "react-native";
 
 const initialState = {
   ShopData: ShopData,
@@ -606,6 +603,93 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ShopData: ShopData.slice(),
+      };
+    }
+    case "EDIT_SHOP": {
+      const shopId = action.shopId;
+      const shopName = action.shopName;
+      const shopImage = action.shopImage;
+      const shopkeeperName = action.shopkeeperName;
+      const shopkeeperImage = action.shopkeeperImage;
+      const shopLocation = action.shopLocation;
+      const shopDesc = action.shopDesc;
+      const shopOffers = action.shopOffer;
+      const shopFront = action.shopFront;
+      const openDays = action.openDays;
+      const openTimings = action.openTimings;
+      const closeTimings = action.closeTimings;
+      const breakTimings = action.breakTimings;
+
+      const selectedStore = state.ShopData.find(
+        (item) => item.shop_Id === shopId
+      );
+
+      const updatedStore = new Shop(
+        shopId,
+        shopName,
+        shopkeeperName,
+        shopImage,
+        shopkeeperImage,
+        shopLocation,
+        shopDesc,
+        selectedStore.shop_Categories,
+        openDays,
+        openTimings,
+        closeTimings,
+        breakTimings,
+        shopOffers,
+        shopFront
+      );
+
+      var ShopData = state.ShopData;
+      const shopIndex = state.ShopData.findIndex(
+        (item) => item.shop_Id === action.shopId
+      );
+      ShopData[shopIndex] = updatedStore;
+
+      return {
+        ...state,
+        ShopData: ShopData.slice(),
+      };
+    }
+    case "ADD_SHOP": {
+      const shopId = action.shopId;
+      const shopName = action.shopName;
+      const shopImage = action.shopImage;
+      const shopkeeperName = action.shopkeeperName;
+      const shopkeeperImage = action.shopkeeperImage;
+      const shopLocation = action.shopLocation;
+      const shopDesc = action.shopDesc;
+      const shopOffers = action.shopOffer;
+      const shopFront = action.shopFront;
+      const openDays = action.openDays;
+      const openTimings = action.openTimings;
+      const closeTimings = action.closeTimings;
+      const breakTimings = action.breakTimings;
+
+      const newStore = new Shop(
+        shopId,
+        shopName,
+        shopkeeperName,
+        shopImage,
+        shopkeeperImage,
+        shopLocation,
+        shopDesc,
+        [],
+        openDays,
+        openTimings,
+        closeTimings,
+        breakTimings,
+        shopOffers,
+        shopFront
+      );
+
+      const shopData = [...state.ShopData, newStore];
+
+      
+      return {
+        ...state,
+        ShopData: shopData.slice(),
       };
     }
   }

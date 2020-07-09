@@ -7,6 +7,8 @@ export const REMOVE_PRODUCT = "REMOVE_PRODUCT";
 export const EDIT_GLOBAL_CATEGORY = "EDIT_GLOBAL_CATEGORY";
 export const EDIT_LOCAL_CATEGORY = "EDIT_LOCAL_CATEGORY";
 export const EDIT_PRODUCT = "EDIT_PRODUCT";
+export const EDIT_SHOP = "EDIT_SHOP";
+export const ADD_SHOP = "ADD_SHOP";
 
 export const addGlobal = (shopId, Name, ImageUrl) => {
   return {
@@ -136,5 +138,71 @@ export const editProduct = (
     prod_Price: prod_Price,
     prod_Mrp: prod_Mrp,
     prod_Availability: prod_Availability,
+  };
+};
+
+export const editShop = (
+  shopId,
+  shopName,
+  shopImage,
+  shopkeeperName,
+  shopkeeperImage,
+  shopLocation,
+  shopOffer,
+  shopFront,
+  shopDesc,
+  openDays,
+  openTimings,
+  closeTimings,
+  breakTimings
+) => {
+  return {
+    type: EDIT_SHOP,
+    shopId: shopId,
+    shopName: shopName,
+    shopImage: shopImage,
+    shopkeeperName: shopkeeperName,
+    shopkeeperImage: shopkeeperImage,
+    shopLocation: shopLocation,
+    shopOffer: shopOffer,
+    shopFront: shopFront,
+    shopDesc: shopDesc,
+    openDays: openDays,
+    openTimings: openTimings,
+    closeTimings: closeTimings,
+    breakTimings: breakTimings,
+  };
+};
+
+export const addShop = (
+  shopId,
+  shopName,
+  shopImage,
+  shopkeeperName,
+  shopkeeperImage,
+  shopLocation,
+  shopOffer,
+  shopFront,
+  shopDesc,
+  openDays,
+  openTimings,
+  closeTimings,
+  breakTimings
+) => {
+  return {
+    type: ADD_SHOP,
+    shopId: shopId,
+    shopName: shopName,
+    shopImage: shopImage,
+    shopkeeperName: shopkeeperName,
+    shopkeeperImage: shopkeeperImage,
+    shopLocation: shopLocation,
+    shopOffer: shopOffer,
+    shopFront: shopFront,
+    shopDesc: shopDesc,
+    openDays: openDays,
+    openTimings: openTimings,
+    closeTimings: closeTimings,
+    breakTimings: breakTimings,
   };
 };

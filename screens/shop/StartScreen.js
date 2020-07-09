@@ -20,6 +20,8 @@ import ModalView from "../../components/UI/ModalView";
 const StartScreen = (props) => {
   const dispatch = useDispatch();
 
+  const ShopData = useSelector((state) => state.shops.ShopData);
+
   const addedShops = useSelector((state) => {
     const shopData = [];
     for (const key in state.store.shops) {
@@ -99,8 +101,9 @@ const StartScreen = (props) => {
       </View>
       <Button
         onPress={() => {
-          dispatch(ShopStoreActions.addStore("15C5GS"));
-          dispatch(ShopStoreActions.addStore("G7745X"));
+          dispatch(ShopStoreActions.addStore("15C5GS", ShopData));
+          // dispatch(ShopStoreActions.addStore("15C5GT"))
+          dispatch(ShopStoreActions.addStore("G7745X", ShopData));
         }}
         title="clickme"
       />
@@ -108,6 +111,7 @@ const StartScreen = (props) => {
         isModalVisible={isModalVisible}
         toggleModal={toggleModal}
         shopId={shopId}
+        ShopData={ShopData}
         setShopId={setShopId}
         navigate={QRScannerNavigate}
         setModalVisibility={setIsModalVisible}

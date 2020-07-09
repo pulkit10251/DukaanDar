@@ -11,6 +11,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case "ADD_STORE": {
       const shopId = action.shopId;
+      const ShopData = action.ShopData;
       const shop = ShopData.find((props) => props.shop_Id === shopId);
       const shopName = shop.shop_Name;
 
