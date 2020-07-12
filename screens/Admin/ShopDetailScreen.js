@@ -10,11 +10,12 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Colors from "../../constants/Colors";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import { Switch } from "react-native-gesture-handler";
+import * as ShopActions from "../../store/actions/ShopAction";
 
 const ShopDetailScreen = (props) => {
   const CategoryNavigate = (shopId) => {
@@ -26,12 +27,18 @@ const ShopDetailScreen = (props) => {
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
-  const shopId = "15C5GS";
+  const shopId = props.navigation.getParam("shopId");
   const shop = useSelector((state) =>
     state.shops.ShopData.find((shop) => shop.shop_Id === shopId)
-  )
+  );
 
-  
+  const dispatch = useDispatch();
+
+  const shopData = useSelector((state) => state.shops.ShopData);
+
+  useEffect(() => {
+    dispatch(ShopActions.addServer(shopData));
+  }, [dispatch, shopData]);
 
   const Time = (time) => {
     const T = time.split(":");
@@ -181,8 +188,6 @@ const ShopDetailScreen = (props) => {
   useEffect(() => {
     props.navigation.setParams({ shopId: shopId });
   }, []);
-
-
 
   return (
     <ScrollView>

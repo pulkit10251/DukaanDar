@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AdminProductsCard from "../../components/UI/AdminProductsCard";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
+import * as ShopActions from "../../store/actions/ShopAction";
 
 const AddProductScreen = (props) => {
   const shopId = props.navigation.getParam("shopId");
@@ -32,6 +33,10 @@ const AddProductScreen = (props) => {
   const products = localCat.category_Products;
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(ShopActions.addServer(shopData));
+  }, [dispatch, shopData]);
 
   return (
     <View>

@@ -1,9 +1,10 @@
-import React from "react";
+import React ,{useEffect} from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import AdminLocalCategoriesCard from "../../components/UI/AdminLocalCategoriesCard";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
+import * as ShopActions from "../../store/actions/ShopAction";
 
 const AddLCScreen = (props) => {
   const shopData = useSelector((state) => state.shops.ShopData);
@@ -25,6 +26,10 @@ const AddLCScreen = (props) => {
       LocId: LocId,
     });
   };
+
+  useEffect(() => {
+    dispatch(ShopActions.addServer(shopData));
+  }, [dispatch, shopData]);
 
   const EditLocalCategory = (shopId, catName, ImageUrl, GlobalId, LocalId) => {
     props.navigation.navigate("EditLocal", {

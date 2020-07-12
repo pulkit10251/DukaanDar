@@ -4,16 +4,23 @@ import AdminCategoriesCard from "../../components/UI/AdminCategoriesCard";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import { useSelector, useDispatch } from "react-redux";
+import * as ShopActions from "../../store/actions/ShopAction";
 
 const AddGCScreen = (props) => {
   const shopId = props.navigation.getParam("shopId");
-  const shopData = useSelector((state) =>
+  const shop = useSelector((state) =>
     state.shops.ShopData.find((item) => item.shop_Id === shopId)
   );
 
+  const shopData = useSelector((state) => state.shops.ShopData);
+
   const dispatch = useDispatch();
 
-  const categories = shopData.shop_Categories;
+  useEffect(() => {
+    dispatch(ShopActions.addServer(shopData));
+  }, [dispatch, shopData]);
+
+  const categories = shop.shop_Categories;
   useEffect(() => {
     props.navigation.setParams({ ShopId: shopId });
   }, []);

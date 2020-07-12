@@ -14,11 +14,16 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import * as ShopIDAction from "../../store/actions/ShopIdAction";
 import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
+import * as ShopActions from "../../store/actions/ShopAction";
 
 import ModalView from "../../components/UI/ModalView";
 
 const StartScreen = (props) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+      dispatch(ShopActions.fetchShop());
+  }, [dispatch]);
 
   const ShopData = useSelector((state) => state.shops.ShopData);
 

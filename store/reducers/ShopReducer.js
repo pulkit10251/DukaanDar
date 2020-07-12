@@ -686,10 +686,16 @@ export default (state = initialState, action) => {
 
       const shopData = [...state.ShopData, newStore];
 
-      
       return {
         ...state,
         ShopData: shopData.slice(),
+      };
+    }
+    case "FETCH_SHOP": {
+      const shopData = action.shopData;
+      return {
+        ...state,
+        ShopData: shopData,
       };
     }
   }

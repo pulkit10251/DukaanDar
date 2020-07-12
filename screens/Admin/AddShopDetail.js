@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -50,6 +50,15 @@ const AddShopDetail = (props) => {
   const [showClose, setShowClose] = useState(false);
   const [showbreakOpen, setShowbreakOpen] = useState(false);
   const [showbreakClose, setShowbreakClose] = useState(false);
+
+  const shopData = useSelector((state) => state.shops.ShopData);
+
+  useEffect(() => {
+    props.navigation.addListener("willFocus", () => {
+      dispatch(ShopActions.addServer(shopData));
+    });
+  }, [dispatch]);
+
 
   let openImagePickerAsync = async (setImage) => {
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();

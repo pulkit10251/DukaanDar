@@ -118,8 +118,10 @@ const EditDetailScreen = (props) => {
 
   const items = [];
 
+
   for (var i = 0; i < Shop.shop_Categories.length; i++) {
-    items.push(...Shop.shop_Categories[i].category_Local);
+    const category = Shop.shop_Categories[i];
+    items.push(...category.category_Local);
   }
 
   const toggleModal = () => {
@@ -565,7 +567,7 @@ const EditDetailScreen = (props) => {
                           },
                           {
                             text: "OK",
-                            onPress: () => setOffers(updatedOffers),
+                            onPress: () => setOffers(updatedOffers.slice()),
                           },
                         ],
                         { cancelable: false }

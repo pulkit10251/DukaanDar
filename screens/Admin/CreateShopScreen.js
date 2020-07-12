@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Text,
   View,
@@ -6,13 +6,17 @@ import {
   TouchableNativeFeedback,
   TouchableOpacity,
   Platform,
+  Image,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import * as ShopActions from "../../store/actions/ShopAction";
 
 var isNew = false;
 
 const CreateShopScreen = (props) => {
   const shopId = "15C5GT";
+  const dispatch = useDispatch();
+
   const shopData = useSelector((state) => state.shops.ShopData);
 
   const shop = shopData.find((item) => item.shop_Id === shopId);
@@ -25,6 +29,11 @@ const CreateShopScreen = (props) => {
   const AddNavigate = (shopId) => {
     props.navigation.navigate("AddShop", { shopId: shopId });
   };
+
+
+  useEffect(() => {
+    dispatch(ShopActions.addServer(shopData));
+  }, [dispatch,shopData]);
 
   if (shop === undefined) {
     isNew = false;
@@ -48,7 +57,28 @@ const CreateShopScreen = (props) => {
 
   return (
     <View>
-      <Text>create Screen</Text>
+      <View style={styles.IntroContainer}>
+        <View style={styles.imageContainer}>
+          <Image
+            style={{ width: "100%", height: "100%" }}
+            source={{ uri: shop.shop_ShopkeeperImage }}
+          />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.welcome}>Welcome,</Text>
+          <Text style={styles.Text}>{shop.shop_ShopkeeperName}</Text>
+          <Text style={styles.Text}>Lets Manage your shop</Text>
+        </View>
+      </View>
+      <View style={{ alignItems: "center" }}>
+        <TouchableCmp
+          onPress={() => props.navigation.navigate("Main", { shopId: shopId })}
+        >
+          <View style={styles.buttonContainer}>
+            <Text style={styles.buttonText}>Make Changes</Text>
+          </View>
+        </TouchableCmp>
+      </View>
     </View>
   );
 };
@@ -70,9 +100,24 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignContent: "center",
   },
-  ImageContainer: {
+  IntroContainer: {
     width: "90%",
-    aspectRatio: 0.5,
+    height: "50%",
+    marginVertical: 20,
+    borderRadius: 20,
+    borderWidth: 1,
+    alignSelf: "center",
+    padding: 5,
+    flexDirection: "row",
+  },
+  imageContainer: {
+    width: "45%",
+    aspectRatio: 1,
+    borderRadius: 200,
+    borderWidth: 1,
+    overflow: "hidden",
+    alignSelf: "center",
+    marginHorizontal: 10,
   },
   image: {
     width: "100%",
@@ -94,6 +139,20 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
+  },
+  welcome: {
+    fontFamily: "open-sans-bold",
+    fontSize: 18,
+    textAlign: "center",
+  },
+  Text: {
+    fontSize: 14,
+    fontFamily: "open-sans",
+    textAlign: "center",
+  },
+  textContainer: {
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
