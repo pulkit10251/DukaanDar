@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
 import { Platform } from "react-native";
-import { createAppContainer } from "react-navigation";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import Colors from "../constants/Colors";
 
@@ -31,6 +31,9 @@ import ShopDetailScreen from "../screens/Admin/ShopDetailScreen";
 import EditDetailScreen from "../screens/Admin/EditDetailScreen";
 import CreateShopScreen from "../screens/Admin/CreateShopScreen";
 import AddShopDetail from "../screens/Admin/AddShopDetail";
+import LoginScreen from "../screens/Auth/LoginScreen";
+import SignUpScreen from "../screens/Auth/SignUpScreen";
+import VerificationScreen from "../screens/Auth/VerificationScreen";
 
 defaultNavOptions = {
   headerStyle: {
@@ -59,6 +62,7 @@ const StartNavigator = createStackNavigator(
           color={drawerConfig.tintColor}
         />
       ),
+      drawerLockMode: "locked-closed",
       title: "Change Shop",
     },
   }
@@ -160,13 +164,18 @@ const AdminNavigator = createStackNavigator(
   }
 );
 
+const AuthNavigator = createStackNavigator({
+  Login: LoginScreen,
+  SignUp: SignUpScreen,
+  Verify: VerificationScreen,
+});
+
 const shopNavigator = createDrawerNavigator(
   {
     Start: StartNavigator,
     All: HomeNavigator,
     Cart: CartNavigator,
     Order: OrderNavigator,
-    Admin: AdminNavigator,
   },
   {
     contentOptions: {
@@ -177,4 +186,22 @@ const shopNavigator = createDrawerNavigator(
   }
 );
 
-export default createAppContainer(shopNavigator);
+const shopAdminNavigator = createDrawerNavigator(
+  {
+    Admin: AdminNavigator,
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.primary,
+    },
+
+  }
+);
+
+const FirstNavigator = createSwitchNavigator({
+  Auth: AuthNavigator,
+  Shop: shopNavigator,
+  Admin: shopAdminNavigator,
+});
+
+export default createAppContainer(FirstNavigator);

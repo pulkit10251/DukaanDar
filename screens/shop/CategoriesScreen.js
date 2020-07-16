@@ -1,5 +1,11 @@
 import React from "react";
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  VirtualizedList,
+} from "react-native";
 import { useSelector } from "react-redux";
 import CategoriesCard from "../../components/UI/CategoriesCard";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -20,9 +26,17 @@ const CategoriesScreen = (props) => {
     });
   };
 
+  const getItemCount = (data) => {
+    return data.length;
+  };
+  const getItem = (data, index) => {
+    return data[index];
+  };
+
   return (
     <View>
-      <FlatList
+      <VirtualizedList
+        initialNumToRender={4}
         data={categories}
         keyExtractor={(item) => String(item.category_Id)}
         renderItem={(itemData) => (
@@ -34,6 +48,8 @@ const CategoriesScreen = (props) => {
             products={ProductNavigate}
           />
         )}
+        getItem={getItem}
+        getItemCount={getItemCount}
       />
     </View>
   );
