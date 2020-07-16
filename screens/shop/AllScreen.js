@@ -1,5 +1,12 @@
-import React from "react";
-import { Text, View, StyleSheet, Platform, FlatList } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Platform,
+  FlatList,
+  VirtualizedList,
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import { useSelector } from "react-redux";
@@ -28,13 +35,20 @@ const AllScreen = (props) => {
       shopId: shopId,
     });
   };
-  const shopId = useSelector((state)=>state.shopId.shopId);
+  const shopId = useSelector((state) => state.shopId.shopId);
 
   const shop = useSelector((state) =>
     state.shops.ShopData.find((shop) => shop.shop_Id === shopId)
   );
 
   const FrontData = shop.shop_Front;
+
+  const getItemCount = (data) => {
+    return data.length;
+  };
+  const getItem = (data, index) => {
+    return data[index]
+  };
 
   return (
     <View style={styles.container}>
@@ -44,12 +58,13 @@ const AllScreen = (props) => {
         shopCategories={shop.shop_Categories}
         SearchNavigate={searchScreenNavigate}
       />
-      <FlatList
+      <VirtualizedList
         ListHeaderComponent={
           <View>
             <FrontImages shop_Offers={shop.shop_Offers} />
           </View>
         }
+        initialNumToRender={4}
         data={FrontData}
         keyExtractor={(item) => String(item.Local_Id)}
         renderItem={(itemData) => (
@@ -60,6 +75,8 @@ const AllScreen = (props) => {
             navigation={productDetailNavigate}
           />
         )}
+        getItem={getItem}
+        getItemCount={getItemCount}
       />
     </View>
   );

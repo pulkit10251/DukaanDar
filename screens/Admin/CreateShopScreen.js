@@ -14,8 +14,12 @@ import * as ShopActions from "../../store/actions/ShopAction";
 var isNew = false;
 
 const CreateShopScreen = (props) => {
-  const shopId = "15C5GT";
+  const shopId = useSelector(state => state.shopId.shopId);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(ShopActions.fetchShop());
+}, [dispatch]);
 
   const shopData = useSelector((state) => state.shops.ShopData);
 

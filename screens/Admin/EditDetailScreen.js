@@ -84,7 +84,7 @@ const EditDetailScreen = (props) => {
 
     if (!pickerResult.cancelled) {
       offers.push(pickerResult.uri);
-      setOffers(offers);
+      setOffers(offers.slice());
     }
   };
 
