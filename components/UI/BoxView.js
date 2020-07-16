@@ -55,11 +55,12 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "space-around",
     alignItems: "center",
+    overflow:'hidden'
   },
   box: {
     width: Dimensions.get("screen").width * 0.45,
     height: Dimensions.get("screen").height * 0.15,
-    borderRadius: 10,
+    borderRadius: 2,
     elevation: 2,
     shadowColor: "black",
     shadowOpacity: 0.26,
