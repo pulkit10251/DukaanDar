@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -7,23 +7,34 @@ import {
   TouchableOpacity,
   Platform,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as ShopActions from "../../store/actions/ShopAction";
+import Colors from "../../constants/Colors";
 
 var isNew = false;
 
 const CreateShopScreen = (props) => {
-  const shopId = useSelector(state => state.shopId.shopId);
+  const shopId = "15C5GS";
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    dispatch(ShopActions.fetchShop());
-}, [dispatch]);
+    const dispatchFcn = async () => {
+      setLoading(true);
+      await dispatch(ShopActions.fetchShop());
+      setLoading(false);
+    };
 
-  const shopData = useSelector((state) => state.shops.ShopData);
+    dispatchFcn();
+  }, [dispatch]);
 
-  const shop = shopData.find((item) => item.shop_Id === shopId);
+  const shop = useSelector((state) =>
+    state.shops.ShopData.find((item) => item.shop_Id === shopId)
+  );
+
+  // const shop = shopData.find((item) => item.shop_Id === shopId);
 
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -33,11 +44,6 @@ const CreateShopScreen = (props) => {
   const AddNavigate = (shopId) => {
     props.navigation.navigate("AddShop", { shopId: shopId });
   };
-
-
-  useEffect(() => {
-    dispatch(ShopActions.addServer(shopData));
-  }, [dispatch,shopData]);
 
   if (shop === undefined) {
     isNew = false;
@@ -57,6 +63,14 @@ const CreateShopScreen = (props) => {
     );
   } else {
     isNew = true;
+  }
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
   }
 
   return (

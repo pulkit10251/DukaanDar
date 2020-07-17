@@ -27,6 +27,7 @@ const AddLater = (props) => {
           props.dispatch(
             ShopStoreActions.removeFromCart(props.product.prod_Id, shopId)
           );
+          props.dispatch(ShopStoreActions.addCustomerData());
         }}
       >
         <View style={styles.iconContainer}>
@@ -47,6 +48,7 @@ const AddLater = (props) => {
               shopId
             )
           );
+          props.dispatch(ShopStoreActions.addCustomerData());
         }}
       >
         <View style={styles.iconContainer}>

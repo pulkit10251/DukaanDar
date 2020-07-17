@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Text,
   View,
@@ -16,9 +16,16 @@ import ProductsCard from "../../components/UI/ProductsCard";
 import { Ionicons } from "@expo/vector-icons";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
+import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 
 const CartScreen = (props) => {
   const shopId = useSelector((state) => state.shopId.shopId);
+
+  const customerData = useSelector((state) => state.store.shops);
+
+  useEffect(() => {
+    dispatch(ShopStoreActions.addCustomerData(customerData));
+  }, [dispatch,customerData]);
 
   const totalAmount = useSelector(
     (state) => state.store.shops[shopId].TotalAmount
@@ -62,7 +69,6 @@ const CartScreen = (props) => {
         product: state.store.shops[shopId].cartItems[key].product,
         quantity: state.store.shops[shopId].cartItems[key].quantity,
         sum: state.store.shops[shopId].cartItems[key].sum,
-        catList: state.store.shops[shopId].cartItems[key].catList,
         id: key,
       });
     }

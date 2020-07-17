@@ -7,6 +7,7 @@ import {
   Platform,
   Button,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import Card from "../../components/UI/Card";
 import { useSelector, useDispatch } from "react-redux";
@@ -17,20 +18,30 @@ import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 import * as ShopActions from "../../store/actions/ShopAction";
 
 import ModalView from "../../components/UI/ModalView";
+import Colors from "../../constants/Colors";
 
 const StartScreen = (props) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-      dispatch(ShopActions.fetchShop());
-  }, [dispatch]);
+    const fetch = async () => {
+      setLoading(true);
+      await dispatch(ShopActions.fetchShop());
+      await dispatch(ShopStoreActions.fetchCustomerData());
+      setLoading(false);
+    };
+    fetch();
+  }, [dispatch, customerData]);
 
+  const customerData = useSelector((state) => state.store.shops);
   const ShopData = useSelector((state) => state.shops.ShopData);
 
   const addedShops = useSelector((state) => {
     const shopData = [];
     for (const key in state.store.shops) {
-      shopData.push(state.store.shops[key].shopData);
+      const shop = ShopData.find((item) => item.shop_Id === key);
+      shopData.push(shop);
     }
     return shopData.sort((a, b) => (a.shop_Id > b.shop_Id ? 1 : -1));
   });
@@ -71,16 +82,26 @@ const StartScreen = (props) => {
       [
         {
           text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
         {
           text: "OK",
-          onPress: () => dispatch(ShopStoreActions.removeStore(shopId)),
+          onPress: () => {
+            dispatch(ShopStoreActions.removeStore(shopId));
+            dispatch(ShopStoreActions.addCustomerData());
+          },
         },
       ],
       { cancelable: false }
     );
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <View>
@@ -106,9 +127,10 @@ const StartScreen = (props) => {
       </View>
       <Button
         onPress={() => {
-          dispatch(ShopStoreActions.addStore("15C5GS", ShopData));
+          dispatch(ShopStoreActions.addStore("15C5GS"));
           // dispatch(ShopStoreActions.addStore("15C5GT"))
-          dispatch(ShopStoreActions.addStore("G7745X", ShopData));
+          dispatch(ShopStoreActions.addStore("G7745X"));
+          dispatch(ShopStoreActions.addCustomerData());
         }}
         title="clickme"
       />

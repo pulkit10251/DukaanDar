@@ -2,6 +2,7 @@ import ShopData from "../../data/Dummy_data";
 import StoreModel from "../../models/StoreModel";
 import CartItem from "../../models/CartItem";
 import OrderModel from "../../models/OrderModel";
+import { FETCH_CUSTOMER_DATA } from "../actions/ShopStoreAction";
 
 const initialState = {
   shops: {},
@@ -11,10 +12,6 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case "ADD_STORE": {
       const shopId = action.shopId;
-      const ShopData = action.ShopData;
-      const shop = ShopData.find((props) => props.shop_Id === shopId);
-      const shopName = shop.shop_Name;
-
       let NewShop;
       if (state.shops[shopId]) {
         return state;
@@ -22,15 +19,7 @@ export default (state = initialState, action) => {
         const cartItems = {};
         const YourOrders = [];
         // shop is not present in the store
-        NewShop = new StoreModel(
-          shopName,
-          shopId,
-          shop,
-          cartItems,
-          YourOrders,
-          0,
-          0
-        );
+        NewShop = new StoreModel(shopId, cartItems, YourOrders, 0, 0);
       }
 
       return {
@@ -79,9 +68,7 @@ export default (state = initialState, action) => {
         [addedProduct.prod_Id]: updatedOrnewCartItem,
       };
       const updatedShop = new StoreModel(
-        store.shopName,
         store.shopId,
-        store.shopData,
         updatedCartItems,
         store.YourOrders,
         store.TotalAmount + prodPrice,
@@ -117,9 +104,7 @@ export default (state = initialState, action) => {
       }
 
       const updatedShop = new StoreModel(
-        selectedStore.shopName,
         selectedStore.shopId,
-        selectedStore.shopData,
         updatedCartItems,
         selectedStore.YourOrders,
         selectedStore.TotalAmount - selectedCartItem.product.prod_Price,
@@ -144,8 +129,6 @@ export default (state = initialState, action) => {
       const paymentMethod = paymentDetails.paymentMethod;
       const paymentStatus = paymentDetails.paymentStatus;
 
-    
-
       const newOrder = new OrderModel(
         DummyId,
         cartItems,
@@ -158,9 +141,7 @@ export default (state = initialState, action) => {
       const updatedOrderItems = orders.concat(newOrder);
 
       const updatedShop = new StoreModel(
-        store.shopName,
         store.shopId,
-        store.shopData,
         {},
         updatedOrderItems,
         0,
@@ -171,7 +152,13 @@ export default (state = initialState, action) => {
         shops: { ...state.shops, [shop_Id]: updatedShop },
       };
     }
+    case FETCH_CUSTOMER_DATA: {
+      return {
+        shops: action.customerData,
+      };
+    }
+    default: {
+      return state;
+    }
   }
-
-  return state;
 };

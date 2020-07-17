@@ -1,17 +1,15 @@
-import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  FlatList,
-  Platform,
-} from "react-native";
+import React, { useEffect } from "react";
+import { Text, View, StyleSheet, FlatList, Platform } from "react-native";
 import ProductsCard from "../../components/UI/ProductsCard";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import { useDispatch, useSelector } from "react-redux";
+import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 
 const ProductOverviewScreen = (props) => {
+  const customerData = useSelector((state) => state.store.shops);
+
+
   const categoryList = props.navigation.getParam("CatList");
 
   const productDetailNavigate = (product, categoryList, shopId) => {

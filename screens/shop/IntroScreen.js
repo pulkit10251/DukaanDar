@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { useSelector } from "react-redux";
 import Colors from "../../constants/Colors";
@@ -19,6 +20,10 @@ const IntroScreen = (props) => {
       shopId: id,
     });
   };
+
+  const [loading, setLoading] = useState(false);
+
+
 
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -98,9 +103,10 @@ const IntroScreen = (props) => {
         const Break = breakTime.split(" to ");
         const breakstart = new Date(curr_date + " " + Break[0]);
         const breakend = new Date(curr_date + " " + Break[1]);
-        
+
         if (
-          (curr >= open && curr <= breakstart) || (curr >= breakend && curr <= close)
+          (curr >= open && curr <= breakstart) ||
+          (curr >= breakend && curr <= close)
         ) {
           Status = "OPEN";
           Color = "green";
@@ -304,8 +310,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
   },
-  timingContainer:{
-    marginVertical:10,
+  timingContainer: {
+    marginVertical: 10,
   },
   timings: {
     flexDirection: "row",

@@ -87,6 +87,7 @@ const EditProduct = (props) => {
           prod_Availability
         )
       );
+      dispatch(ShopActions.addServer());
       props.navigation.pop();
     }
   };

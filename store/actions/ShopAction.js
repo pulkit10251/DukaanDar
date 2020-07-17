@@ -217,10 +217,12 @@ export const addShop = (
   };
 };
 
-export const addServer = (shopData) => {
-  return async (dispatch) => {
+export const addServer = () => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const shopData = getState().shops.ShopData;
     const response = await fetch(
-      "https://dukaandar-e4590.firebaseio.com/ShopData.json",
+      `https://dukaandar-e4590.firebaseio.com/ShopData.json?auth=${token}`,
       {
         method: "PATCH",
         headers: {
@@ -229,20 +231,28 @@ export const addServer = (shopData) => {
         body: JSON.stringify({ shopData }),
       }
     );
+    if (!response.ok) {
+      throw new Error("Something went wrong");
+    }
+
     const resData = await response.json();
   };
 };
 
 export const fetchShop = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      "https://dukaandar-e4590.firebaseio.com/ShopData.json"
+      `https://dukaandar-e4590.firebaseio.com/ShopData.json?auth=${token}`
     );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong");
+    }
 
     const resData = await response.json();
 
     var shopData = [];
-
 
     for (var i = 0; i < resData.shopData.length; i++) {
       const shop = resData.shopData[i];
@@ -263,7 +273,7 @@ export const fetchShop = () => {
 
         for (var k = 0; k < local_Categories.length; k++) {
           const products =
-            local_Categories[k].category_Products === "undefined"
+            local_Categories[k].category_Products === undefined
               ? []
               : local_Categories[k].category_Products;
 
@@ -307,7 +317,6 @@ export const fetchShop = () => {
         )
       );
     }
-
 
     dispatch({
       type: FETCH_SHOP,

@@ -16,9 +16,6 @@ const AddGCScreen = (props) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(ShopActions.addServer(shopData));
-  }, [dispatch, shopData]);
 
   const categories = shop.shop_Categories;
   useEffect(() => {

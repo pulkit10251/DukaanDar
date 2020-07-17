@@ -1,4 +1,20 @@
-export const SIGNUP = "SIGNUP";
+import { AsyncStorage } from "react-native";
+
+export const AUTHENTICATE = "AUTHENTICATE";
+export const LOGOUT = "LOGOUT";
+
+let timer;
+
+export const authenticate = (userId, token, expiryTime) => {
+  return (dispatch) => {
+    dispatch(setLogoutTimer(expiryTime));
+    dispatch({
+      type: AUTHENTICATE,
+      userId: userId,
+      token: token,
+    });
+  };
+};
 
 export const signup = (email, password, name, contact, type) => {
   return async (dispatch) => {
@@ -33,9 +49,9 @@ export const signup = (email, password, name, contact, type) => {
 
     if (type === "User" && response.ok) {
       const addServerResponse = await fetch(
-        "https://dukaandar-e4590.firebaseio.com/Users.json",
+        `https://dukaandar-e4590.firebaseio.com/Users/${resData.localId}.json?auth=${resData.idToken}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -48,7 +64,7 @@ export const signup = (email, password, name, contact, type) => {
       const addserverRes = await addServerResponse.json();
     } else if (type === "DukaanDar" && response.ok) {
       const addServerResponse = await fetch(
-        `https://dukaandar-e4590.firebaseio.com/DukaanDar/${resData.localId}.json`,
+        `https://dukaandar-e4590.firebaseio.com/DukaanDar/${resData.localId}.json?auth=${resData.idToken}`,
         {
           method: "PUT",
           headers: {
@@ -64,9 +80,18 @@ export const signup = (email, password, name, contact, type) => {
       const addserverRes = await addServerResponse.json();
     }
 
-    dispatch({
-      type: SIGNUP,
-    });
+    dispatch(
+      authenticate(
+        resData.localId,
+        resData.idToken,
+        parseInt(resData.expiresIn) * 1000
+      )
+    );
+
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(resData.expiresIn) * 1000
+    );
+    saveDatatoStorage(resData.idToken, resData.localId, expirationDate);
   };
 };
 
@@ -102,11 +127,41 @@ export const signin = (email, password, type) => {
       throw new Error(message);
     }
 
+    const resData = await response.json();
 
-    dispatch({
-      type: SIGNUP,
-    });
+    const responseData = await fetch(
+      `https://dukaandar-e4590.firebaseio.com/DukaanDar/${resData.localId}.json`
+    );
+
+    const data = await responseData.json();
+    if (type === "DukaanDar" && data === null) {
+      throw new Error("Sorry! You are not registered as a DukaanDar !");
+    }
+
+    dispatch(
+      authenticate(
+        resData.localId,
+        resData.idToken,
+        parseInt(resData.expiresIn) * 1000
+      )
+    );
+
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(resData.expiresIn) * 1000
+    );
+    saveDatatoStorage(resData.idToken, resData.localId, expirationDate);
   };
+};
+
+const saveDatatoStorage = (token, userId, expirationDate) => {
+  AsyncStorage.setItem(
+    "userData",
+    JSON.stringify({
+      token: token,
+      userId: userId,
+      expiryDate: expirationDate.toISOString(),
+    })
+  );
 };
 
 export const passwordReset = (emailId) => {
@@ -138,5 +193,27 @@ export const passwordReset = (emailId) => {
       }
       throw new Error(message);
     }
+  };
+};
+
+export const logout = () => {
+  clearLogoutTimer();
+  AsyncStorage.removeItem("userData");
+  return {
+    type: LOGOUT,
+  };
+};
+
+const clearLogoutTimer = () => {
+  if (timer) {
+    clearTimeout(timer);
+  }
+};
+
+export const setLogoutTimer = (expirationTime) => {
+  return (dispatch) => {
+    timer = setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime);
   };
 };

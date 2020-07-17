@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -13,30 +13,29 @@ import ProductDetailCard from "../../components/UI/ProductDetailCard";
 import ExploreItemBox from "../../components/UI/ExploreItemBox";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
-import { useDispatch, useSelector } from "react-redux";
-import CartItem from "../../models/CartItem";
+import { useSelector, useDispatch } from "react-redux";
 
 const ProductScreen = (props) => {
   const product = props.navigation.getParam("product");
   const LocalList = props.navigation.getParam("categoryList");
 
-  const shopId = props.navigation.getParam("shopId")
+  const shopId = props.navigation.getParam("shopId");
 
   const list = props.navigation
     .getParam("categoryList")
     .filter((item) => item.prod_Id != product.prod_Id);
 
-  const dispatch = useDispatch();
-
   const cartItem = useSelector((state) => state.store.shops[shopId].cartItems);
 
-  const productDetailNavigate = (product, categoryList,shopId) => {
+
+  const productDetailNavigate = (product, categoryList, shopId) => {
     props.navigation.replace("productDetail", {
       product: product,
       categoryList: categoryList,
-      shopId: shopId
+      shopId: shopId,
     });
   };
+  const dispatch = useDispatch();
 
   return (
     <ScrollView>

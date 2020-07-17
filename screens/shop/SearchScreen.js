@@ -41,6 +41,13 @@ const SearchScreen = (props) => {
 
       for (var j = 0; j < globalCat.length; j++) {
         const LocalCat = globalCat[j].category_Products;
+        if(LocalCat === undefined){
+          console.log("undefined present")
+          console.log(LocalCat);
+          console.log(j,i);
+          console.log(LocalCat.length)
+
+        }
         const category = globalCat[j];
         for (var k = 0; k < LocalCat.length; k++) {
           const Product = LocalCat[k];

@@ -30,12 +30,12 @@ const ModalView = (props) => {
     return code;
   });
 
-  
   const onSubmit = (data, ShopData) => {
     if (data.length === 6) {
       if (storeData.includes(data)) {
         props.setModalVisibility(false);
         props.dispatch(ShopStoreActions.addStore(data, ShopData));
+        props.dispatch(ShopStoreActions.addCustomerData());
       } else {
         Alert.alert("Invalid Code", "you have provided wrong code", [
           { text: "OK" },
@@ -95,7 +95,9 @@ const ModalView = (props) => {
               </TouchableCmp>
             </View>
             <View style={styles.Details}>
-              <TouchableCmp onPress={() => onSubmit(props.shopId, props.ShopData)}>
+              <TouchableCmp
+                onPress={() => onSubmit(props.shopId, props.ShopData)}
+              >
                 <View style={styles.button}>
                   <Text style={styles.buttonText}>Submit</Text>
                 </View>

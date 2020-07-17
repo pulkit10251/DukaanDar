@@ -22,7 +22,6 @@ const EditGlobal = (props) => {
   const catId = props.navigation.getParam("catId");
   const shopId = props.navigation.getParam("shopId");
 
-
   const [image, setImage] = useState(imageUrl);
   const [name, setName] = useState(CatName);
 
@@ -134,6 +133,7 @@ const EditGlobal = (props) => {
                     text: "Ok",
                     onPress: () => {
                       dispatch(ShopActions.removeGlobal(shopId, catId));
+                      dispatch(ShopActions.addServer());
                       props.navigation.pop();
                     },
                   },

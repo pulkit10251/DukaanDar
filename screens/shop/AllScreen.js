@@ -6,15 +6,22 @@ import {
   Platform,
   FlatList,
   VirtualizedList,
+  ActivityIndicator,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import FrontCard from "../../components/UI/FrontCard";
 import FrontImages from "../../components/UI/FrontImages";
 import Header from "../../components/UI/Header";
+import Colors from "../../constants/Colors";
+import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 
 const AllScreen = (props) => {
+  const dispatch = useDispatch();
+
+  const customerData = useSelector((state) => state.store.shops);
+
   const CategoryNavigate = (id) => {
     props.navigation.navigate("Category", {
       shopId: id,
@@ -47,7 +54,7 @@ const AllScreen = (props) => {
     return data.length;
   };
   const getItem = (data, index) => {
-    return data[index]
+    return data[index];
   };
 
   return (

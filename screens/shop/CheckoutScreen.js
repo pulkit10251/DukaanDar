@@ -41,6 +41,7 @@ const CheckoutScreen = (props) => {
                 paymentMethod
               )
             );
+            dispatch(ShopStoreAction.addCustomerData());
             props.navigation.navigate("All");
           }}
         >

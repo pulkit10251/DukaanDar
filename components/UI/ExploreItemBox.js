@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   stockText: {
-    fontSize: Dimensions.get("screen").width * 0.045,
+    fontSize: 16,
     fontFamily: "open-sans-bold",
     color: "red",
     textAlign: "center",

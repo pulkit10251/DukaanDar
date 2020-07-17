@@ -12,7 +12,6 @@ import * as CartActions from "../../store/actions/CartAction";
 import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 import { useSelector } from "react-redux";
 
-
 const AddInitial = (props) => {
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -32,6 +31,7 @@ const AddInitial = (props) => {
             shopId
           )
         );
+        props.dispatch(ShopStoreActions.addCustomerData());
       }}
     >
       <View style={styles.container}>

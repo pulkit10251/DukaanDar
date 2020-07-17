@@ -10,6 +10,8 @@ import ReduxThunk from "redux-thunk";
 import ShopReducer from "./store/reducers/ShopReducer";
 import ShopIdReducer from "./store/reducers/ShopIdReducer";
 import ShopStoreReducer from "./store/reducers/ShopStoreReducer";
+import AuthReducer from "./store/reducers/AuthReducer";
+import NavigationContainer from "./navigation/NavigationContainer";
 
 const fetchFont = () => {
   return Font.loadAsync({
@@ -22,6 +24,7 @@ const rootReducer = combineReducers({
   shops: ShopReducer,
   shopId: ShopIdReducer,
   store: ShopStoreReducer,
+  auth: AuthReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
@@ -40,7 +43,7 @@ export default function App() {
   }
   return (
     <Provider store={store}>
-      <ShopNavigator />
+      <NavigationContainer />
     </Provider>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   Text,
   View,
@@ -6,12 +6,18 @@ import {
   FlatList,
   VirtualizedList,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import CategoriesCard from "../../components/UI/CategoriesCard";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
+import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 
 const CategoriesScreen = (props) => {
+  const dispatch = useDispatch();
+
+  const customerData = useSelector((state) => state.store.shops);
+
+
   const shopId = props.navigation.getParam("shopId");
   const shop = useSelector((state) =>
     state.shops.ShopData.find((shop) => shop.shop_Id === shopId)

@@ -10,6 +10,7 @@ const ProductDetailCard = (props) => {
   const cartItems = props.cartItem;
   var currentQuantity;
   if (cartItems[props.product.prod_Id]) {
+
     currentQuantity = cartItems[props.product.prod_Id].quantity;
   } else {
     currentQuantity = 0;
@@ -114,20 +115,20 @@ const styles = StyleSheet.create({
   },
   price: {
     marginRight: 10,
-    fontSize: Dimensions.get("screen").height * 0.025,
+    fontSize: 22,
     fontFamily: "open-sans-bold",
     textAlign: "center",
     marginTop: "auto",
   },
   mrp: {
     textDecorationLine: "line-through",
-    fontSize: Dimensions.get("screen").height * 0.025,
+    fontSize: 22,
     fontFamily: "open-sans",
     color: "#888",
     marginTop: "auto",
   },
   percentage: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.accent,
     borderRadius: 5,
     marginHorizontal: 10,
     width: Dimensions.get("screen").width * 0.2,
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     margin: 3,
-    fontSize: Dimensions.get("screen").height * 0.018,
+    fontSize: 14,
     fontFamily: "open-sans",
   },
   priceAddContainer: {

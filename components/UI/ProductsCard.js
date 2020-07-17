@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     color: "#888",
   },
   percentage: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.accent,
     borderRadius: 5,
     alignItems: "center",
     marginLeft: "auto",

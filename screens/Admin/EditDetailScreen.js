@@ -118,7 +118,6 @@ const EditDetailScreen = (props) => {
 
   const items = [];
 
-
   for (var i = 0; i < Shop.shop_Categories.length; i++) {
     const category = Shop.shop_Categories[i];
     items.push(...category.category_Local);
@@ -641,6 +640,7 @@ const EditDetailScreen = (props) => {
                 breakTimings
               )
             );
+            dispatch(ShopActions.addServer());
             props.navigation.pop();
           }}
         >

@@ -138,6 +138,7 @@ const EditLocal = (props) => {
                       dispatch(
                         ShopActions.removeLocal(shopId, GlobalId, LocalId)
                       );
+                      dispatch(ShopActions.addServer());
                       props.navigation.pop();
                     },
                   },
