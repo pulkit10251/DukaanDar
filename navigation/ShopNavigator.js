@@ -1,6 +1,14 @@
-import React from "react";
+import React, { Profiler } from "react";
 import { createStackNavigator } from "react-navigation-stack";
-import { View, Platform, SafeAreaView, Button } from "react-native";
+import {
+  View,
+  Text,
+  Platform,
+  SafeAreaView,
+  Button,
+  TouchableNativeFeedback,
+  TouchableOpacity,
+} from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import Colors from "../constants/Colors";
@@ -37,6 +45,8 @@ import VerificationScreen from "../screens/Auth/VerificationScreen";
 import StartupScreen from "../screens/StartupScreen";
 import { useDispatch } from "react-redux";
 import * as AuthActions from "../store/actions/AuthActions";
+import ProfileScreen from "../screens/shop/ProfileScreen";
+import AboutScreen from "../screens/shop/AboutScreen";
 
 defaultNavOptions = {
   headerStyle: {
@@ -65,8 +75,123 @@ const StartNavigator = createStackNavigator(
           color={drawerConfig.tintColor}
         />
       ),
-      drawerLockMode: "locked-closed",
-      title: "Change Shop",
+      title: "Your Shops",
+    },
+  }
+);
+
+const ProfileNavigator = createStackNavigator(
+  {
+    profile: ProfileScreen,
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions,
+    initialRouteName: "profile",
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-person" : "ios-person"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+      title: "Your Profile",
+    },
+  }
+);
+
+const AboutNavigator = createStackNavigator(
+  {
+    about: AboutScreen,
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions,
+    initialRouteName: "about",
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-information-circle" : "ios-information-circle"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+      title: "About",
+    },
+  }
+);
+
+const StartDrawerNavigator = createDrawerNavigator(
+  {
+    Start: StartNavigator,
+    Profile: ProfileNavigator,
+    About: AboutNavigator,
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.other,
+    },
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-folder" : "ios-folder"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+      title: "Change Shops",
+    },
+    unmountInactiveRoutes: true,
+    initialRouteName: "Start",
+    contentComponent: (props) => {
+      const dispatch = useDispatch();
+      let TouchableCmp = TouchableOpacity;
+      if (Platform.OS === "android" && Platform.Version >= 21) {
+        TouchableCmp = TouchableNativeFeedback;
+      }
+      return (
+        <View
+          style={{
+            flex: 1,
+            paddingVertical: 40,
+            paddingHorizontal: 20,
+            justifyContent: "space-between",
+          }}
+        >
+          <SafeAreaView
+            forceInset={{ horizontal: "never" }}
+            style={{ flex: 1 }}
+          >
+            <View styles={{ flex: 1 }}>
+              <DrawerItems {...props} />
+            </View>
+          </SafeAreaView>
+          <TouchableCmp
+            onPress={() => {
+              dispatch(AuthActions.logout());
+            }}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              justifyContent: "flex-end",
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: Colors.other,
+                borderRadius: 5,
+                width: "100%",
+                height: 40,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={{ color: "white", textAlign: "center" }}>
+                LOGOUT
+              </Text>
+            </View>
+          </TouchableCmp>
+        </View>
+      );
     },
   }
 );
@@ -167,6 +292,83 @@ const AdminNavigator = createStackNavigator(
   }
 );
 
+const StartAdminDrawerNavigator = createDrawerNavigator(
+  {
+    Start: StartNavigator,
+    Profile: ProfileNavigator,
+    About: AboutNavigator,
+    Admin: AdminNavigator,
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.other,
+    },
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-folder" : "ios-folder"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+      title: "Change Shops",
+    },
+    unmountInactiveRoutes: true,
+    initialRouteName: "Start",
+    contentComponent: (props) => {
+      const dispatch = useDispatch();
+      let TouchableCmp = TouchableOpacity;
+      if (Platform.OS === "android" && Platform.Version >= 21) {
+        TouchableCmp = TouchableNativeFeedback;
+      }
+      return (
+        <View
+          style={{
+            flex: 1,
+            paddingVertical: 40,
+            paddingHorizontal: 20,
+            justifyContent: "space-between",
+          }}
+        >
+          <SafeAreaView
+            forceInset={{ horizontal: "never" }}
+            style={{ flex: 1 }}
+          >
+            <View styles={{ flex: 1 }}>
+              <DrawerItems {...props} />
+            </View>
+          </SafeAreaView>
+          <TouchableCmp
+            onPress={() => {
+              dispatch(AuthActions.logout());
+            }}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              justifyContent: "flex-end",
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: Colors.other,
+                borderRadius: 5,
+                width: "100%",
+                height: 40,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={{ color: "white", textAlign: "center" }}>
+                LOGOUT
+              </Text>
+            </View>
+          </TouchableCmp>
+        </View>
+      );
+    },
+  }
+);
+
 const AuthNavigator = createStackNavigator({
   Login: LoginScreen,
   SignUp: SignUpScreen,
@@ -175,45 +377,33 @@ const AuthNavigator = createStackNavigator({
 
 const shopNavigator = createDrawerNavigator(
   {
-    Start: StartNavigator,
+    Start: StartDrawerNavigator,
     All: HomeNavigator,
     Cart: CartNavigator,
     Order: OrderNavigator,
   },
   {
     contentOptions: {
-      activeTintColor: Colors.primary,
+      activeTintColor: Colors.other,
     },
     unmountInactiveRoutes: true,
     initialRouteName: "Start",
-    contentComponent: (props) => {
-      const dispatch = useDispatch();
-      return (
-        <View style={{ flex: 1, paddingVertical: 40, paddingHorizontal: 20 }}>
-          <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
-            <DrawerItems {...props} />
-            <Button
-              title="Logout"
-              color={Colors.primary}
-              onPress={() => {
-                dispatch(AuthActions.logout()); 
-              }}
-            />
-          </SafeAreaView>
-        </View>
-      );
-    },
   }
 );
 
 const shopAdminNavigator = createDrawerNavigator(
   {
-    Admin: AdminNavigator,
+    Start: StartAdminDrawerNavigator,
+    All: HomeNavigator,
+    Cart: CartNavigator,
+    Order: OrderNavigator,
   },
   {
     contentOptions: {
-      activeTintColor: Colors.primary,
+      activeTintColor: Colors.other,
     },
+    unmountInactiveRoutes: true,
+    initialRouteName: "Start",
   }
 );
 

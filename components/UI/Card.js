@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     paddingHorizontal: 10,
     borderRadius: 10,
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.accent,
     padding: 8,
     width: 100,
   },

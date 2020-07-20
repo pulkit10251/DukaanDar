@@ -66,7 +66,9 @@ const EditDetailScreen = (props) => {
       return;
     }
 
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+    });
 
     if (!pickerResult.cancelled) {
       setImage(pickerResult.uri);
@@ -80,7 +82,9 @@ const EditDetailScreen = (props) => {
       return;
     }
 
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+    });
 
     if (!pickerResult.cancelled) {
       offers.push(pickerResult.uri);

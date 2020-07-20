@@ -5,7 +5,6 @@ import {
   StyleSheet,
   FlatList,
   Platform,
-  Button,
   Alert,
   ActivityIndicator,
 } from "react-native";
@@ -23,12 +22,24 @@ import Colors from "../../constants/Colors";
 const StartScreen = (props) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Error", error);
+    }
+  }, [error]);
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
+      setError(null);
       await dispatch(ShopActions.fetchShop());
-      await dispatch(ShopStoreActions.fetchCustomerData());
+      try {
+        await dispatch(ShopStoreActions.fetchCustomerData());
+      } catch (err) {
+        setError(err.message);
+      }
       setLoading(false);
     };
     fetch();
@@ -125,15 +136,7 @@ const StartScreen = (props) => {
           "Click on the Add Button on the Extreme right{"\n"} to Add new Shops"
         </Text>
       </View>
-      <Button
-        onPress={() => {
-          dispatch(ShopStoreActions.addStore("15C5GS"));
-          // dispatch(ShopStoreActions.addStore("15C5GT"))
-          dispatch(ShopStoreActions.addStore("G7745X"));
-          dispatch(ShopStoreActions.addCustomerData());
-        }}
-        title="clickme"
-      />
+
       <ModalView
         isModalVisible={isModalVisible}
         toggleModal={toggleModal}
@@ -151,6 +154,17 @@ const StartScreen = (props) => {
 StartScreen.navigationOptions = (NavData) => {
   return {
     headerTitle: "DukaanDar",
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          onPress={() => {
+            NavData.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item

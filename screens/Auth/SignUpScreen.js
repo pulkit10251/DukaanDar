@@ -9,7 +9,7 @@ import {
   Platform,
   Alert,
   ActivityIndicator,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import * as AuthActions from "../../store/actions/AuthActions";
 import { useDispatch } from "react-redux";
@@ -60,15 +60,20 @@ const SignUpScreen = (props) => {
       } catch (err) {
         setError(err.message);
       }
+      Alert.alert("Success!", "You have sucessfully signed up!", [
+        {
+          text: "ok",
+          onPress: () => {
+            props.navigation.pop();
+          },
+        },
+      ]);
       setLoading(false);
     }
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-    
-    >
+    <KeyboardAvoidingView style={styles.container}>
       <View>
         <Text style={styles.signupText}>Are You...</Text>
       </View>

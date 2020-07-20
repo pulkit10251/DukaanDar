@@ -80,6 +80,17 @@ export const signup = (email, password, name, contact, type) => {
       const addserverRes = await addServerResponse.json();
     }
 
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(resData.expiresIn) * 1000
+    );
+    saveDatatoStorage(
+      resData.idToken,
+      resData.localId,
+      expirationDate,
+      type,
+      resData.refreshToken
+    );
+
     dispatch(
       authenticate(
         resData.localId,
@@ -87,11 +98,6 @@ export const signup = (email, password, name, contact, type) => {
         parseInt(resData.expiresIn) * 1000
       )
     );
-
-    const expirationDate = new Date(
-      new Date().getTime() + parseInt(resData.expiresIn) * 1000
-    );
-    saveDatatoStorage(resData.idToken, resData.localId, expirationDate);
   };
 };
 
@@ -138,6 +144,20 @@ export const signin = (email, password, type) => {
       throw new Error("Sorry! You are not registered as a DukaanDar !");
     }
 
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(resData.expiresIn) * 1000
+    );
+
+    console.log("in signin", type);
+
+    saveDatatoStorage(
+      resData.idToken,
+      resData.localId,
+      expirationDate,
+      type,
+      resData.refreshToken
+    );
+
     dispatch(
       authenticate(
         resData.localId,
@@ -145,21 +165,24 @@ export const signin = (email, password, type) => {
         parseInt(resData.expiresIn) * 1000
       )
     );
-
-    const expirationDate = new Date(
-      new Date().getTime() + parseInt(resData.expiresIn) * 1000
-    );
-    saveDatatoStorage(resData.idToken, resData.localId, expirationDate);
   };
 };
 
-const saveDatatoStorage = (token, userId, expirationDate) => {
+const saveDatatoStorage = (
+  token,
+  userId,
+  expirationDate,
+  type,
+  refreshToken
+) => {
   AsyncStorage.setItem(
     "userData",
     JSON.stringify({
       token: token,
       userId: userId,
       expiryDate: expirationDate.toISOString(),
+      type: type,
+      refreshToken: refreshToken,
     })
   );
 };
@@ -196,6 +219,50 @@ export const passwordReset = (emailId) => {
   };
 };
 
+export const refreshCredentials = (refreshToken, type) => {
+  return async (dispatch) => {
+    console.log(type);
+    const response = await fetch(
+      "https://securetoken.googleapis.com/v1/token?key=AIzaSyASH-pS6-FOO4BUVPjtcTVRnq-i6w1pmuw",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: "grant_type=refresh_token&refresh_token=" + refreshToken,
+      }
+    );
+
+    if (!response.ok) {
+      console.log("error occured!!!");
+      const resData = await response.json();
+      const error = resData.error.message;
+      throw new Error(error);
+    }
+
+    const resData = await response.json();
+
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(resData.expires_in) * 1000
+    );
+
+    saveDatatoStorage(
+      resData.id_token,
+      resData.user_id,
+      expirationDate,
+      type,
+      resData.refresh_token
+    );
+    dispatch(
+      authenticate(
+        resData.user_id,
+        resData.id_token,
+        parseInt(resData.expires_in) * 1000
+      )
+    );
+  };
+};
+
 export const logout = () => {
   clearLogoutTimer();
   AsyncStorage.removeItem("userData");
@@ -211,9 +278,18 @@ const clearLogoutTimer = () => {
 };
 
 export const setLogoutTimer = (expirationTime) => {
-  return (dispatch) => {
-    timer = setTimeout(() => {
-      dispatch(logout());
+  return async (dispatch) => {
+    const userData = await AsyncStorage.getItem("userData");
+    const transformedData = JSON.parse(userData);
+
+    timer = setTimeout(async () => {
+      try {
+        dispatch(
+          refreshCredentials(transformedData.refreshToken, transformedData.type)
+        );
+      } catch (err) {
+        dispatch(logout());
+      }
     }, expirationTime);
   };
 };

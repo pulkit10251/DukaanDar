@@ -501,6 +501,13 @@ export default (state = initialState, action) => {
 
       globalCategories[globalIndex].CategoryLocal = localCategories;
 
+      var shopFront = selectedStore.shop_Front;
+
+      const frontIndex = shopFront.findIndex(
+        (item) => item.Local_Id === LocalId
+      );
+      shopFront[frontIndex] = localCategories[localIndex];
+
       const updatedStore = new Shop(
         selectedStore.shop_Id,
         selectedStore.shop_Name,
@@ -515,7 +522,7 @@ export default (state = initialState, action) => {
         selectedStore.shop_ClosedTimings,
         selectedStore.shop_BreakTimings,
         selectedStore.shop_Offers,
-        selectedStore.shop_Front
+        shopFront
       );
 
       var ShopData = state.ShopData;
@@ -575,7 +582,13 @@ export default (state = initialState, action) => {
 
       localCategories[localIndex].category_Products = products;
       globalCategories[globalIndex].category_Local = localCategories;
-      4;
+
+      var shopFront = selectedStore.shop_Front;
+      const frontIndex = shopFront.findIndex(
+        (item) => item.Local_Id === prod_CategoryId
+      );
+
+      shopFront[frontIndex] = localCategories[localIndex];
 
       const updatedStore = new Shop(
         selectedStore.shop_Id,
@@ -591,7 +604,7 @@ export default (state = initialState, action) => {
         selectedStore.shop_ClosedTimings,
         selectedStore.shop_BreakTimings,
         selectedStore.shop_Offers,
-        selectedStore.shop_Front
+        shopFront
       );
 
       var ShopData = state.ShopData;

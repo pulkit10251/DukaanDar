@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     color: "#888",
   },
   percentage: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.accent,
     borderRadius: 5,
     alignItems: "center",
     marginLeft: "auto",
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "open-sans-bold",
     fontSize: 40,
-    color: Colors.primary,
+    color: Colors.other,
   },
 });
 
