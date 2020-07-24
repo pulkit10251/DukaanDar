@@ -256,6 +256,7 @@ export const fetchShop = () => {
 
     for (var i = 0; i < resData.shopData.length; i++) {
       const shop = resData.shopData[i];
+
       const categories =
         shop.shop_Categories === undefined ? [] : shop.shop_Categories;
       const front = shop.shop_Front === undefined ? [] : shop.shop_Front;
@@ -324,3 +325,4 @@ export const fetchShop = () => {
     });
   };
 };
+

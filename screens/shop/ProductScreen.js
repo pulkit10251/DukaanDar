@@ -14,6 +14,7 @@ import ExploreItemBox from "../../components/UI/ExploreItemBox";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import { useSelector, useDispatch } from "react-redux";
+import Colors from "../../constants/Colors";
 
 const ProductScreen = (props) => {
   const product = props.navigation.getParam("product");
@@ -26,7 +27,6 @@ const ProductScreen = (props) => {
     .filter((item) => item.prod_Id != product.prod_Id);
 
   const cartItem = useSelector((state) => state.store.shops[shopId].cartItems);
-
 
   const productDetailNavigate = (product, categoryList, shopId) => {
     props.navigation.replace("productDetail", {
@@ -41,11 +41,85 @@ const ProductScreen = (props) => {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: product.prod_ImageUrl }}
-            style={styles.image}
-            resizeMode="contain"
-          />
+          <View
+            style={{
+              width: "65%",
+              height: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              source={{ uri: product.prod_ImageUrl }}
+              style={styles.image}
+              resizeMode="contain"
+            />
+          </View>
+          <View
+            style={{
+              width: "90%",
+              height: 60,
+              position: "absolute",
+              marginRight: 10,
+              borderRadius: 10,
+              alignItems: "center",
+              justifyContent: "center",
+              transform: [{ rotate: "270deg" }],
+              left: Dimensions.get("screen").width * 0.42,
+              margin: 10,
+              backgroundColor: Colors.other,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "open-sans-bold",
+                textAlignVertical: "top",
+                textAlign: "center",
+                fontSize: 25,
+                color: "white",
+              }}
+            >
+              {product.prod_Name}
+            </Text>
+          </View>
+          <View
+            style={{
+              width: 80,
+              aspectRatio: 1,
+              position: "absolute",
+              borderWidth: 1,
+              bottom: 10,
+              left: 10,
+              backgroundColor: Colors.other,
+              borderRadius: 10,
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{ width: "100%", height: "60%", alignItems: "center" }}
+            >
+              <Text
+                style={{
+                  fontFamily: "open-sans-bold",
+                  fontSize: 40,
+                  color: "white",
+                }}
+              >
+                {product.prod_Quantity}
+              </Text>
+            </View>
+            <View>
+              <Text
+                style={{
+                  fontFamily: "open-sans-bold",
+                  fontSize: 18,
+                  color: "white",
+                }}
+              >
+                {product.prod_Unit}
+              </Text>
+            </View>
+          </View>
         </View>
         <ProductDetailCard
           Name={product.prod_Name}
@@ -116,8 +190,10 @@ const styles = StyleSheet.create({
   imageContainer: {
     backgroundColor: "white",
     width: "100%",
-    height: Dimensions.get("screen").height * 0.4,
+    aspectRatio: 1,
     marginBottom: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
     width: "100%",

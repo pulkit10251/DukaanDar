@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     margin: 3,
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: "open-sans",
   },
   priceAddContainer: {

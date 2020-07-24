@@ -47,6 +47,7 @@ import { useDispatch } from "react-redux";
 import * as AuthActions from "../store/actions/AuthActions";
 import ProfileScreen from "../screens/shop/ProfileScreen";
 import AboutScreen from "../screens/shop/AboutScreen";
+import OrderDetailAdminScreen from "../screens/Admin/OrderDetailAdminScreen";
 
 defaultNavOptions = {
   headerStyle: {
@@ -110,7 +111,11 @@ const AboutNavigator = createStackNavigator(
     navigationOptions: {
       drawerIcon: (drawerConfig) => (
         <Ionicons
-          name={Platform.OS === "android" ? "md-information-circle" : "ios-information-circle"}
+          name={
+            Platform.OS === "android"
+              ? "md-information-circle"
+              : "ios-information-circle"
+          }
           size={23}
           color={drawerConfig.tintColor}
         />
@@ -276,6 +281,7 @@ const AdminNavigator = createStackNavigator(
     EditGlobal: EditGlobal,
     EditLocal: EditLocal,
     EditProduct: EditProduct,
+    OrderDetail: OrderDetailAdminScreen,
   },
   {
     defaultNavigationOptions: defaultNavOptions,

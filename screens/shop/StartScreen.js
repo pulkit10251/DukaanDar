@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Text,
   View,
@@ -19,10 +19,15 @@ import * as ShopActions from "../../store/actions/ShopAction";
 import ModalView from "../../components/UI/ModalView";
 import Colors from "../../constants/Colors";
 
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+
 const StartScreen = (props) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
+
 
   useEffect(() => {
     if (error) {

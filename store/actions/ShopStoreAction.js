@@ -49,18 +49,58 @@ export const placeOrder = (
   paymentStatus,
   paymentMethod
 ) => {
-  return {
-    type: PLACE_ORDER,
-    shopId: shopId,
-    orderData: {
-      cartItems: cartItems,
-      totalAmount: totalAmount,
-      totalMrp: totalMrp,
-    },
-    paymentDetails: {
-      paymentMethod: paymentMethod,
-      paymentStatus: paymentStatus,
-    },
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const uid = getState().auth.userId;
+    const DummyId = new Date().getTime().toString();
+    const date = new Date();
+
+    const CustomerData = await fetch(
+      `https://dukaandar-e4590.firebaseio.com/Users/${uid}.json?auth=${token}`
+    );
+
+    const customerResponse = await CustomerData.json();
+
+    const response = await fetch(
+      `https://dukaandar-e4590.firebaseio.com/shopOrders/${shopId}/active/${DummyId}.json?auth=${token}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Date: date,
+          Id: DummyId,
+          orderData: {
+            cartItems: cartItems,
+            totalAmount: totalAmount,
+            totalMrp: totalMrp,
+          },
+          paymentDetails: {
+            paymentMethod: paymentMethod,
+            paymentStatus: paymentStatus,
+          },
+          CustomerName: customerResponse.name,
+          CustomerMobileNumber: customerResponse.contact,
+          CustomerEmail: customerResponse.email,
+        }),
+      }
+    );
+    dispatch({
+      type: PLACE_ORDER,
+      shopId: shopId,
+      DummyId: DummyId,
+      Date: date,
+      orderData: {
+        cartItems: cartItems,
+        totalAmount: totalAmount,
+        totalMrp: totalMrp,
+      },
+      paymentDetails: {
+        paymentMethod: paymentMethod,
+        paymentStatus: paymentStatus,
+      },
+    });
   };
 };
 

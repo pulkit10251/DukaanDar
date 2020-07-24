@@ -11,7 +11,10 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as ShopActions from "../../store/actions/ShopAction";
+import * as OrderActions from "../../store/actions/OrderAction";
 import Colors from "../../constants/Colors";
+import { FlatList } from "react-native-gesture-handler";
+import OrderItem from "../../components/UI/OrderItem";
 
 var isNew = false;
 
@@ -24,6 +27,7 @@ const CreateShopScreen = (props) => {
     const dispatchFcn = async () => {
       setLoading(true);
       await dispatch(ShopActions.fetchShop());
+      await dispatch(OrderActions.fetchOrders(shopId));
       setLoading(false);
     };
 
@@ -34,7 +38,8 @@ const CreateShopScreen = (props) => {
     state.shops.ShopData.find((item) => item.shop_Id === shopId)
   );
 
-  // const shop = shopData.find((item) => item.shop_Id === shopId);
+  const activeOrders = useSelector((state) => state.orders.active);
+  const deliveredOrders = useSelector((state) => state.orders.delivered);
 
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -43,6 +48,12 @@ const CreateShopScreen = (props) => {
 
   const AddNavigate = (shopId) => {
     props.navigation.navigate("AddShop", { shopId: shopId });
+  };
+
+  const OrderDetailNavigate = (Order) => {
+    props.navigation.navigate("OrderDetail", {
+      Order: Order,
+    });
   };
 
   if (shop === undefined) {
@@ -74,30 +85,68 @@ const CreateShopScreen = (props) => {
   }
 
   return (
-    <View>
-      <View style={styles.IntroContainer}>
-        <View style={styles.imageContainer}>
-          <Image
-            style={{ width: "100%", height: "100%" }}
-            source={{ uri: shop.shop_ShopkeeperImage }}
-          />
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.welcome}>Welcome,</Text>
-          <Text style={styles.Text}>{shop.shop_ShopkeeperName}</Text>
-          <Text style={styles.Text}>Lets Manage your shop</Text>
-        </View>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <TouchableCmp
-          onPress={() => props.navigation.navigate("Main", { shopId: shopId })}
-        >
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Make Changes</Text>
+    <FlatList
+      ListHeaderComponent={
+        <View style={{ flex: 1 }}>
+          <View style={styles.IntroContainer}>
+            <View style={styles.imageContainer}>
+              <Image
+                style={{ width: "100%", height: "100%" }}
+                source={{ uri: shop.shop_ShopkeeperImage }}
+              />
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.welcome}>Welcome,</Text>
+              <Text style={styles.Text}>{shop.shop_ShopkeeperName}</Text>
+              <Text style={styles.Text}>Lets Manage your shop</Text>
+            </View>
           </View>
-        </TouchableCmp>
-      </View>
-    </View>
+          <View style={{ alignItems: "center" }}>
+            <TouchableCmp
+              onPress={() =>
+                props.navigation.navigate("Main", { shopId: shopId })
+              }
+            >
+              <View style={styles.buttonContainer}>
+                <Text style={styles.buttonText}>Make Changes</Text>
+              </View>
+            </TouchableCmp>
+          </View>
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              marginVertical: 10,
+              backgroundColor: "white",
+              padding:5
+            }}
+          >
+            <Text
+              style={{
+                textAlign: "center",
+                fontFamily: "open-sans-bold",
+                fontSize: 20,
+              }}
+            >
+              Active Orders
+            </Text>
+          </View>
+        </View>
+      }
+      data={activeOrders}
+      keyExtractor={(item) => item.id}
+      renderItem={(itemData) => (
+        <OrderItem
+          date={itemData.item.readableDate}
+          id={itemData.item.id}
+          paymentMethod={itemData.item.paymentMethod}
+          paymentStatus={itemData.item.paymentStatus}
+          navigate={() => {
+            OrderDetailNavigate(itemData.item);
+          }}
+        />
+      )}
+    />
   );
 };
 
@@ -120,7 +169,8 @@ const styles = StyleSheet.create({
   },
   IntroContainer: {
     width: "90%",
-    height: "50%",
+    height: 180,
+    backgroundColor: "white",
     marginVertical: 20,
     borderRadius: 20,
     borderWidth: 1,

@@ -1,5 +1,7 @@
 import { AsyncStorage } from "react-native";
-
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+import Constants from "expo-constants";
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
 
@@ -47,22 +49,24 @@ export const signup = (email, password, name, contact, type) => {
 
     const resData = await response.json();
 
-    if (type === "User" && response.ok) {
-      const addServerResponse = await fetch(
-        `https://dukaandar-e4590.firebaseio.com/Users/${resData.localId}.json?auth=${resData.idToken}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            uid: resData.localId,
-            contact: contact,
-          }),
-        }
-      );
-      const addserverRes = await addServerResponse.json();
-    } else if (type === "DukaanDar" && response.ok) {
+    const addServerResponse = await fetch(
+      `https://dukaandar-e4590.firebaseio.com/Users/${resData.localId}.json?auth=${resData.idToken}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uid: resData.localId,
+          contact: contact,
+          name: name,
+          email: email,
+        }),
+      }
+    );
+    const addserverRes = await addServerResponse.json();
+
+    if (type === "DukaanDar" && response.ok) {
       const addServerResponse = await fetch(
         `https://dukaandar-e4590.firebaseio.com/DukaanDar/${resData.localId}.json?auth=${resData.idToken}`,
         {
@@ -74,6 +78,8 @@ export const signup = (email, password, name, contact, type) => {
             key: resData.localId,
             contact: contact,
             shopId: "DD-" + Math.floor(Math.random() * 100000),
+            name: name,
+            email: email,
           }),
         }
       );
@@ -148,8 +154,6 @@ export const signin = (email, password, type) => {
       new Date().getTime() + parseInt(resData.expiresIn) * 1000
     );
 
-    console.log("in signin", type);
-
     saveDatatoStorage(
       resData.idToken,
       resData.localId,
@@ -221,7 +225,6 @@ export const passwordReset = (emailId) => {
 
 export const refreshCredentials = (refreshToken, type) => {
   return async (dispatch) => {
-    console.log(type);
     const response = await fetch(
       "https://securetoken.googleapis.com/v1/token?key=AIzaSyASH-pS6-FOO4BUVPjtcTVRnq-i6w1pmuw",
       {
@@ -293,3 +296,4 @@ export const setLogoutTimer = (expirationTime) => {
     }, expirationTime);
   };
 };
+

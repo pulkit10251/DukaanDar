@@ -32,7 +32,9 @@ const OrderBox = (props) => {
             </View>
           )}
         </View>
-        <Text style={styles.text}>{props.product.prod_Name}</Text>
+        <View style={{ height: 50, marginBottom: 10 }}>
+          <Text style={styles.text}>{props.product.prod_Name}</Text>
+        </View>
         <View style={styles.boxContainer}>
           <View style={styles.priceAddContainer}>
             <Text style={styles.QuantityText}>
@@ -51,12 +53,12 @@ const OrderBox = (props) => {
 const styles = StyleSheet.create({
   container: {
     width: "90%",
-    height: Dimensions.get("screen").height * 0.2,
+    height: 200,
     flexDirection: "row",
     backgroundColor: "white",
     marginVertical: 5,
-    borderWidth:2,
-    borderRadius:10,
+    borderWidth: 2,
+    borderRadius: 10,
     borderColor: Colors.primary,
   },
   imageContainer: {
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     padding: 5,
+    justifyContent: "space-between",
   },
   price: {
     marginRight: 10,
@@ -117,7 +120,7 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans",
   },
   boxContainer: {
-    marginTop: "auto",
+    marginTop: 0,
     flexDirection: "row",
     flex: 1,
   },

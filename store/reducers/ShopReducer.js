@@ -159,14 +159,6 @@ export default (state = initialState, action) => {
       var globalCategories = selectedStore.shop_Categories;
       globalCategories[catIndex] = globalCategory;
 
-      var shop_Front = selectedStore.shop_Front;
-      for (var i = 0; i < shop_Front.length; i++) {
-        var locCat = shop_Front[i];
-        locCat.category_Products = locCat.category_Products.filter(
-          (item) => item.prod_Id != prodId
-        );
-        shop_Front[i] = locCat;
-      }
       const updatedStore = new Shop(
         selectedStore.shop_Id,
         selectedStore.shop_Name,
@@ -181,7 +173,7 @@ export default (state = initialState, action) => {
         selectedStore.shop_ClosedTimings,
         selectedStore.shop_BreakTimings,
         selectedStore.shop_Offers,
-        shop_Front
+        selectedStore.shop_Front
       );
       const ShopData = state.ShopData;
 
@@ -501,13 +493,6 @@ export default (state = initialState, action) => {
 
       globalCategories[globalIndex].CategoryLocal = localCategories;
 
-      var shopFront = selectedStore.shop_Front;
-
-      const frontIndex = shopFront.findIndex(
-        (item) => item.Local_Id === LocalId
-      );
-      shopFront[frontIndex] = localCategories[localIndex];
-
       const updatedStore = new Shop(
         selectedStore.shop_Id,
         selectedStore.shop_Name,
@@ -522,7 +507,7 @@ export default (state = initialState, action) => {
         selectedStore.shop_ClosedTimings,
         selectedStore.shop_BreakTimings,
         selectedStore.shop_Offers,
-        shopFront
+        selectedStore.shop_Front
       );
 
       var ShopData = state.ShopData;
@@ -583,13 +568,6 @@ export default (state = initialState, action) => {
       localCategories[localIndex].category_Products = products;
       globalCategories[globalIndex].category_Local = localCategories;
 
-      var shopFront = selectedStore.shop_Front;
-      const frontIndex = shopFront.findIndex(
-        (item) => item.Local_Id === prod_CategoryId
-      );
-
-      shopFront[frontIndex] = localCategories[localIndex];
-
       const updatedStore = new Shop(
         selectedStore.shop_Id,
         selectedStore.shop_Name,
@@ -604,7 +582,7 @@ export default (state = initialState, action) => {
         selectedStore.shop_ClosedTimings,
         selectedStore.shop_BreakTimings,
         selectedStore.shop_Offers,
-        shopFront
+        selectedStore.shop_Front
       );
 
       var ShopData = state.ShopData;

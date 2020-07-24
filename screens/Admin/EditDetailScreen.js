@@ -11,6 +11,7 @@ import {
   Picker,
   Dimensions,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Permission from "expo-permissions";
@@ -23,6 +24,8 @@ import Colors from "../../constants/Colors";
 import PickerCheckBox from "react-native-picker-checkbox";
 import ModalDetailView from "../../components/UI/ModalDetailView";
 import * as ShopActions from "../../store/actions/ShopAction";
+import firebase from "../../firebase";
+import UUID from "uuid-v4";
 
 const EditDetailScreen = (props) => {
   const dispatch = useDispatch();
@@ -59,7 +62,10 @@ const EditDetailScreen = (props) => {
   const [showbreakClose, setShowbreakClose] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
 
-  let openImagePickerAsync = async (setImage) => {
+  const [sloading, setSloading] = useState(false);
+  const [skloading, setSkloading] = useState(false);
+
+  let openImagePickerAsync = async (setImage, type, setLoading) => {
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
     if (permissionResult.granted === false) {
       alert("Permission to access camera roll is required!");
@@ -71,8 +77,38 @@ const EditDetailScreen = (props) => {
     });
 
     if (!pickerResult.cancelled) {
-      setImage(pickerResult.uri);
+      setLoading(true);
+      await uploadImage(pickerResult.uri, shopId, type).catch((error) => {
+        console.log(error.message);
+      });
+      getImageUrl(type, setImage);
+      setLoading(false);
     }
+  };
+
+  const uploadImage = async (uri, shopId, type) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    var ref = firebase
+      .storage()
+      .ref()
+      .child("DukaanDar/" + shopId + "/" + type);
+
+    return ref.put(blob);
+  };
+
+  const getImageUrl = (type, setImage) => {
+    let ref = firebase.storage().ref("DukaanDar/" + shopId + "/" + type);
+    ref
+      .getDownloadURL()
+      .then((url) => {
+        setImage(url);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        return "Something went Wrong!";
+      });
   };
 
   let addOfferImagePickerAsync = async (offers, setOffers) => {
@@ -84,12 +120,39 @@ const EditDetailScreen = (props) => {
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       base64: true,
+      maxWidth: 200,
+      maxHeight: 500,
     });
 
     if (!pickerResult.cancelled) {
-      offers.push(pickerResult.uri);
-      setOffers(offers.slice());
+      const uuid = UUID();
+      await uploadImageOffers(pickerResult.uri, shopId, uuid).catch((error) => {
+        Alert.alert(error.message);
+      });
+      let ref = firebase
+        .storage()
+        .ref("DukaanDar/" + shopId + "/offers/" + uuid);
+      ref
+        .getDownloadURL()
+        .then((url) => {
+          offers.push(url);
+          setOffers(offers.slice());
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     }
+  };
+
+  const uploadImageOffers = async (uri, shopId, uuid) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    var ref = firebase
+      .storage()
+      .ref()
+      .child("DukaanDar/" + shopId + "/offers/" + uuid);
+
+    return ref.put(blob);
   };
 
   const Time = (t) => {
@@ -131,23 +194,55 @@ const EditDetailScreen = (props) => {
     setShowPicker((state) => !state);
   };
 
+  const data = [];
+  for (var i = 0; i < front.length; i++) {
+    const global = Shop.shop_Categories.find(
+      (item) => item.category_Id === front[i].Global_Id
+    );
+    const localCategory = global.category_Local.find(
+      (item) => item.Local_Id === front[i].Local_Id
+    );
+    data.push(localCategory);
+  }
+
   return (
     <FlatList
-      data={front}
+      data={data}
       keyExtractor={(item) => item.Local_Id}
       ListHeaderComponent={
         <View>
           <View>
             <View style={styles.imageContainer}>
-              <Image
-                source={{ uri: shopImage === "" ? Imagess.NoImage : shopImage }}
-                style={styles.image}
-                resizeMode="stretch"
-              />
+              {sloading ? (
+                <View
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <ActivityIndicator size="small" color={Colors.primary} />
+                  <Text>Uploading Image...</Text>
+                </View>
+              ) : (
+                <Image
+                  source={{
+                    uri: shopImage === "" ? Imagess.NoImage : shopImage,
+                  }}
+                  style={styles.image}
+                  resizeMode="stretch"
+                />
+              )}
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={styles.BoldText}>Select Image for Shop : </Text>
-              <TouchableCmp onPress={() => openImagePickerAsync(setShopImage)}>
+              <TouchableCmp
+                onPress={() =>
+                  openImagePickerAsync(setShopImage, "ShopImage", setSloading)
+                }
+                disabled={sloading ? true : false}
+              >
                 <View style={styles.buttonContainer}>
                   <Text style={styles.buttonText}>Select Image</Text>
                 </View>
@@ -156,21 +251,44 @@ const EditDetailScreen = (props) => {
           </View>
           <View>
             <View style={styles.imageContainer}>
-              <Image
-                source={{
-                  uri:
-                    shopkeeperImage === "" ? Imagess.NoImage : shopkeeperImage,
-                }}
-                style={styles.image}
-                resizeMode="stretch"
-              />
+              {skloading ? (
+                <View
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <ActivityIndicator size="small" color={Colors.primary} />
+                  <Text>Uploading Image...</Text>
+                </View>
+              ) : (
+                <Image
+                  source={{
+                    uri:
+                      shopkeeperImage === ""
+                        ? Imagess.NoImage
+                        : shopkeeperImage,
+                  }}
+                  style={styles.image}
+                  resizeMode="stretch"
+                />
+              )}
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={styles.BoldText}>
                 Select Image for ShopKeeper :{" "}
               </Text>
               <TouchableCmp
-                onPress={() => openImagePickerAsync(setShopkeeperImage)}
+                onPress={() =>
+                  openImagePickerAsync(
+                    setShopkeeperImage,
+                    "ShopkeeperImage",
+                    setSkloading
+                  )
+                }
+                disabled={skloading ? true : false}
               >
                 <View style={styles.buttonContainer}>
                   <Text style={styles.buttonText}>Select Image</Text>
@@ -570,7 +688,9 @@ const EditDetailScreen = (props) => {
                           },
                           {
                             text: "OK",
-                            onPress: () => setOffers(updatedOffers.slice()),
+                            onPress: () => {
+                              setOffers(updatedOffers.slice());
+                            },
                           },
                         ],
                         { cancelable: false }
@@ -644,9 +764,11 @@ const EditDetailScreen = (props) => {
                 breakTimings
               )
             );
+
             dispatch(ShopActions.addServer());
             props.navigation.pop();
           }}
+          disabled={sloading || skloading ? true : false}
         >
           <View
             style={{

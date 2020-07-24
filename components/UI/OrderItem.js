@@ -19,7 +19,7 @@ const OrderItem = (props) => {
     <View style={styles.container}>
       <View style={styles.TextContainer}>
         <View style={styles.dateContainer}>
-          <Text style={styles.Text}>{props.date}</Text>
+          <Text style={styles.boldText}>{props.date}</Text>
         </View>
         <View style={styles.IdContainer}>
           <Text style={styles.boldText}>Order Id : </Text>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     width: "95%",
     alignSelf: "center",
-    height: Dimensions.get("screen").height * 0.25,
+    height: 200,
     elevation: 2,
     backgroundColor: "white",
     marginVertical: 5,
@@ -73,14 +73,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
-    height: "30%",
+    height: 40,
     alignItems: "center",
     justifyContent: "center",
   },
   button: {
     backgroundColor: "red",
-    width: "95%",
-    height: "80%",
+    height: 40,
+    padding: 10,
     borderRadius: 5,
     justifyContent: "center",
   },
@@ -88,11 +88,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontFamily: "open-sans",
-    fontSize: 23,
+    fontSize: 16,
   },
   dateContainer: {
     alignItems: "center",
-    margin: 5,
+    marginVertical: 10,
+
   },
   Text: {
     fontFamily: "open-sans",

@@ -120,7 +120,8 @@ export default (state = initialState, action) => {
       const shop_Id = action.shopId;
       const store = state.shops[shop_Id];
       const orders = store.YourOrders;
-      const DummyId = new Date().getTime().toString();
+      const DummyId = action.DummyId;
+      const Date = action.Date;
       const orderData = action.orderData;
       const cartItems = orderData.cartItems;
       const totalAmount = orderData.totalAmount;
@@ -134,7 +135,7 @@ export default (state = initialState, action) => {
         cartItems,
         totalAmount,
         totalMrp,
-        new Date(),
+        Date,
         paymentStatus,
         paymentMethod
       );

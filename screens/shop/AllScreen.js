@@ -20,8 +20,6 @@ import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 const AllScreen = (props) => {
   const dispatch = useDispatch();
 
-  const customerData = useSelector((state) => state.store.shops);
-
   const CategoryNavigate = (id) => {
     props.navigation.navigate("Category", {
       shopId: id,
@@ -48,7 +46,17 @@ const AllScreen = (props) => {
     state.shops.ShopData.find((shop) => shop.shop_Id === shopId)
   );
 
-  const FrontData = shop.shop_Front;
+  const Front = shop.shop_Front;
+  const data = [];
+  for (var i = 0; i < Front.length; i++) {
+    const global = shop.shop_Categories.find(
+      (item) => item.category_Id === Front[i].Global_Id
+    );
+    const localCategory = global.category_Local.find(
+      (item) => item.Local_Id === Front[i].Local_Id
+    );
+    data.push(localCategory);
+  }
 
   const getItemCount = (data) => {
     return data.length;
@@ -72,7 +80,7 @@ const AllScreen = (props) => {
           </View>
         }
         initialNumToRender={4}
-        data={FrontData}
+        data={data}
         keyExtractor={(item) => String(item.Local_Id)}
         renderItem={(itemData) => (
           <FrontCard

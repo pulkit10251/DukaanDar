@@ -48,19 +48,27 @@ const ModalDetailView = (props) => {
             <View style={styles.checkContainer}>
               <Ionicons
                 name={
-                  list.includes(itemData.item)
+                  list.some((item) => item.Local_Id === itemData.item.Local_Id)
                     ? "md-checkbox"
                     : "md-square-outline"
                 }
                 color={Colors.primary}
                 onPress={() => {
-                  if (list.includes(itemData.item)) {
+                  if (
+                    list.some(
+                      (item) => item.Local_Id === itemData.item.Local_Id
+                    )
+                  ) {
                     const newList = list.filter(
                       (item) => item.Local_Id !== itemData.item.Local_Id
                     );
                     props.setFront(newList);
                   } else {
-                    const newList = [...list, itemData.item];
+                    const frontCat = {
+                      Local_Id: itemData.item.Local_Id,
+                      Global_Id: itemData.item.Global_Id,
+                    };
+                    const newList = [...list, frontCat];
                     if (list.length < 5) {
                       props.setFront(newList);
                     }
