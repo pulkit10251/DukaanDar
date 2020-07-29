@@ -8,10 +8,9 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-import { format } from "date-fns";
 import moment from "moment";
 
-const OrderItem = (props) => {
+const OrderItemAdmin = (props) => {
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
@@ -24,6 +23,10 @@ const OrderItem = (props) => {
       <View style={styles.TextContainer}>
         <View style={styles.dateContainer}>
           <Text style={styles.boldText}>{Date}</Text>
+        </View>
+        <View style={styles.IdContainer}>
+          <Text style={styles.boldText}>Name : </Text>
+          <Text style={styles.Text}>{props.name}</Text>
         </View>
         <View style={styles.IdContainer}>
           <Text style={styles.boldText}>Order Id : </Text>
@@ -44,6 +47,17 @@ const OrderItem = (props) => {
             {props.paymentStatus ? "DONE" : "PENDING"}
           </Text>
         </View>
+        <View style={styles.IdContainer}>
+          <Text style={styles.boldText}>Order Status : </Text>
+          <Text
+            style={{
+              ...styles.Textcolor,
+              color: props.orderStatus === "PACKED" ? "green" : "red",
+            }}
+          >
+            {props.orderStatus.toUpperCase()}
+          </Text>
+        </View>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableCmp onPress={props.navigate}>
@@ -60,8 +74,8 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 2,
     width: "95%",
+    height: 250,
     alignSelf: "center",
-    height: 200,
     elevation: 2,
     backgroundColor: "white",
     marginVertical: 5,
@@ -78,8 +92,10 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
     height: 40,
+    marginTop: "auto",
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 10,
   },
   button: {
     backgroundColor: "red",
@@ -110,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderItem;
+export default OrderItemAdmin;

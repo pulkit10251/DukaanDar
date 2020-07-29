@@ -55,6 +55,22 @@ export const placeOrder = (
     const DummyId = new Date().getTime().toString();
     const date = new Date();
 
+    dispatch({
+      type: PLACE_ORDER,
+      shopId: shopId,
+      DummyId: DummyId,
+      Date: date,
+      orderData: {
+        cartItems: cartItems,
+        totalAmount: totalAmount,
+        totalMrp: totalMrp,
+      },
+      paymentDetails: {
+        paymentMethod: paymentMethod,
+        paymentStatus: paymentStatus,
+      },
+    });
+
     const CustomerData = await fetch(
       `https://dukaandar-e4590.firebaseio.com/Users/${uid}.json?auth=${token}`
     );
@@ -83,24 +99,11 @@ export const placeOrder = (
           CustomerName: customerResponse.name,
           CustomerMobileNumber: customerResponse.contact,
           CustomerEmail: customerResponse.email,
+          userId: customerResponse.uid,
+          OrderStatus: "Pending",
         }),
       }
     );
-    dispatch({
-      type: PLACE_ORDER,
-      shopId: shopId,
-      DummyId: DummyId,
-      Date: date,
-      orderData: {
-        cartItems: cartItems,
-        totalAmount: totalAmount,
-        totalMrp: totalMrp,
-      },
-      paymentDetails: {
-        paymentMethod: paymentMethod,
-        paymentStatus: paymentStatus,
-      },
-    });
   };
 };
 
@@ -164,6 +167,40 @@ export const fetchCustomerData = () => {
     dispatch({
       type: FETCH_CUSTOMER_DATA,
       customerData: customerData,
+    });
+  };
+};
+
+export const changeOrderStatus = (shopId, orderId, status) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const response = await fetch(
+      `https://dukaandar-e4590.firebaseio.com/shopOrders/${shopId}/active/${orderId}.json?auth=${token}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          OrderStatus: status,
+        }),
+      }
+    );
+  };
+};
+
+export const getOrderStatus = (shopId, orderId) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const response = await fetch(
+      `https://dukaandar-e4590.firebaseio.com/shopOrders/${shopId}/active/${orderId}/OrderStatus.json?auth=${token}`
+    );
+    const resData = await response.json();
+    // console.log(resData);
+
+    dispatch({
+      type: "GET_STATUS",
+      status: resData,
     });
   };
 };

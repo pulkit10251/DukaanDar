@@ -1,6 +1,6 @@
 const initialState = {
-  active: [],
-  Delivered: [],
+  active: {},
+  Delivered: {},
 };
 
 export default (state = initialState, action) => {
@@ -9,12 +9,12 @@ export default (state = initialState, action) => {
       const activeData = action.active;
       const deliveredData = action.delivered;
 
-
       return {
         active: activeData,
         delivered: deliveredData,
       };
 
+    
     default:
       return state;
   }

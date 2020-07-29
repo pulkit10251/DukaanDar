@@ -9,13 +9,15 @@ import {
   Image,
   ActivityIndicator,
 } from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import HeaderButton from "../../components/UI/HeaderButton";
 import { useSelector, useDispatch } from "react-redux";
 import * as ShopActions from "../../store/actions/ShopAction";
 import * as OrderActions from "../../store/actions/OrderAction";
 import Colors from "../../constants/Colors";
 import { FlatList } from "react-native-gesture-handler";
-import OrderItem from "../../components/UI/OrderItem";
-
+import { NavigationEvents } from "react-navigation";
+import OrderItemAdmin from "../../components/UI/OrderItemAdmin";
 var isNew = false;
 
 const CreateShopScreen = (props) => {
@@ -30,9 +32,12 @@ const CreateShopScreen = (props) => {
       await dispatch(OrderActions.fetchOrders(shopId));
       setLoading(false);
     };
-
     dispatchFcn();
   }, [dispatch]);
+
+  useEffect(() => {
+    props.navigation.setParams({ shopId: shopId });
+  }, []);
 
   const shop = useSelector((state) =>
     state.shops.ShopData.find((item) => item.shop_Id === shopId)
@@ -50,9 +55,10 @@ const CreateShopScreen = (props) => {
     props.navigation.navigate("AddShop", { shopId: shopId });
   };
 
-  const OrderDetailNavigate = (Order) => {
+  const OrderDetailNavigate = (Order, shopId) => {
     props.navigation.navigate("OrderDetail", {
       Order: Order,
+      ShopId: shopId,
     });
   };
 
@@ -85,68 +91,77 @@ const CreateShopScreen = (props) => {
   }
 
   return (
-    <FlatList
-      ListHeaderComponent={
-        <View style={{ flex: 1 }}>
-          <View style={styles.IntroContainer}>
-            <View style={styles.imageContainer}>
-              <Image
-                style={{ width: "100%", height: "100%" }}
-                source={{ uri: shop.shop_ShopkeeperImage }}
-              />
-            </View>
-            <View style={styles.textContainer}>
-              <Text style={styles.welcome}>Welcome,</Text>
-              <Text style={styles.Text}>{shop.shop_ShopkeeperName}</Text>
-              <Text style={styles.Text}>Lets Manage your shop</Text>
-            </View>
-          </View>
-          <View style={{ alignItems: "center" }}>
-            <TouchableCmp
-              onPress={() =>
-                props.navigation.navigate("Main", { shopId: shopId })
-              }
-            >
-              <View style={styles.buttonContainer}>
-                <Text style={styles.buttonText}>Make Changes</Text>
+    <View>
+      <NavigationEvents
+        onWillFocus={() => {
+          dispatch(OrderActions.fetchOrders(shopId));
+        }}
+      />
+      <FlatList
+        ListHeaderComponent={
+          <View style={{ flex: 1 }}>
+            <View style={styles.IntroContainer}>
+              <View style={styles.imageContainer}>
+                <Image
+                  style={{ width: "100%", height: "100%" }}
+                  source={{ uri: shop.shop_ShopkeeperImage }}
+                />
               </View>
-            </TouchableCmp>
-          </View>
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              marginVertical: 10,
-              backgroundColor: "white",
-              padding:5
-            }}
-          >
-            <Text
+              <View style={styles.textContainer}>
+                <Text style={styles.welcome}>Welcome,</Text>
+                <Text style={styles.Text}>{shop.shop_ShopkeeperName}</Text>
+                <Text style={styles.Text}>Lets Manage your shop</Text>
+              </View>
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <TouchableCmp
+                onPress={() =>
+                  props.navigation.navigate("Main", { shopId: shopId })
+                }
+              >
+                <View style={styles.buttonContainer}>
+                  <Text style={styles.buttonText}>Make Changes</Text>
+                </View>
+              </TouchableCmp>
+            </View>
+            <View
               style={{
-                textAlign: "center",
-                fontFamily: "open-sans-bold",
-                fontSize: 20,
+                alignItems: "center",
+                justifyContent: "center",
+                marginVertical: 10,
+                backgroundColor: "white",
+                padding: 5,
               }}
             >
-              Active Orders
-            </Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontFamily: "open-sans-bold",
+                  fontSize: 20,
+                }}
+              >
+                Active Orders
+              </Text>
+            </View>
           </View>
-        </View>
-      }
-      data={activeOrders}
-      keyExtractor={(item) => item.id}
-      renderItem={(itemData) => (
-        <OrderItem
-          date={itemData.item.readableDate}
-          id={itemData.item.id}
-          paymentMethod={itemData.item.paymentMethod}
-          paymentStatus={itemData.item.paymentStatus}
-          navigate={() => {
-            OrderDetailNavigate(itemData.item);
-          }}
-        />
-      )}
-    />
+        }
+        data={activeOrders}
+        keyExtractor={(item) => item.id}
+        renderItem={(itemData) => (
+          <OrderItemAdmin
+            date={itemData.item.date}
+            id={itemData.item.id}
+            paymentMethod={itemData.item.paymentMethod}
+            paymentStatus={itemData.item.paymentStatus}
+            orderStatus={itemData.item.orderStatus}
+            name={itemData.item.customerName}
+            navigate={() => {
+              OrderDetailNavigate(itemData.item, shopId);
+            }}
+          />
+        )}
+      />
+    </View>
   );
 };
 
@@ -156,6 +171,30 @@ CreateShopScreen.navigationOptions = (NavData) => {
     headerTitleStyle: {
       textAlign: "center",
     },
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          onPress={() => {
+            NavData.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Add"
+          iconName={Platform.OS === "android" ? "md-archive" : "ios-archive"}
+          onPress={() => {
+            NavData.navigation.navigate("Delivered", {
+              shopId: NavData.navigation.getParam("shopId"),
+            });
+          }}
+        />
+      </HeaderButtons>
+    ),
   };
 };
 

@@ -1,4 +1,4 @@
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Alert, Linking } from "react-native";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
@@ -108,7 +108,7 @@ export const signup = (email, password, name, contact, type) => {
 };
 
 export const signin = (email, password, type) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     const response = await fetch(
       "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyASH-pS6-FOO4BUVPjtcTVRnq-i6w1pmuw",
       {
@@ -169,6 +169,26 @@ export const signin = (email, password, type) => {
         parseInt(resData.expiresIn) * 1000
       )
     );
+    const expoToken = await registerForPushNotificationsAsync();
+    if (expoToken !== undefined) {
+      const expoResponse = await fetch(
+        `https://dukaandar-e4590.firebaseio.com/ExpoTokens/${resData.localId}.json?auth=${resData.idToken}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            expoToken: expoToken,
+          }),
+        }
+      );
+      if (!expoResponse.ok) {
+        const errorResData = await expoResponse.json();
+        const errorId = errorResData.error.message;
+        throw new Error(errorId);
+      }
+    }
   };
 };
 
@@ -297,3 +317,49 @@ export const setLogoutTimer = (expirationTime) => {
   };
 };
 
+export const addExpoToken = (expoToken) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
+
+    const response = await fetch(
+      `https://dukaandar-e4590.firebaseio.com/Users/${userId}?auth=${token}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          expoToken: expoToken,
+        }),
+      }
+    );
+  };
+};
+
+const registerForPushNotificationsAsync = async () => {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+    let finalStatus = existingStatus;
+
+    if (finalStatus !== "granted") {
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  return token;
+};

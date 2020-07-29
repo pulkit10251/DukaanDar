@@ -87,7 +87,6 @@ const ProductScreen = (props) => {
               width: 80,
               aspectRatio: 1,
               position: "absolute",
-              borderWidth: 1,
               bottom: 10,
               left: 10,
               backgroundColor: Colors.other,

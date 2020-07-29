@@ -113,7 +113,7 @@ const ModalView = (props) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    height: Dimensions.get("screen").height * 0.23,
+    height: 200,
     paddingHorizontal: 10,
     paddingTop: 10,
   },

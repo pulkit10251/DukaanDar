@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
         return state;
       } else {
         const cartItems = {};
-        const YourOrders = [];
+        const YourOrders = {};
         // shop is not present in the store
         NewShop = new StoreModel(shopId, cartItems, YourOrders, 0, 0);
       }
@@ -139,7 +139,10 @@ export default (state = initialState, action) => {
         paymentStatus,
         paymentMethod
       );
-      const updatedOrderItems = orders.concat(newOrder);
+      const updatedOrderItems = {
+        ...orders,
+        [DummyId]: newOrder,
+      };
 
       const updatedShop = new StoreModel(
         store.shopId,
@@ -158,6 +161,7 @@ export default (state = initialState, action) => {
         shops: action.customerData,
       };
     }
+
     default: {
       return state;
     }

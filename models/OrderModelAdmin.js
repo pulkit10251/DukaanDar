@@ -11,7 +11,10 @@ class OrderModel {
     paymentMethod,
     customerName,
     customerContact,
-    customerEmail
+    customerEmail,
+    orderStatus,
+    customerExpoId,
+    userId
   ) {
     this.id = id;
     this.cartItems = cartItems;
@@ -23,6 +26,9 @@ class OrderModel {
     this.customerContact = customerContact;
     this.customerEmail = customerEmail;
     this.customerName = customerName;
+    this.orderStatus = orderStatus;
+    this.customerExpoId = customerExpoId;
+    this.userId = userId;
   }
 
   get readableDate() {

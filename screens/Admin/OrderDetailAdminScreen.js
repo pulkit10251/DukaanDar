@@ -1,16 +1,74 @@
-import React from "react";
-import { Text, View, StyleSheet, FlatList, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  Platform,
+  Button,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import CartPriceContainer from "../../components/UI/CartPriceContainer";
 import OrderBox from "../../components/UI/OrderBox";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import * as Linking from "expo-linking";
+import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
+import { useDispatch, useSelector } from "react-redux";
+import * as OrderActions from "../../store/actions/OrderAction";
+
+const sendPushNotification = async (expoPushToken) => {
+  console.log("called");
+  const message = {
+    to: expoPushToken,
+    sound: "default",
+    title: "Order Packed!",
+    body:
+      "The Order you placed is packed. You can take it and pay in active hours!",
+    data: { data: "Hello" },
+  };
+
+  await fetch("https://exp.host/--/api/v2/push/send", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Accept-encoding": "gzip, deflate",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(message),
+  });
+};
 
 const OrderDetailAdminScreen = (props) => {
+  let TouchableCmp = TouchableOpacity;
+  if (Platform.OS === "android" && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+  }
   const order = props.navigation.getParam("Order");
+  const orderId = order.id;
   const cartItems = order.cartItems;
   const totalMrp = order.totalMrp;
   const totalAmount = order.totalAmount;
+  const expoPushToken = order.customerExpoId;
+  const shopId = props.navigation.getParam("ShopId");
+  const status = order.orderStatus;
+  const userId = order.userId;
+  const paymentStatus = order.paymentStatus;
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
+
+  if (loading) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.screen}>
       <FlatList
@@ -88,6 +146,136 @@ const OrderDetailAdminScreen = (props) => {
             />
           </View>
         )}
+        ListFooterComponent={() => (
+          <View
+            style={{
+              padding: 5,
+              backgroundColor: "white",
+              width: "100%",
+              alignSelf: "center",
+              marginVertical: 20,
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={{ fontFamily: "open-sans-bold" }}>
+                Order Status :{" "}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: "open-sans-bold",
+                  color: status === "PACKED" ? "green" : "red",
+                }}
+              >
+                {status.toUpperCase()}
+              </Text>
+              {status !== "PACKED" && (
+                <TouchableCmp
+                  onPress={() => {
+                    Alert.alert(
+                      "Caution! ",
+                      "Set this order to packed only if you have packed it as it will notify the customer about the same!",
+                      [
+                        {
+                          text: "cancel",
+                          style: "cancel",
+                        },
+                        {
+                          text: "ok",
+                          onPress: async () => {
+                            if (expoPushToken !== undefined) {
+                              sendPushNotification(expoPushToken);
+                            }
+                            setLoading(true);
+                            await dispatch(
+                              ShopStoreActions.changeOrderStatus(
+                                shopId,
+                                orderId,
+                                "PACKED"
+                              )
+                            );
+                            setLoading(false);
+                            props.navigation.pop();
+                          },
+                        },
+                      ]
+                    );
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor:
+                        status === "PACKED" ? Colors.accent : "red",
+                      padding: 5,
+                      margin: 5,
+                      marginLeft: "auto",
+                      borderRadius: 5,
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>SET AS PACKED</Text>
+                  </View>
+                </TouchableCmp>
+              )}
+            </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={{ fontFamily: "open-sans-bold" }}>
+                Payment Status :{" "}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: "open-sans-bold",
+                  color: paymentStatus ? "green" : "red",
+                }}
+              >
+                {paymentStatus ? "PAID" : "PENDING"}
+              </Text>
+              {!paymentStatus && (
+                <TouchableCmp
+                  onPress={() => {
+                    {
+                      Alert.alert(
+                        "Caution! ",
+                        "Set this order to Paid only if customer have paid for it!",
+                        [
+                          {
+                            text: "cancel",
+                            style: "cancel",
+                          },
+                          {
+                            text: "ok",
+                            onPress: async () => {
+                              setLoading(true);
+                              await dispatch(
+                                OrderActions.changePaymentStatus(
+                                  userId,
+                                  shopId,
+                                  orderId
+                                )
+                              );
+                              setLoading(false);
+                              props.navigation.pop();
+                            },
+                          },
+                        ]
+                      );
+                    }
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: paymentStatus ? Colors.accent : "red",
+                      padding: 5,
+                      margin: 10,
+                      marginLeft: "auto",
+                      borderRadius: 5,
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>SET AS PAID</Text>
+                  </View>
+                </TouchableCmp>
+              )}
+            </View>
+          </View>
+        )}
       />
     </View>
   );
@@ -133,7 +321,6 @@ const styles = StyleSheet.create({
     width: "95%",
     elevation: 2,
     backgroundColor: "white",
-    height: 200,
     alignSelf: "center",
     padding: 10,
     marginVertical: 10,

@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View, StyleSheet, FlatList } from "react-native";
 import CartPriceContainer from "../../components/UI/CartPriceContainer";
 import OrderBox from "../../components/UI/OrderBox";
+import { useDispatch, useSelector } from "react-redux";
+import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 
 const OrderDetailScreen = (props) => {
   const cartItems = props.navigation.getParam("cartItems");
   const totalAmount = props.navigation.getParam("totalAmount");
   const totalMrp = props.navigation.getParam("totalMrp");
+  const orderId = props.navigation.getParam("orderId");
+  const shopId = props.navigation.getParam("shopId");
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(ShopStoreActions.getOrderStatus(shopId, orderId));
+  }, [dispatch]);
+
+  const status =
+    useSelector((state) => state.status.OrderStatus) === null
+      ? "Pending"
+      : useSelector((state) => state.status.OrderStatus);
 
   return (
     <View style={styles.screen}>
@@ -35,6 +48,58 @@ const OrderDetailScreen = (props) => {
               mrp={totalMrp}
               quantity={itemData.item.quantity}
             />
+          </View>
+        )}
+        ListFooterComponent={() => (
+          <View
+            style={{
+              marginVertical: 10,
+              backgroundColor: "white",
+              padding: 10,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontFamily: "open-sans-bold",
+                  fontSize: 18,
+                }}
+              >
+                Order Status :{" "}
+              </Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontFamily: "open-sans-bold",
+                  fontSize: 18,
+                  textTransform: "uppercase",
+                  color: status === "Pending" ? "red" : "green",
+                }}
+              >
+                {status}
+              </Text>
+            </View>
+            {status === "PACKED" && (
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    margin: 5,
+                    marginTop: 15,
+                    fontFamily: "open-sans-bold",
+                  }}
+                >
+                  Your Order has been packed! You can visit at active hours from
+                  now own! please don't be late
+                </Text>
+              </View>
+            )}
           </View>
         )}
       />

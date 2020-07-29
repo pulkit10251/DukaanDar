@@ -48,6 +48,7 @@ import * as AuthActions from "../store/actions/AuthActions";
 import ProfileScreen from "../screens/shop/ProfileScreen";
 import AboutScreen from "../screens/shop/AboutScreen";
 import OrderDetailAdminScreen from "../screens/Admin/OrderDetailAdminScreen";
+import DeliveredOrder from "../screens/Admin/DeliveredOrder";
 
 defaultNavOptions = {
   headerStyle: {
@@ -282,6 +283,7 @@ const AdminNavigator = createStackNavigator(
     EditLocal: EditLocal,
     EditProduct: EditProduct,
     OrderDetail: OrderDetailAdminScreen,
+    Delivered: DeliveredOrder,
   },
   {
     defaultNavigationOptions: defaultNavOptions,

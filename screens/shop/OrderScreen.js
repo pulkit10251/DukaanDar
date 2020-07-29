@@ -12,11 +12,25 @@ const OrderScreen = (props) => {
     (state) => state.store.shops[shopId].YourOrders
   );
 
-  const OrderDetailNavigate = (cartItems, totalAmount, totalMrp) => {
+  const OrderItemsArray = [];
+
+  for (const key in orderItems) {
+    OrderItemsArray.push(orderItems[key]);
+  }
+
+  const OrderDetailNavigate = (
+    cartItems,
+    totalAmount,
+    totalMrp,
+    orderId,
+    shopId
+  ) => {
     props.navigation.navigate("detail", {
       cartItems: cartItems,
       totalAmount: totalAmount,
       totalMrp: totalMrp,
+      shopId: shopId,
+      orderId: orderId,
     });
   };
 
@@ -33,12 +47,12 @@ const OrderScreen = (props) => {
 
   return (
     <FlatList
-      data={orderItems.reverse()}
+      data={OrderItemsArray.reverse()}
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => (
         <View>
           <OrderItem
-            date={itemData.item.readableDate}
+            date={itemData.item.date}
             id={itemData.item.id}
             paymentMethod={itemData.item.paymentMethod}
             paymentStatus={itemData.item.paymentStatus}
@@ -46,7 +60,9 @@ const OrderScreen = (props) => {
               OrderDetailNavigate(
                 itemData.item.cartItems,
                 itemData.item.totalAmount,
-                itemData.item.totalMrp
+                itemData.item.totalMrp,
+                itemData.item.id,
+                shopId
               )
             }
           />
