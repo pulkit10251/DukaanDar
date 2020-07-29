@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Text,
   View,
@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { format } from "date-fns";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 
 const OrderItem = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -17,6 +19,8 @@ const OrderItem = (props) => {
     TouchableCmp = TouchableNativeFeedback;
   }
 
+
+  const status = props.orderStatus;
   const Date = moment(props.date).format("MMMM Do YYYY, hh:mm A");
 
   return (
@@ -44,6 +48,17 @@ const OrderItem = (props) => {
             {props.paymentStatus ? "DONE" : "PENDING"}
           </Text>
         </View>
+        <View style={styles.IdContainer}>
+          <Text style={styles.boldText}>Order Status : </Text>
+          <Text
+            style={{
+              ...styles.Textcolor,
+              color: status === "PACKED" ? "green" : "red",
+            }}
+          >
+            {status}
+          </Text>
+        </View>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableCmp onPress={props.navigate}>
@@ -61,7 +76,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     width: "95%",
     alignSelf: "center",
-    height: 200,
+    height: 230,
     elevation: 2,
     backgroundColor: "white",
     marginVertical: 5,
@@ -80,6 +95,8 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: "auto",
+    marginBottom: 15,
   },
   button: {
     backgroundColor: "red",

@@ -14,61 +14,53 @@ export const fetchOrders = (shopId) => {
     }
 
     const resData = await response.json();
-    var active = resData.active;
-    var activeData = [];
-    if (active !== undefined) {
-      for (const key in active) {
-        const expoId = await fetch(
-          `https://dukaandar-e4590.firebaseio.com/ExpoTokens/${active[key].userId}.json?auth=${token}`
-        );
-
-        const expoData = await expoId.json();
-
-        const newOrder = new OrderModelAdmin(
-          active[key].Id,
-          active[key].orderData.cartItems,
-          active[key].orderData.totalAmount,
-          active[key].orderData.totalMrp,
-          active[key].Date,
-          active[key].paymentDetails.paymentStatus,
-          active[key].paymentDetails.paymentMethod,
-          active[key].CustomerName,
-          active[key].CustomerMobileNumber,
-          active[key].CustomerEmail,
-          active[key].OrderStatus,
-          expoData.expoToken,
-          active[key].userId
-        );
-        activeData.push(newOrder);
-      }
-    }
-
-    var delivered = resData.delivered;
+    
     var deliveredData = [];
-    if (delivered !== undefined) {
-      for (const key in delivered) {
-        const expoId = await fetch(
-          `https://dukaandar-e4590.firebaseio.com/ExpoTokens/${delivered[key].userId}.json?auth=${token}`
-        );
+    var activeData = [];
 
-        const expoData = await expoId.json();
+    if (resData !== null) {
+      var active = resData.active;
+      if (active !== undefined) {
+        for (const key in active) {
+          const newOrder = new OrderModelAdmin(
+            active[key].Id,
+            active[key].orderData.cartItems,
+            active[key].orderData.totalAmount,
+            active[key].orderData.totalMrp,
+            active[key].Date,
+            active[key].paymentDetails.paymentStatus,
+            active[key].paymentDetails.paymentMethod,
+            active[key].CustomerName,
+            active[key].CustomerMobileNumber,
+            active[key].CustomerEmail,
+            active[key].OrderStatus,
+            active[key].expoToken,
+            active[key].userId
+          );
+          activeData.push(newOrder);
+        }
+      }
 
-        const newOrder = new OrderModelAdmin(
-          delivered[key].Id,
-          delivered[key].orderData.cartItems,
-          delivered[key].orderData.totalAmount,
-          delivered[key].orderData.totalMrp,
-          delivered[key].Date,
-          delivered[key].paymentDetails.paymentStatus,
-          delivered[key].paymentDetails.paymentMethod,
-          delivered[key].CustomerName,
-          delivered[key].CustomerMobileNumber,
-          delivered[key].CustomerEmail,
-          delivered[key].OrderStatus,
-          expoData.expoToken,
-          delivered[key].userId
-        );
-        deliveredData.push(newOrder);
+      var delivered = resData.delivered;
+      if (delivered !== undefined) {
+        for (const key in delivered) {
+          const newOrder = new OrderModelAdmin(
+            delivered[key].Id,
+            delivered[key].orderData.cartItems,
+            delivered[key].orderData.totalAmount,
+            delivered[key].orderData.totalMrp,
+            delivered[key].Date,
+            delivered[key].paymentDetails.paymentStatus,
+            delivered[key].paymentDetails.paymentMethod,
+            delivered[key].CustomerName,
+            delivered[key].CustomerMobileNumber,
+            delivered[key].CustomerEmail,
+            delivered[key].OrderStatus,
+            delivered[key].expoToken,
+            delivered[key].userId
+          );
+          deliveredData.push(newOrder);
+        }
       }
     }
 
@@ -138,7 +130,6 @@ export const changePaymentStatus = (userId, shopId, orderId) => {
 
     const orderData = await order.json();
 
-
     const delivered = await fetch(
       `https://dukaandar-e4590.firebaseio.com/shopOrders/${shopId}/delivered/${orderId}.json?auth=${token}`,
       {
@@ -156,7 +147,5 @@ export const changePaymentStatus = (userId, shopId, orderId) => {
         method: "DELETE",
       }
     );
-
-    
   };
 };

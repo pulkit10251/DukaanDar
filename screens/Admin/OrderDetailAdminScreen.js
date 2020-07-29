@@ -5,7 +5,6 @@ import {
   StyleSheet,
   FlatList,
   Platform,
-  Button,
   TouchableOpacity,
   TouchableNativeFeedback,
   Alert,
@@ -190,7 +189,8 @@ const OrderDetailAdminScreen = (props) => {
                               ShopStoreActions.changeOrderStatus(
                                 shopId,
                                 orderId,
-                                "PACKED"
+                                "PACKED",
+                                userId
                               )
                             );
                             setLoading(false);

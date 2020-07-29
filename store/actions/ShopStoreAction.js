@@ -69,6 +69,7 @@ export const placeOrder = (
         paymentMethod: paymentMethod,
         paymentStatus: paymentStatus,
       },
+      OrderStatus: "PENDING",
     });
 
     const CustomerData = await fetch(
@@ -76,6 +77,12 @@ export const placeOrder = (
     );
 
     const customerResponse = await CustomerData.json();
+
+    const expoId = await fetch(
+      `https://dukaandar-e4590.firebaseio.com/ExpoTokens/${customerResponse.uid}.json?auth=${token}`
+    );
+
+    const expoData = await expoId.json();
 
     const response = await fetch(
       `https://dukaandar-e4590.firebaseio.com/shopOrders/${shopId}/active/${DummyId}.json?auth=${token}`,
@@ -100,7 +107,8 @@ export const placeOrder = (
           CustomerMobileNumber: customerResponse.contact,
           CustomerEmail: customerResponse.email,
           userId: customerResponse.uid,
-          OrderStatus: "Pending",
+          OrderStatus: "PENDING",
+          expoToken: expoData.expoToken,
         }),
       }
     );
@@ -171,7 +179,7 @@ export const fetchCustomerData = () => {
   };
 };
 
-export const changeOrderStatus = (shopId, orderId, status) => {
+export const changeOrderStatus = (shopId, orderId, status, userId) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const response = await fetch(
@@ -186,6 +194,19 @@ export const changeOrderStatus = (shopId, orderId, status) => {
         }),
       }
     );
+
+    const Response = await fetch(
+      `https://dukaandar-e4590.firebaseio.com/Customers/${userId}/${shopId}/YourOrders/${orderId}.json?auth=${token}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderStatus: status,
+        }),
+      }
+    );
   };
 };
 
@@ -196,11 +217,10 @@ export const getOrderStatus = (shopId, orderId) => {
       `https://dukaandar-e4590.firebaseio.com/shopOrders/${shopId}/active/${orderId}/OrderStatus.json?auth=${token}`
     );
     const resData = await response.json();
-    // console.log(resData);
 
     dispatch({
       type: "GET_STATUS",
-      status: resData,
+      status: resData === null ? "PACKED" : resData,
     });
   };
 };

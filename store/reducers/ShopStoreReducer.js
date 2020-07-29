@@ -129,6 +129,7 @@ export default (state = initialState, action) => {
       const paymentDetails = action.paymentDetails;
       const paymentMethod = paymentDetails.paymentMethod;
       const paymentStatus = paymentDetails.paymentStatus;
+      const status = action.OrderStatus;
 
       const newOrder = new OrderModel(
         DummyId,
@@ -137,7 +138,8 @@ export default (state = initialState, action) => {
         totalMrp,
         Date,
         paymentStatus,
-        paymentMethod
+        paymentMethod,
+        status,
       );
       const updatedOrderItems = {
         ...orders,

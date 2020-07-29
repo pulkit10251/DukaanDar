@@ -8,7 +8,8 @@ class OrderModel {
     totalMrp,
     date,
     paymentStatus,
-    paymentMethod
+    paymentMethod,
+    orderStatus
   ) {
     this.id = id;
     this.cartItems = cartItems;
@@ -17,6 +18,7 @@ class OrderModel {
     this.date = date;
     this.paymentStatus = paymentStatus;
     this.paymentMethod = paymentMethod;
+    this.orderStatus = orderStatus;
   }
 
   get readableDate() {

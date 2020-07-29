@@ -18,6 +18,7 @@ import Colors from "../../constants/Colors";
 import { FlatList } from "react-native-gesture-handler";
 import { NavigationEvents } from "react-navigation";
 import OrderItemAdmin from "../../components/UI/OrderItemAdmin";
+import { set } from "date-fns";
 var isNew = false;
 
 const CreateShopScreen = (props) => {
@@ -28,9 +29,11 @@ const CreateShopScreen = (props) => {
   useEffect(() => {
     const dispatchFcn = async () => {
       setLoading(true);
+      setRefreshing(true);
       await dispatch(ShopActions.fetchShop());
       await dispatch(OrderActions.fetchOrders(shopId));
       setLoading(false);
+      setRefreshing(false);
     };
     dispatchFcn();
   }, [dispatch]);
@@ -38,6 +41,14 @@ const CreateShopScreen = (props) => {
   useEffect(() => {
     props.navigation.setParams({ shopId: shopId });
   }, []);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchOrdersFcn = async (shopId, setRefreshing) => {
+    setRefreshing(true);
+    await dispatch(OrderActions.fetchOrders(shopId));
+    setRefreshing(false);
+  };
 
   const shop = useSelector((state) =>
     state.shops.ShopData.find((item) => item.shop_Id === shopId)
@@ -98,6 +109,8 @@ const CreateShopScreen = (props) => {
         }}
       />
       <FlatList
+        onRefresh={() => fetchOrdersFcn(shopId, setRefreshing)}
+        refreshing={refreshing}
         ListHeaderComponent={
           <View style={{ flex: 1 }}>
             <View style={styles.IntroContainer}>

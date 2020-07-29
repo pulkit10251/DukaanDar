@@ -16,10 +16,9 @@ const OrderDetailScreen = (props) => {
     dispatch(ShopStoreActions.getOrderStatus(shopId, orderId));
   }, [dispatch]);
 
-  const status =
-    useSelector((state) => state.status.OrderStatus) === null
-      ? "Pending"
-      : useSelector((state) => state.status.OrderStatus);
+  const status = useSelector((state) => state.status.OrderStatus);
+
+  var Status = status === null ? "Pending" : status;
 
   return (
     <View style={styles.screen}>
@@ -79,10 +78,10 @@ const OrderDetailScreen = (props) => {
                   fontFamily: "open-sans-bold",
                   fontSize: 18,
                   textTransform: "uppercase",
-                  color: status === "Pending" ? "red" : "green",
+                  color: Status === "Pending" ? "red" : "green",
                 }}
               >
-                {status}
+                {Status}
               </Text>
             </View>
             {status === "PACKED" && (

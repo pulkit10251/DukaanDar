@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, FlatList, Image } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import OrderItem from "../../components/UI/OrderItem";
 import Imagess from "../../constants/Imagess";
 
@@ -56,6 +56,8 @@ const OrderScreen = (props) => {
             id={itemData.item.id}
             paymentMethod={itemData.item.paymentMethod}
             paymentStatus={itemData.item.paymentStatus}
+            shopId={shopId}
+            orderStatus={itemData.item.orderStatus}
             navigate={() =>
               OrderDetailNavigate(
                 itemData.item.cartItems,
