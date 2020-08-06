@@ -18,6 +18,8 @@ import * as Linking from "expo-linking";
 import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 import { useDispatch, useSelector } from "react-redux";
 import * as OrderActions from "../../store/actions/OrderAction";
+import { normalize } from "react-native-elements";
+import { normalizeUnits } from "moment";
 
 const sendPushNotification = async (expoPushToken) => {
   console.log("called");
@@ -85,7 +87,9 @@ const OrderDetailAdminScreen = (props) => {
                 }}
               >
                 <Text style={styles.text}>Customer Name : </Text>
-                <Text style={{ fontSize: 18, fontFamily: "open-sans" }}>
+                <Text
+                  style={{ fontSize: normalize(14), fontFamily: "open-sans" }}
+                >
                   {order.customerName}
                 </Text>
               </View>
@@ -97,7 +101,9 @@ const OrderDetailAdminScreen = (props) => {
                 }}
               >
                 <Text style={styles.text}>Contact No. : </Text>
-                <Text style={{ fontSize: 18, fontFamily: "open-sans" }}>
+                <Text
+                  style={{ fontSize: normalize(14), fontFamily: "open-sans" }}
+                >
                   {order.customerContact}
                 </Text>
 
@@ -119,7 +125,9 @@ const OrderDetailAdminScreen = (props) => {
                 }}
               >
                 <Text style={styles.text}>Email : </Text>
-                <Text style={{ fontSize: 18, fontFamily: "open-sans" }}>
+                <Text
+                  style={{ fontSize: normalize(14), fontFamily: "open-sans" }}
+                >
                   {order.customerEmail}
                 </Text>
               </View>
@@ -156,13 +164,19 @@ const OrderDetailAdminScreen = (props) => {
             }}
           >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={{ fontFamily: "open-sans-bold" }}>
+              <Text
+                style={{
+                  fontFamily: "open-sans-bold",
+                  fontSize: normalize(12),
+                }}
+              >
                 Order Status :{" "}
               </Text>
               <Text
                 style={{
                   fontFamily: "open-sans-bold",
                   color: status === "PACKED" ? "green" : "red",
+                  fontSize: normalize(12),
                 }}
               >
                 {status.toUpperCase()}
@@ -211,18 +225,26 @@ const OrderDetailAdminScreen = (props) => {
                       borderRadius: 5,
                     }}
                   >
-                    <Text style={{ color: "white" }}>SET AS PACKED</Text>
+                    <Text style={{ color: "white", fontSize: normalize(12) }}>
+                      SET AS PACKED
+                    </Text>
                   </View>
                 </TouchableCmp>
               )}
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={{ fontFamily: "open-sans-bold" }}>
+              <Text
+                style={{
+                  fontFamily: "open-sans-bold",
+                  fontSize: normalize(12),
+                }}
+              >
                 Payment Status :{" "}
               </Text>
               <Text
                 style={{
                   fontFamily: "open-sans-bold",
+                  fontSize: normalize(12),
                   color: paymentStatus ? "green" : "red",
                 }}
               >
@@ -269,7 +291,9 @@ const OrderDetailAdminScreen = (props) => {
                       borderRadius: 5,
                     }}
                   >
-                    <Text style={{ color: "white" }}>SET AS PAID</Text>
+                    <Text style={{ color: "white", fontSize: normalize(12) }}>
+                      SET AS PAID
+                    </Text>
                   </View>
                 </TouchableCmp>
               )}
@@ -311,7 +335,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "open-sans-bold",
-    fontSize: 18,
+    fontSize: normalize(14),
     textAlign: "center",
   },
   container: {

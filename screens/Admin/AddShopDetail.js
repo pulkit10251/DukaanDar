@@ -177,7 +177,9 @@ const AddShopDetail = (props) => {
 
   const items = [];
 
-  const submitHandler = (
+  const [isLoading, setIsLoading] = useState(false);
+
+  const submitHandler = async (
     shopId,
     shopName,
     shopkeeperName,
@@ -205,6 +207,7 @@ const AddShopDetail = (props) => {
         "Hey ! you have left one or more field empty !!!"
       );
     } else {
+      setIsLoading(true);
       dispatch(
         ShopActions.addShop(
           shopId,
@@ -222,7 +225,9 @@ const AddShopDetail = (props) => {
           breakTimings
         )
       );
-      props.navigation.pop();
+      await dispatch(ShopActions.addServer());
+      setIsLoading(false);
+      props.navigation.navigate("Start");
     }
   };
 
@@ -738,39 +743,54 @@ const AddShopDetail = (props) => {
       }
       numColumns={2}
       ListFooterComponent={
-        <TouchableCmp
-          onPress={() => {
-            submitHandler(
-              shopId,
-              name,
-              shopkeeperName,
-              loc,
-              desc,
-              shopImage,
-              shopkeeperImage,
-              offers,
-              front,
-              open,
-              openTimings,
-              closeTimings,
-              breakTimings
-            );
-          }}
-          disabled={sloading || skloading ? true : false}
-        >
-          <View
-            style={{
-              ...styles.buttonContainer,
-              width: "30%",
-              alignSelf: "center",
-              marginVertical: 20,
-              marginHorizontal: 10,
-              marginBottom: 50,
-            }}
-          >
-            <Text style={styles.buttonText}>Submit</Text>
-          </View>
-        </TouchableCmp>
+        <View>
+          {isLoading === false ? (
+            <TouchableCmp
+              onPress={() => {
+                submitHandler(
+                  shopId,
+                  name,
+                  shopkeeperName,
+                  loc,
+                  desc,
+                  shopImage,
+                  shopkeeperImage,
+                  offers,
+                  front,
+                  open,
+                  openTimings,
+                  closeTimings,
+                  breakTimings
+                );
+              }}
+              disabled={sloading || skloading ? true : false}
+            >
+              <View
+                style={{
+                  ...styles.buttonContainer,
+                  width: "30%",
+                  alignSelf: "center",
+                  marginVertical: 20,
+                  marginHorizontal: 10,
+                  marginBottom: 50,
+                }}
+              >
+                <Text style={styles.buttonText}>Submit</Text>
+              </View>
+            </TouchableCmp>
+          ) : (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                marginVertical: 20,
+                marginBottom: 50,
+              }}
+            >
+              <ActivityIndicator size="small" color={Colors.primary} />
+            </View>
+          )}
+        </View>
       }
       renderItem={(itemData) => (
         <View

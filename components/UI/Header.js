@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import { normalize } from "react-native-elements";
 
 const Header = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
-    fontSize: Dimensions.get("screen").width * 0.04,
+    fontSize: normalize(12),
     fontFamily: "open-sans-bold",
   },
   searchBar: {
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   searchText: {
     fontFamily: "open-sans",
     color: "#888",
-    fontSize: 14,
+    fontSize: normalize(12),
   },
 });
 

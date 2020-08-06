@@ -10,6 +10,11 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { normalize } from "react-native-elements";
 
 const Card = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -88,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "center",
     flex: 1,
-    width: "95%",
+    width: wp("95%"),
   },
   cardStyle: {
     flexDirection: "row",
@@ -107,8 +112,8 @@ const styles = StyleSheet.create({
   },
   cardText: {
     fontFamily: "open-sans-bold",
-    fontSize: Dimensions.get("screen").height * 0.025,
-    padding: 10,
+    fontSize: normalize(14),
+    padding: 10
   },
   ArrowStyle: {
     justifyContent: "flex-end",
@@ -130,7 +135,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: Colors.accent,
     padding: 8,
-    width: 100,
+    width: wp("30%"),
   },
   deletebutton: {
     marginLeft: "auto",
@@ -138,7 +143,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "red",
     padding: 8,
-    width: 100,
+    width: wp("30%"),
   },
   trash: {
     alignItems: "center",
@@ -146,6 +151,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     textAlign: "center",
+    fontSize: normalize(12)
   },
 });
 

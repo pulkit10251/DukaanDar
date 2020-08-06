@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import Colors from "../../constants/Colors";
+import { normalize } from "react-native-elements";
 
 const FrontBox = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -17,7 +18,9 @@ const FrontBox = (props) => {
     TouchableCmp = TouchableNativeFeedback;
   }
   return (
-    <TouchableCmp onPress={() => props.navigation(props.prod, props.data,props.shopId)}>
+    <TouchableCmp
+      onPress={() => props.navigation(props.prod, props.data, props.shopId)}
+    >
       <View style={styles.box}>
         <View style={styles.imageContainer}>
           <Image
@@ -26,7 +29,15 @@ const FrontBox = (props) => {
             resizeMode="stretch"
           />
         </View>
-        <Text style={styles.text}>{props.name}</Text>
+        <View
+          style={{
+            height: "26%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={styles.text}>{props.name}</Text>
+        </View>
       </View>
     </TouchableCmp>
   );
@@ -51,7 +62,8 @@ const styles = StyleSheet.create({
     width: "90%",
     height: "70%",
     borderRadius: 10,
-    marginTop: 5,
+    marginVertical: 5,
+
     alignItems: "center",
   },
   image: {
@@ -63,11 +75,11 @@ const styles = StyleSheet.create({
   text: {
     flexWrap: "wrap",
     alignItems: "center",
-    marginTop: "auto",
     textAlign: "center",
     paddingHorizontal: 5,
-    marginBottom: 20,
+    marginBottom: 10,
     fontFamily: "open-sans-bold",
+    fontSize: normalize(12),
     color: "white",
   },
 });

@@ -3,6 +3,8 @@ import { Text, View, StyleSheet, Dimensions } from "react-native";
 import Colors from "../../constants/Colors";
 import AddInitial from "../../components/UI/AddInitial";
 import AddLater from "../../components/UI/AddLater";
+import { normalize } from "react-native-elements";
+import { normalizeUnits } from "moment";
 
 const ProductDetailCard = (props) => {
   const percentage = 100 - (props.Price * 100) / props.Mrp;
@@ -10,7 +12,6 @@ const ProductDetailCard = (props) => {
   const cartItems = props.cartItem;
   var currentQuantity;
   if (cartItems[props.product.prod_Id]) {
-
     currentQuantity = cartItems[props.product.prod_Id].quantity;
   } else {
     currentQuantity = 0;
@@ -115,14 +116,14 @@ const styles = StyleSheet.create({
   },
   price: {
     marginRight: 10,
-    fontSize: 22,
+    fontSize: normalize(20),
     fontFamily: "open-sans-bold",
     textAlign: "center",
     marginTop: "auto",
   },
   mrp: {
     textDecorationLine: "line-through",
-    fontSize: 22,
+    fontSize: normalize(20),
     fontFamily: "open-sans",
     color: "#888",
     marginTop: "auto",
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.accent,
     borderRadius: 5,
     marginHorizontal: 10,
-    width: Dimensions.get("screen").width * 0.2,
+    width: Dimensions.get("screen").width * 0.22,
     height: Dimensions.get("screen").height * 0.035,
     justifyContent: "center",
     marginTop: "auto",
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     margin: 3,
-    fontSize: 12,
+    fontSize: normalize(11),
     fontFamily: "open-sans",
   },
   priceAddContainer: {
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   QuantityText: {
-    fontSize: Dimensions.get("screen").width * 0.05,
+    fontSize: normalize(12),
     fontFamily: "open-sans",
   },
   addContainer: {
@@ -161,11 +162,11 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontFamily: "open-sans-bold",
-    fontSize: Dimensions.get("screen").width * 0.05,
+    fontSize: normalize(14),
   },
   text: {
     fontFamily: "open-sans",
-    fontSize: Dimensions.get("screen").width * 0.05,
+    fontSize: normalize(14),
   },
   Mfdcontainer: {
     flexDirection: "row",
@@ -177,12 +178,12 @@ const styles = StyleSheet.create({
   inStock: {
     fontFamily: "open-sans-bold",
     color: "green",
-    fontSize: Dimensions.get("screen").height * 0.025,
+    fontSize: normalize(Dimensions.get("screen").height * 0.025),
   },
   OutStock: {
     fontFamily: "open-sans-bold",
     color: "red",
-    fontSize: Dimensions.get("screen").height * 0.025,
+    fontSize: normalize(Dimensions.get("screen").height * 0.025),
   },
 });
 

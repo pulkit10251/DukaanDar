@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 import * as AuthActions from "../../store/actions/AuthActions";
+import { normalize } from "react-native-elements";
 
 const LoginScreen = (props) => {
   const dispatch = useDispatch();
@@ -110,6 +111,7 @@ const LoginScreen = (props) => {
           style={styles.inputText}
           placeholder="Email..."
           placeholderTextColor="#003f5c"
+          keyboardType="email-address"
           onChangeText={(text) => {
             setEmail(text);
           }}
@@ -195,6 +197,7 @@ const styles = StyleSheet.create({
   },
   inputText: {
     height: 50,
+    fontSize: normalize(12)
   },
   loginBtn: {
     width: "80%",
@@ -209,19 +212,22 @@ const styles = StyleSheet.create({
   loginText: {
     fontFamily: "open-sans-bold",
     color: "white",
+    fontSize: normalize(12)
   },
   forgot: {
     color: "white",
     fontFamily: "open-sans-bold",
+    fontSize: normalize(12)
   },
   Titletext: {
     color: "white",
     marginBottom: 20,
-    fontSize: 50,
+    fontSize: normalize(40),
     fontFamily: "sans-serif-medium",
   },
   buttonText: {
     fontFamily: "open-sans",
+    fontSize: normalize(12)
   },
 });
 

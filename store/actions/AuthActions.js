@@ -189,6 +189,7 @@ export const signin = (email, password, type) => {
         throw new Error(errorId);
       }
     }
+    
   };
 };
 

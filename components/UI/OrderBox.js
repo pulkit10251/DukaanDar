@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet, Dimensions, Image } from "react-native";
 import Colors from "../../constants/Colors";
+import { normalize } from "react-native-elements";
 
 const OrderBox = (props) => {
   const percentage =
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
   },
   imageContainer: {
-    width: "35%",
+    width: "33%",
     height: "90%",
     marginHorizontal: 10,
     alignSelf: "center",
@@ -81,12 +82,12 @@ const styles = StyleSheet.create({
   },
   price: {
     marginRight: 10,
-    fontSize: Dimensions.get("screen").height * 0.025,
+    fontSize: normalize(16),
     fontFamily: "open-sans-bold",
   },
   mrp: {
     textDecorationLine: "line-through",
-    fontSize: Dimensions.get("screen").height * 0.025,
+    fontSize: normalize(16),
     fontFamily: "open-sans",
     color: "#888",
   },
@@ -95,19 +96,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     marginLeft: "auto",
-    marginHorizontal: 10,
+    marginHorizontal: 0,
     justifyContent: "center",
   },
   percentText: {
     textAlign: "center",
     color: "white",
     margin: 3,
-    fontSize: Dimensions.get("screen").height * 0.015,
+    fontSize: normalize(10),
     fontFamily: "open-sans",
   },
   text: {
     fontFamily: "open-sans",
-    fontSize: Dimensions.get("screen").height * 0.025,
+    fontSize: normalize(16),
   },
   priceAddContainer: {
     width: "45%",
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   QuantityText: {
-    fontSize: Dimensions.get("screen").height * 0.025,
+    fontSize: normalize(20),
     fontFamily: "open-sans",
   },
   boxContainer: {
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
   BoxText: {
     textAlign: "center",
     fontFamily: "open-sans-bold",
-    fontSize: 40,
+    fontSize: normalize(40),
     color: Colors.other,
   },
 });

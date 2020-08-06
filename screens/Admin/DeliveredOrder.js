@@ -9,7 +9,7 @@ const DeliveredOrder = (props) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    console.log("fuction called");
+
     const dispatchFcn = async () => {
       setLoading(true);
       await dispatch(OrderActions.fetchOrders(shopId));

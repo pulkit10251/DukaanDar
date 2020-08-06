@@ -9,6 +9,7 @@ import {
   Platform,
 } from "react-native";
 import moment from "moment";
+import { normalize } from "react-native-elements";
 
 const OrderItemAdmin = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -42,6 +43,7 @@ const OrderItemAdmin = (props) => {
             style={{
               ...styles.Textcolor,
               color: props.paymentStatus ? "green" : "red",
+              fontSize: normalize(12)
             }}
           >
             {props.paymentStatus ? "DONE" : "PENDING"}
@@ -53,6 +55,7 @@ const OrderItemAdmin = (props) => {
             style={{
               ...styles.Textcolor,
               color: props.orderStatus === "PACKED" ? "green" : "red",
+              fontSize: normalize(12)
             }}
           >
             {props.orderStatus.toUpperCase()}
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 2,
     width: "95%",
-    height: 250,
+    height: Dimensions.get("screen").height*0.357,
     alignSelf: "center",
     elevation: 2,
     backgroundColor: "white",
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontFamily: "open-sans",
-    fontSize: 16,
+    fontSize: normalize(14),
   },
   dateContainer: {
     alignItems: "center",
@@ -116,6 +119,7 @@ const styles = StyleSheet.create({
   },
   Text: {
     fontFamily: "open-sans",
+    fontSize: normalize(12)
   },
   IdContainer: {
     flexDirection: "row",
@@ -123,6 +127,7 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontFamily: "open-sans-bold",
+    fontSize: normalize(12)
   },
 });
 

@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import * as AuthActions from "../../store/actions/AuthActions";
 import { useDispatch } from "react-redux";
+import { normalize } from "react-native-elements";
 
 const SignUpScreen = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -247,6 +248,7 @@ const styles = StyleSheet.create({
   inputText: {
     height: 50,
     width: "100%",
+    fontSize: normalize(12)
   },
   titleText: {
     color: "white",
@@ -270,7 +272,11 @@ const styles = StyleSheet.create({
   signupText: {
     fontFamily: "open-sans-bold",
     color: "white",
+    fontSize: normalize(12)
   },
+  buttonText:{
+    fontSize: normalize(12)
+  }
 });
 
 export default SignUpScreen;

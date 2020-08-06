@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 import Colors from "../../constants/Colors";
+import { normalize } from "react-native-elements";
 
 const IntroScreen = (props) => {
   const AllNavigate = (id) => {
@@ -212,6 +213,7 @@ const IntroScreen = (props) => {
               color: Color,
               margin: Dimensions.get("screen").height * 0.005,
               fontFamily: "open-sans-bold",
+              fontSize:normalize(12)
             }}
           >
             {status}
@@ -282,13 +284,14 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "open-sans-bold",
     fontWeight: "bold",
-    fontSize: 22,
+    fontSize: normalize(22),
   },
   description: {
     fontFamily: "open-sans",
     fontStyle: "italic",
     textAlign: "center",
     color: "#888",
+    fontSize: normalize(12)
   },
   button: {
     backgroundColor: Colors.primary,
@@ -300,7 +303,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontFamily: "open-sans",
-    fontSize: 22,
+    fontSize: normalize(18),
     textAlign: "center",
     marginHorizontal: 5,
   },
@@ -317,10 +320,12 @@ const styles = StyleSheet.create({
   timingsText: {
     fontFamily: "open-sans-bold",
     margin: Dimensions.get("screen").height * 0.005,
+    fontSize: normalize(12),
   },
   block1: {
     fontFamily: "open-sans",
     margin: Dimensions.get("screen").height * 0.005,
+    fontSize: normalize(12)
   },
 });
 

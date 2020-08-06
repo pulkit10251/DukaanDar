@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import AdminBoxView from "./AdminBoxView";
 import Colors from "../../constants/Colors";
 import * as ShopActions from "../../store/actions/ShopAction";
+import { normalize } from "react-native-elements";
 
 const AdminCategoriesCard = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     fontFamily: "open-sans",
-    fontSize: Dimensions.get("screen").width * 0.045,
+    fontSize: normalize(14),
   },
   
   Editicon: {

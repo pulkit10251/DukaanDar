@@ -15,6 +15,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import * as ShopActions from "../../store/actions/ShopAction";
+import { normalize } from "react-native-elements";
 
 const EditGlobal = (props) => {
   const imageUrl = props.navigation.getParam("ImageUrl");
@@ -152,6 +153,12 @@ const EditGlobal = (props) => {
   );
 };
 
+EditGlobal.navigationOptions =(NavData) => {
+  return {
+    headerTitle: "Edit Global Category",
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -197,6 +204,7 @@ const styles = StyleSheet.create({
   input: {
     width: "90%",
     height: "100%",
+    fontSize: normalize(12)
   },
   iconStyle: {
     color: "#888",
@@ -224,7 +232,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontFamily: "open-sans",
-    fontSize: 18,
+    fontSize: normalize(16),
   },
 });
 

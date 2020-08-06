@@ -15,6 +15,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import { useSelector, useDispatch } from "react-redux";
 import Colors from "../../constants/Colors";
+import { normalize } from "react-native-elements";
 
 const ProductScreen = (props) => {
   const product = props.navigation.getParam("product");
@@ -75,7 +76,7 @@ const ProductScreen = (props) => {
                 fontFamily: "open-sans-bold",
                 textAlignVertical: "top",
                 textAlign: "center",
-                fontSize: 25,
+                fontSize: normalize(20),
                 color: "white",
               }}
             >
@@ -100,7 +101,7 @@ const ProductScreen = (props) => {
               <Text
                 style={{
                   fontFamily: "open-sans-bold",
-                  fontSize: 40,
+                  fontSize: normalize(36),
                   color: "white",
                 }}
               >
@@ -111,7 +112,8 @@ const ProductScreen = (props) => {
               <Text
                 style={{
                   fontFamily: "open-sans-bold",
-                  fontSize: 18,
+                  fontSize: normalize(16),
+                  marginTop:5,
                   color: "white",
                 }}
               >
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
   },
   ExploreText: {
     fontFamily: "open-sans-bold",
-    fontSize: Dimensions.get("screen").width * 0.045,
+    fontSize: normalize(18),
     textAlign: "center",
     margin: 10,
   },

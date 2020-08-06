@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Colors from "../../constants/Colors";
+import { normalize } from "react-native-elements";
 
 const CartPriceContainer = (props) => {
   return (
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 10,
-    backgroundColor:'white'
+    backgroundColor: "white",
   },
   rowContainer: {
     flexDirection: "row",
@@ -54,23 +55,25 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   textContainer: {
-    width: "50%",
+    width: "51%",
     justifyContent: "center",
     paddingHorizontal: 20,
   },
   text: {
     fontFamily: "open-sans",
     textAlign: "left",
-    fontSize: 14,
+    fontSize: normalize(12),
   },
   textBold: {
     fontFamily: "open-sans-bold",
     textAlign: "left",
-    fontSize: 16,
+    fontSize: normalize(12),
   },
   amount: {
     textAlign: "right",
     fontFamily: "open-sans",
+    fontSize: normalize(12),
+
   },
   discount: {
     textAlign: "right",

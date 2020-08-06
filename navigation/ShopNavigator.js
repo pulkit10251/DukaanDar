@@ -49,6 +49,9 @@ import ProfileScreen from "../screens/shop/ProfileScreen";
 import AboutScreen from "../screens/shop/AboutScreen";
 import OrderDetailAdminScreen from "../screens/Admin/OrderDetailAdminScreen";
 import DeliveredOrder from "../screens/Admin/DeliveredOrder";
+import CreateNewShopScreen from "../screens/Admin/CreateNewShopScreen";
+import AdminStartupScreen from "../screens/Admin/AdminStartupScreen";
+import { normalize } from "react-native-elements";
 
 defaultNavOptions = {
   headerStyle: {
@@ -57,6 +60,7 @@ defaultNavOptions = {
   headerTintColor: Platform.OS === "android" ? "white" : Colors.primary,
   headerTitleStyle: {
     fontFamily: "open-sans",
+    fontSize: normalize(16),
   },
 };
 
@@ -93,7 +97,7 @@ const ProfileNavigator = createStackNavigator(
       drawerIcon: (drawerConfig) => (
         <Ionicons
           name={Platform.OS === "android" ? "md-person" : "ios-person"}
-          size={23}
+          size={normalize(23)}
           color={drawerConfig.tintColor}
         />
       ),
@@ -117,7 +121,7 @@ const AboutNavigator = createStackNavigator(
               ? "md-information-circle"
               : "ios-information-circle"
           }
-          size={23}
+          size={normalize(23)}
           color={drawerConfig.tintColor}
         />
       ),
@@ -135,6 +139,10 @@ const StartDrawerNavigator = createDrawerNavigator(
   {
     contentOptions: {
       activeTintColor: Colors.other,
+      labelStyle: {
+        fontSize: normalize(12),
+        fontFamily: "open-sans-bold",
+      },
     },
     navigationOptions: {
       drawerIcon: (drawerConfig) => (
@@ -148,6 +156,7 @@ const StartDrawerNavigator = createDrawerNavigator(
     },
     unmountInactiveRoutes: true,
     initialRouteName: "Start",
+
     contentComponent: (props) => {
       const dispatch = useDispatch();
       let TouchableCmp = TouchableOpacity;
@@ -267,10 +276,29 @@ const OrderNavigator = createStackNavigator(
   }
 );
 
-const AdminNavigator = createStackNavigator(
+const AdminNewNavigator = createStackNavigator(
+  {
+    New: CreateNewShopScreen,
+    AddShop: AddShopDetail,
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions,
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-create" : "ios-create"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+      title: "Admin",
+    },
+  }
+);
+
+const AdminExistingNavigator = createStackNavigator(
   {
     Create: CreateShopScreen,
-    AddShop: AddShopDetail,
     Main: ShopDetailScreen,
     EditShop: EditDetailScreen,
     Global: AddGCScreen,
@@ -300,6 +328,27 @@ const AdminNavigator = createStackNavigator(
   }
 );
 
+const AdminNavigator = createSwitchNavigator(
+  {
+    Startup: AdminStartupScreen,
+    NewAdmin: AdminNewNavigator,
+    OldAdmin: AdminExistingNavigator,
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions,
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-create" : "ios-create"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+      title: "Admin",
+    },
+  }
+);
+
 const StartAdminDrawerNavigator = createDrawerNavigator(
   {
     Start: StartNavigator,
@@ -310,6 +359,10 @@ const StartAdminDrawerNavigator = createDrawerNavigator(
   {
     contentOptions: {
       activeTintColor: Colors.other,
+      labelStyle: {
+        fontSize: normalize(12),
+        fontFamily: "open-sans-bold",
+      },
     },
     navigationOptions: {
       drawerIcon: (drawerConfig) => (
@@ -323,6 +376,7 @@ const StartAdminDrawerNavigator = createDrawerNavigator(
     },
     unmountInactiveRoutes: true,
     initialRouteName: "Start",
+
     contentComponent: (props) => {
       const dispatch = useDispatch();
       let TouchableCmp = TouchableOpacity;
@@ -393,6 +447,10 @@ const shopNavigator = createDrawerNavigator(
   {
     contentOptions: {
       activeTintColor: Colors.other,
+      labelStyle: {
+        fontSize: normalize(12),
+        fontFamily: "open-sans-bold",
+      },
     },
     unmountInactiveRoutes: true,
     initialRouteName: "Start",
@@ -409,6 +467,10 @@ const shopAdminNavigator = createDrawerNavigator(
   {
     contentOptions: {
       activeTintColor: Colors.other,
+      labelStyle: {
+        fontSize: normalize(12),
+        fontFamily: "open-sans-bold",
+      },
     },
     unmountInactiveRoutes: true,
     initialRouteName: "Start",

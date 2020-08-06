@@ -16,6 +16,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import { Switch } from "react-native-gesture-handler";
 import * as ShopActions from "../../store/actions/ShopAction";
+import { normalize } from "react-native-elements";
 
 const ShopDetailScreen = (props) => {
   const CategoryNavigate = (shopId) => {
@@ -223,7 +224,8 @@ const ShopDetailScreen = (props) => {
           <Text
             style={{
               color: Color,
-              margin: Dimensions.get("screen").height * 0.005,
+              marginHorizontal: 5,
+              fontSize: normalize(12),
               fontFamily: "open-sans-bold",
             }}
           >
@@ -310,12 +312,13 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "open-sans-bold",
     fontWeight: "bold",
-    fontSize: 22,
+    fontSize: normalize(22),
   },
   description: {
     fontFamily: "open-sans",
     fontStyle: "italic",
     textAlign: "center",
+    fontSize: normalize(12),
     color: "#888",
   },
   button: {
@@ -323,12 +326,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    padding: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   buttonText: {
     color: "white",
     fontFamily: "open-sans",
-    fontSize: 22,
+    fontSize: normalize(18),
     textAlign: "center",
     marginHorizontal: 5,
   },
@@ -341,14 +345,17 @@ const styles = StyleSheet.create({
   },
   timings: {
     flexDirection: "row",
+    marginVertical: 5,
   },
   timingsText: {
     fontFamily: "open-sans-bold",
-    margin: Dimensions.get("screen").height * 0.005,
+    marginLeft: 5,
+    fontSize: normalize(12),
   },
   block1: {
     fontFamily: "open-sans",
-    margin: Dimensions.get("screen").height * 0.005,
+    marginLeft: 5,
+    fontSize: normalize(12),
   },
 });
 

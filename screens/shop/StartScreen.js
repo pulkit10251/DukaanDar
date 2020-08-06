@@ -16,6 +16,8 @@ import HeaderButton from "../../components/UI/HeaderButton";
 import * as ShopIDAction from "../../store/actions/ShopIdAction";
 import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 import * as ShopActions from "../../store/actions/ShopAction";
+import * as ProfileActions from "../../store/actions/ProfileAction";
+import * as DukaanDarActions from "../../store/actions/DukaanDarIdAction";
 
 import ModalView from "../../components/UI/ModalView";
 import Colors from "../../constants/Colors";
@@ -23,6 +25,11 @@ import Colors from "../../constants/Colors";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { normalize } from "react-native-elements";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -130,6 +137,8 @@ const StartScreen = (props) => {
       } catch (err) {
         setError(err.message);
       }
+      await dispatch(ProfileActions.getProfileData());
+      await dispatch(DukaanDarActions.getShopId());
       setLoading(false);
     };
     fetch();
@@ -273,6 +282,7 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     color: "#888",
     textAlign: "center",
+    fontSize: normalize(12)
   },
   textContainer: {
     alignItems: "center",

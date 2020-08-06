@@ -14,6 +14,7 @@ import stringSimilarity from "string-similarity";
 import SearchScreenBar from "../../components/UI/SearchScreenBar";
 import Imagess from "../../constants/Imagess";
 import Colors from "../../constants/Colors";
+import { normalize } from "react-native-elements";
 
 const SearchScreen = (props) => {
   const [value, setvalue] = useState("");
@@ -23,7 +24,7 @@ const SearchScreen = (props) => {
     });
   }, []);
 
-  const productDetailNavigate = (product, categoryList,shopId) => {
+  const productDetailNavigate = (product, categoryList, shopId) => {
     props.navigation.navigate("productDetail", {
       product: product,
       categoryList: categoryList,
@@ -41,12 +42,11 @@ const SearchScreen = (props) => {
 
       for (var j = 0; j < globalCat.length; j++) {
         const LocalCat = globalCat[j].category_Products;
-        if(LocalCat === undefined){
-          console.log("undefined present")
+        if (LocalCat === undefined) {
+          console.log("undefined present");
           console.log(LocalCat);
-          console.log(j,i);
-          console.log(LocalCat.length)
-
+          console.log(j, i);
+          console.log(LocalCat.length);
         }
         const category = globalCat[j];
         for (var k = 0; k < LocalCat.length; k++) {
@@ -163,13 +163,13 @@ const styles = StyleSheet.create({
   },
   noText: {
     textAlign: "center",
-    fontSize: 20,
+    fontSize: normalize(20),
     fontFamily: "open-sans-bold",
     color: "red",
   },
   noticeText: {
     fontFamily: "open-sans",
-    fontSize: 12,
+    fontSize: normalize(12),
     textAlign: "center",
     flexWrap: "wrap",
     color: "#888",

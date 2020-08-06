@@ -16,6 +16,9 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
 import { useSelector } from "react-redux";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { normalize } from "react-native-elements";
+
 
 const ModalView = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -31,7 +34,7 @@ const ModalView = (props) => {
   });
 
   const onSubmit = (data, ShopData) => {
-    if (data.length === 6) {
+    if (data.length === 8) {
       if (storeData.includes(data)) {
         props.setModalVisibility(false);
         props.dispatch(ShopStoreActions.addStore(data, ShopData));
@@ -67,7 +70,7 @@ const ModalView = (props) => {
                   value={props.shopId}
                   onChangeText={(text) => props.setShopId(text)}
                   onSubmitEditing={() => onSubmit(props.shopId, props.ShopData)}
-                  maxLength={6}
+                  maxLength={8}
                 />
               </View>
               <View style={styles.iconContainer}>
@@ -113,13 +116,14 @@ const ModalView = (props) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    height: 200,
+    height: hp('25%'),
     paddingHorizontal: 10,
     paddingTop: 10,
+    borderRadius:10,
   },
   text: {
     fontFamily: "open-sans",
-    fontSize: 18,
+    fontSize: normalize(15),
     marginHorizontal: 10,
   },
   rowContainer: {

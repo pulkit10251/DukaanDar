@@ -15,6 +15,8 @@ import NavigationContainer from "./navigation/NavigationContainer";
 import OrderReducer from "./store/reducers/OrderReducer";
 import * as Notifications from "expo-notifications";
 import OrderStatusReducer from "./store/reducers/OrderStatusReducer";
+import ProfileReducer from "./store/reducers/ProfileReducer";
+import DukaanDarIdReducer from "./store/reducers/DukaanDarIdReducer";
 
 const fetchFont = () => {
   return Font.loadAsync({
@@ -30,6 +32,8 @@ const rootReducer = combineReducers({
   auth: AuthReducer,
   orders: OrderReducer,
   status: OrderStatusReducer,
+  profile: ProfileReducer,
+  dukanId: DukaanDarIdReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

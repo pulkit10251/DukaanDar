@@ -7,6 +7,7 @@ import {
   TextInput,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { normalize } from "react-native-elements";
 
 const SearchBar = (props) => {
   const [value, setValue] = useState("");
@@ -22,6 +23,7 @@ const SearchBar = (props) => {
       <View style={styles.inputTextContainer}>
         <TextInput
           placeholder="search for products"
+          style={{fontSize:normalize(12)}}
           value={value}
           onChangeText={(text) => {
             setValue(text);

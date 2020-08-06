@@ -19,12 +19,15 @@ import { FlatList } from "react-native-gesture-handler";
 import { NavigationEvents } from "react-navigation";
 import OrderItemAdmin from "../../components/UI/OrderItemAdmin";
 import { set } from "date-fns";
+import { normalize } from "react-native-elements";
 var isNew = false;
 
 const CreateShopScreen = (props) => {
-  const shopId = "15C5GS";
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  // const shopId = useSelector((state) => state.dukanId.shopId);
+  const shopId = "15C5GS";
 
   useEffect(() => {
     const dispatchFcn = async () => {
@@ -150,7 +153,7 @@ const CreateShopScreen = (props) => {
                 style={{
                   textAlign: "center",
                   fontFamily: "open-sans-bold",
-                  fontSize: 20,
+                  fontSize: normalize(18),
                 }}
               >
                 Active Orders
@@ -183,6 +186,7 @@ CreateShopScreen.navigationOptions = (NavData) => {
     headerTitle: "Your Shop",
     headerTitleStyle: {
       textAlign: "center",
+      fontSize: normalize(16)
     },
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
@@ -245,7 +249,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "open-sans",
-    fontSize: 16,
+    fontSize: normalize(16),
     color: "#888",
   },
   buttonContainer: {
@@ -259,16 +263,19 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
+    fontSize: normalize(12),
   },
   welcome: {
     fontFamily: "open-sans-bold",
-    fontSize: 18,
+    fontSize: normalize(16),
     textAlign: "center",
   },
   Text: {
-    fontSize: 14,
+    fontSize: normalize(12),
     fontFamily: "open-sans",
     textAlign: "center",
+    flexWrap: "wrap",
+    flexShrink: 1,
   },
   textContainer: {
     alignItems: "center",

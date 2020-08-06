@@ -17,6 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import * as ShopStoreActions from "../../store/actions/ShopStoreAction";
+import { normalize } from "react-native-elements";
 
 const CartScreen = (props) => {
   const shopId = useSelector((state) => state.shopId.shopId);
@@ -25,7 +26,7 @@ const CartScreen = (props) => {
 
   useEffect(() => {
     dispatch(ShopStoreActions.addCustomerData(customerData));
-  }, [dispatch,customerData]);
+  }, [dispatch, customerData]);
 
   const totalAmount = useSelector(
     (state) => state.store.shops[shopId].TotalAmount
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "open-sans-bold",
-    fontSize: 18,
+    fontSize: normalize(16),
     textAlign: "center",
   },
   footerContainer: {
@@ -223,12 +224,12 @@ const styles = StyleSheet.create({
   },
   footerText: {
     color: "white",
-    fontSize: 15,
+    fontSize: normalize(12),
     fontFamily: "open-sans",
   },
   footerAmount: {
     color: "white",
-    fontSize: 15,
+    fontSize: normalize(12),
     marginLeft: "auto",
   },
   iconStyle: {
@@ -242,7 +243,7 @@ const styles = StyleSheet.create({
     marginVertical: 50,
   },
   buttonContainer: {
-    width: Dimensions.get("screen").width * 0.3,
+    width: Dimensions.get("screen").width * 0.34,
     height: Dimensions.get("screen").height * 0.05,
     alignItems: "center",
     justifyContent: "center",
@@ -253,7 +254,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontFamily: "open-sans",
-    fontSize: 12,
+    fontSize: normalize(12),
   },
 });
 

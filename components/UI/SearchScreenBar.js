@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Colors from "../../constants/Colors";
 import Product from "../../models/Product";
+import { normalize } from "react-native-elements";
 
 const SearchScreenBar = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -65,12 +66,12 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "open-sans",
-    fontSize: 15,
+    fontSize: normalize(12),
   },
   categoryText: {
     color: Colors.primary,
     fontFamily: "open-sans-bold",
-    fontSize: 15,
+    fontSize: normalize(12),
   },
 });
 

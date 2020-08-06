@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import * as AuthActions from "../../store/actions/AuthActions";
 import { useDispatch } from "react-redux";
+import { normalize } from "react-native-elements";
 
 const VerificationScreen = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -99,10 +100,11 @@ const styles = StyleSheet.create({
   inputText: {
     height: 50,
     width: "100%",
+    fontSize: normalize(12)
   },
   textStyle: {
     color: "white",
-    fontSize: 20,
+    fontSize: normalize(20),
     fontFamily: "open-sans",
     marginVertical: 40,
   },
@@ -119,6 +121,7 @@ const styles = StyleSheet.create({
   loginText: {
     fontFamily: "open-sans-bold",
     color: "white",
+    fontSize:normalize(12)
   },
   line: {
     marginVertical: 40,
