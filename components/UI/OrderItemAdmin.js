@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 2,
     width: "95%",
-    height: Dimensions.get("screen").height*0.357,
+    height: Dimensions.get("window").height*0.3,
     alignSelf: "center",
     elevation: 2,
     backgroundColor: "white",
