@@ -5,7 +5,7 @@ import CategoryLocal from "../../models/CategoryLocal";
 import Product from "../../models/Product";
 
 const initialState = {
-  ShopData: ShopData,
+  ShopData: {},
 };
 
 export default (state = initialState, action) => {
